@@ -1,0 +1,13 @@
+{
+    "id": "main",
+    "background": "TreeAndSky",
+    "textKey": "mainText",
+    "characterLeft": "Main",
+    "answers": [
+        {"textKey": "mainAnswer1", "nextFrameId": "frame1"},
+        {"textKey": "mainAnswer2", "nextFrameId": "frame1"},
+        {"textKey": "mainAnswer3", "nextFrameId": "end"},
+        {"textKey": "mainAnswer4", "nextFrameId": "end"}
+    ]
+    
+}
