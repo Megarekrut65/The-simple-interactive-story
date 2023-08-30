@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 210355828}
   - component: {fileID: 210355830}
   - component: {fileID: 210355831}
+  - component: {fileID: 210355832}
   m_Layer: 5
   m_Name: Sound
   m_TagString: Untagged
@@ -439,11 +440,39 @@ MonoBehaviour:
   soundIndex: 1
   downEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 210355832}
+        m_TargetAssemblyTypeName: Global.Sound.SoundButton, Assembly-CSharp
+        m_MethodName: Turn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   upEvent:
     m_PersistentCalls:
       m_Calls: []
   onlyOneClick: 0
+--- !u!114 &210355832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210355826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4be191d9d54a6bac71f88bdca67b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  img: {fileID: 210355828}
+  turnOn: {fileID: 21300000, guid: 034488c393ccabb42877f54e17c92553, type: 3}
+  turnOff: {fileID: 21300000, guid: f22d6a88d4c7da94da888ebb31a9e7bb, type: 3}
+  key: soundState
 --- !u!1 &211624290
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,7 +1480,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a5c96aab7aa618749a9396894d61d46f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2213,7 +2242,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1db10c33443674246a76bd4b0c0a0605, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2424,6 +2453,7 @@ GameObject:
   - component: {fileID: 1464348164}
   - component: {fileID: 1464348166}
   - component: {fileID: 1464348167}
+  - component: {fileID: 1464348168}
   m_Layer: 5
   m_Name: Music
   m_TagString: Untagged
@@ -2520,11 +2550,39 @@ MonoBehaviour:
   soundIndex: 1
   downEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1464348168}
+        m_TargetAssemblyTypeName: Global.Sound.MusicButton, Assembly-CSharp
+        m_MethodName: Turn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   upEvent:
     m_PersistentCalls:
       m_Calls: []
   onlyOneClick: 0
+--- !u!114 &1464348168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464348162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be68dd637f944fb4b8982899942af34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  img: {fileID: 1464348164}
+  turnOn: {fileID: 21300000, guid: 923eae884f1242e4ea61921ef0e772b8, type: 3}
+  turnOff: {fileID: 21300000, guid: e76e86eb19c4a1f4f8a7775ff1e1eafb, type: 3}
+  key: musicState
 --- !u!1 &1650688135
 GameObject:
   m_ObjectHideFlags: 0

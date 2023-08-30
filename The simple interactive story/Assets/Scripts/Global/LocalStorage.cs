@@ -19,6 +19,7 @@ namespace Global
             {
                 int => (T)(object)PlayerPrefs.GetInt(key),
                 float => (T)(object)PlayerPrefs.GetFloat(key),
+                bool => (T)(object) bool.Parse(PlayerPrefs.GetString(key)),
                 _ => (T)(object)PlayerPrefs.GetString(key)
             };
         }
@@ -31,6 +32,9 @@ namespace Global
                     break;
                 case float:
                     PlayerPrefs.SetFloat(key,  Convert.ToSingle(value));
+                    break;
+                case bool:
+                    PlayerPrefs.SetString(key,  Convert.ToBoolean(value).ToString());
                     break;
                 default:
                     PlayerPrefs.SetString(key, $"{value}");
