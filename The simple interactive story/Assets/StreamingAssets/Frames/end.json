@@ -1,4 +1,11 @@
 {
     "id": "end",
-    "background": "TheEnd"
+    "background": "End",
+    "characterLeft": "None",
+    "answers": [
+        {
+            "textKey": "end",
+            "nextFrameId": "main"
+        }
+    ]
 }

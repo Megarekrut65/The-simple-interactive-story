@@ -1,8 +1,8 @@
 {
     "id": "main",
-    "background": "TreeAndSky",
+    "background": "SkyAndTree",
     "textKey": "mainText",
-    "characterLeft": "Main",
+    "characterLeft": "Doctor",
     "answers": [
         {"textKey": "mainAnswer1", "nextFrameId": "frame1"},
         {"textKey": "mainAnswer2", "nextFrameId": "frame1"},

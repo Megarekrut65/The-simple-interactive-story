@@ -26,6 +26,9 @@
         },
         {
             "key": "mainAnswer4", "value": "Go away"
+        },
+        {
+            "key": "end", "value": "End..."
         }
     ]
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Story
+namespace Story.Data
 {
     [Serializable]
     public class Frame
@@ -10,7 +10,7 @@ namespace Story
         public string background;
         public string textKey;
         
-        public string characterLeft;
+        public string characterLeft;//900x700
         public string characterRight;
         
         public Answer[] answers;

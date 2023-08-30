@@ -3,7 +3,7 @@ using Global;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Story
+namespace Story.Data
 {
     public class JsonStoryParser
     {

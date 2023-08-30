@@ -8,8 +8,7 @@ namespace Global.Json
     /// </summary>
     /// <typeparam name="TValueType"></typeparam>
     public static class JsonParser<TValueType> {
-        public static SortedDictionary<string, TValueType> Parse(string valuePath) {
-            string path = Application.streamingAssetsPath + "/" + valuePath + ".json";
+        public static SortedDictionary<string, TValueType> Parse(string path) {
             string jsonData = AllFileReader.Read(path);
             
             JsonList<TValueType> list = JsonUtility.FromJson<JsonList<TValueType>>(jsonData);

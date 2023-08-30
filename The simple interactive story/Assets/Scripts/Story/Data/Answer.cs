@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Story
+namespace Story.Data
 {
     [Serializable]
     public class Answer
