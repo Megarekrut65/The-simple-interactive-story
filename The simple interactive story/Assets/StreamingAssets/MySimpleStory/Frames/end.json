@@ -1,6 +1,7 @@
 {
     "id": "end",
     "background": "End",
+    "music": "None",
     "images": {
         "left": "None"
     },

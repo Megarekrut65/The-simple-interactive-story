@@ -11,7 +11,7 @@
 /[Uu]ser[Ss]ettings/
 /Assets/ExternalDependencyManager/
 /Assets/Plugins/
-/WebBuild/
+/Build/
 /Library/PackageCache/
 
 # MemoryCaptures can get excessive in size.
