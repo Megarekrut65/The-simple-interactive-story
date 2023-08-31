@@ -1,7 +1,9 @@
 {
     "id": "end",
     "background": "End",
-    "characterLeft": "None",
+    "images": {
+        "left": "None"
+    },
     "answers": [
         {
             "textKey": "end",

@@ -1,10 +1,8 @@
-﻿using System;
-using Global;
+﻿using Global;
 using Global.Localization;
 using JetBrains.Annotations;
 using Story.Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Story
@@ -18,9 +16,14 @@ namespace Story
         [Header("Parts")]
         [SerializeField] private Transform content;
         [SerializeField] private Image background;
-        [SerializeField] private Image characterLeft;
-        [SerializeField] private Image characterRight;
-        [SerializeField] private GameObject textBtn;
+        
+        [Header("Images")]
+        [SerializeField] private Image left;
+        [SerializeField] private Image right;
+        [SerializeField] private Image centerUnder;
+        [SerializeField] private Image centerOver;
+        
+        [Header("Texts")]
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
 
@@ -46,9 +49,13 @@ namespace Story
         {
             LoadText(frame.textKey);
             LoadAnswers(frame.answers);
+            
             LoadImage(background, "Backgrounds",frame.background);
-            LoadImage(characterLeft, "Characters",frame.characterLeft);
-            LoadImage(characterRight, "Characters",frame.characterRight);
+            
+            LoadImage(left, "Images",frame.images?.left);
+            LoadImage(right, "Images",frame.images?.right);
+            LoadImage(centerUnder, "Images",frame.images?.centerUnder);
+            LoadImage(centerOver, "Images",frame.images?.centerOver);
         }
 
         private void LoadText([CanBeNull] string key)
@@ -57,8 +64,6 @@ namespace Story
 
             if(key != null) text.GetComponent<Text>().text = LocalizationManager.GetWordByKey(key);
             else textObj.SetActive(false);
-            
-            textBtn.SetActive(textObj.activeInHierarchy);
         }
         
         private void LoadAnswers([CanBeNull] Answer[] answers)
@@ -89,20 +94,9 @@ namespace Story
         {
             if(filename == null) return;
 
-            Sprite sprite = GetSpriteFromImage(System.IO.Path.Combine($"{Application.streamingAssetsPath}/{folder}/", 
-                $"{filename}.png"));
+            Sprite sprite = FileReader.ReadSprite($"{Application.streamingAssetsPath}/{folder}/{filename}.png");
 
             if (sprite != null) img.sprite = sprite;
-        }
-        private Sprite GetSpriteFromImage(string imgPath) {
-            byte[] pngBytes = AllFileReader.ReadBytes(imgPath);
-            Texture2D tex = new Texture2D(2, 2);
-            tex.LoadImage(pngBytes);
-            
-            Sprite fromTex = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), 
-                new Vector2(0.5f, 0.5f), 100.0f);
- 
-            return fromTex;
         }
     }
 }

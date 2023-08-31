@@ -1,7 +1,9 @@
 {
     "id": "frame1",
     "textKey": "frame1Text",
-    "characterLeft": "DoctorBig",
+    "images": {
+        "left": "DoctorBig"
+    },
     "answers": [
         {"textKey": "frame1Answer1", "nextFrameId": "end"},
         {"textKey": "frame1Answer2", "nextFrameId": "end"}

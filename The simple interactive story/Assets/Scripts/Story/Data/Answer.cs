@@ -8,5 +8,7 @@ namespace Story.Data
         public string textKey;
         public string nextFrameId;
         public string action;
+
+        public string clickSound;
     }
 }

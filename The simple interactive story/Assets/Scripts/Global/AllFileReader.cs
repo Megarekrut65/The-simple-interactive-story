@@ -6,15 +6,14 @@ namespace Global
 {
     public static class AllFileReader {
 
-        private static bool NeedWeb()
+        private static bool IsPhone()
         {
             return Application.platform == RuntimePlatform.Android
-                   || Application.platform == RuntimePlatform.IPhonePlayer
-                   || Application.platform == RuntimePlatform.WebGLPlayer;
+                   || Application.platform == RuntimePlatform.IPhonePlayer;
         }
         public static string Read(string path) {
             string res;
-            if (path.Contains("://") || path.Contains(":///") || NeedWeb()) {
+            if (IsPhone()) {
                 UnityWebRequest www = UnityWebRequest.Get(path);
                 www.SendWebRequest();
                 while (!www.isDone) {
@@ -30,7 +29,7 @@ namespace Global
         public static byte[] ReadBytes(string path) {
             byte[] res;
             
-            if (path.Contains("://") || path.Contains(":///") || NeedWeb()) {
+            if (IsPhone()) {
                 UnityWebRequest www = UnityWebRequest.Get(path);
                 www.SendWebRequest();
                 while (!www.isDone) {

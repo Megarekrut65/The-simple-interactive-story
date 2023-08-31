@@ -35,8 +35,7 @@ namespace Global.Localization
 
         private IEnumerator ChangeCoroutine(string language)
         {
-            _wordMap = JsonParser<string>.Parse(System.IO.Path.Combine(
-                $"{Application.streamingAssetsPath}/{LanguageFolder}/", $"{language}.json"));
+            _wordMap = JsonParser<string>.Parse($"/{LanguageFolder}/{language}");
             yield return null;
             Ready = true;
             OnLanguageChanged?.Invoke();

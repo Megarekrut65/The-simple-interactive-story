@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.Serialization;
 
 namespace Story.Data
 {
@@ -9,9 +10,10 @@ namespace Story.Data
         
         public string background;
         public string textKey;
-        
-        public string characterLeft;//900x700
-        public string characterRight;
+
+        public string music;
+
+        public Images images;
         
         public Answer[] answers;
     }
