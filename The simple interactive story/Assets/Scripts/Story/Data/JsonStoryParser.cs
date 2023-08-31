@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Global;
+using Global.Json;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,20 +10,19 @@ namespace Story.Data
     {
         public SortedDictionary<string, Frame> Frames { get; private set; } = new SortedDictionary<string, Frame>();
 
-        private readonly string _storyName;
-        public JsonStoryParser(string storyName, string mainFrame)
+        private readonly string _fullPath;
+        public JsonStoryParser(string fullPath, string mainFrame)
         {
-            _storyName = storyName;
+            _fullPath = fullPath;
             ReadFrame(mainFrame);
         }
         private void ReadFrame([CanBeNull] string frameName)
         {
             if(frameName == null || Frames.ContainsKey(frameName)) return;
             
-            string path = $"{Application.streamingAssetsPath}/{_storyName}/Frames/{frameName}.json";
-            
-            string jsonData = AllFileReader.Read(path);
-            Frame frame = JsonUtility.FromJson<Frame>(jsonData);
+            string path = $"{_fullPath}/Frames/{frameName}";
+
+            Frame frame = JsonObjectParser<Frame>.Parse(path);
             Frames.Add(frame.id, frame);
             
             if(frame.answers == null) return;

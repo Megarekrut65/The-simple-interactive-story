@@ -10,9 +10,10 @@ namespace Global.Localization
         private SortedDictionary<string, string> _wordMap = new SortedDictionary<string, string>();
         private string _currentLanguage = "";
 
-        public LocalizationManagerInstance(string languagePath)
+        public LocalizationManagerInstance(string languagePath, string language="")
         {
             _languagePath = languagePath;
+            ChangeLanguage(language);
         }
         
         public void ChangeLanguage(string language) {
@@ -21,7 +22,7 @@ namespace Global.Localization
             }
 
             _currentLanguage = language;
-            _wordMap = JsonParser<string>.Parse($"{_languagePath}/{language}");
+            _wordMap = JsonListParser<string>.Parse($"{_languagePath}/{language}");
         }
         
         public string GetWord(string key)

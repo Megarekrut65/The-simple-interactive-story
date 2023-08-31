@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Global;
 using Global.Localization;
 using JetBrains.Annotations;
@@ -10,8 +11,6 @@ namespace Story
 {
     public class StoryLoader : MonoBehaviour
     {
-        [SerializeField] private string mainFrame;
-
         [SerializeField] private GameObject variantPrefab;
         
         [Header("Parts")]
@@ -28,26 +27,23 @@ namespace Story
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
 
-        private JsonStoryParser _parser;
-        private const string StoryName = "MySimpleStory";
+        private StoryController _controller;
 
         private void Start()
         {
-            _parser = new JsonStoryParser(StoryName, mainFrame);
-            LoadFrame(_parser.Frames[mainFrame]);
-
-            /*foreach (var item in dic)
-            {
-                Debug.Log($"{item.Value.id}, {item.Value.textKey}, " +
-                          $"{item.Value.background}, {item.Value.characterLeft}, {item.Value.characterRight}");
-                if(item.Value.answers == null) continue;
-                foreach (var ans in item.Value.answers)
-                {
-                    Debug.Log($"{ans.textKey}, {ans.action}, {ans.nextFrameId}");
-                }
-            }*/
+            string storyId = LocalStorage.GetValue("storyId", "");
+            string language = LocalStorage.GetValue("language", "en_US");
+            if(storyId == "") return;
+            
+            StartCoroutine(Load(storyId, language));
         }
 
+        private IEnumerator Load(string storyId, string language)
+        {
+            _controller = new StoryController(storyId, language);
+            LoadFrame(_controller.GetFrame(_controller.Config.mainFrame));
+            yield return null;
+        }
         private void LoadFrame(Frame frame)
         {
             LoadText(frame.textKey);
@@ -65,7 +61,7 @@ namespace Story
         {
             textObj.SetActive(true);
 
-            if(key != null) text.GetComponent<Text>().text = LocalizationManager.GetWordByKey(key);
+            if(key != null) text.GetComponent<Text>().text = _controller.GetWord(key);
             else textObj.SetActive(false);
         }
         
@@ -79,15 +75,18 @@ namespace Story
             foreach (Answer answer in answers)
             {
                 GameObject obj = Instantiate(variantPrefab, content, false);
+                
+                answer.textKey = _controller.GetWord(answer.textKey);
                 obj.GetComponent<Variant>().SetData(answer, AnswerClick);
             }
         }
 
         private void AnswerClick(string frameId, string action)
         {
-            if(frameId == null || !_parser.Frames.ContainsKey(frameId)) return;
+            Frame frame = _controller.GetFrame(frameId);
+            if(frameId == null || frame == null) return;
 
-            LoadFrame(_parser.Frames[frameId]);
+            LoadFrame(frame);
             
             if(action == null) return;
             Debug.Log("Action");
@@ -97,8 +96,7 @@ namespace Story
         {
             if(filename == null) return;
 
-            Sprite sprite = FileReader.ReadSprite($"{Application.streamingAssetsPath}/{StoryName}/" +
-                                                  $"{folder}/{filename}.png");
+            Sprite sprite = _controller.GetSprite($"{folder}/{filename}");
 
             if (sprite != null) img.sprite = sprite;
         }
