@@ -2,6 +2,7 @@
 using System.Collections;
 using Global;
 using Global.Localization;
+using Global.Sound;
 using JetBrains.Annotations;
 using Story.Data;
 using UnityEngine;
@@ -46,6 +47,10 @@ namespace Story
         }
         private void LoadFrame(Frame frame)
         {
+            if(frame == null) return;
+
+            LoadMusic(frame);
+            
             LoadText(frame.textKey);
             LoadAnswers(frame.answers);
             
@@ -57,6 +62,12 @@ namespace Story
             LoadImage(centerOver, "Images",frame.images?.centerOver);
         }
 
+        private void LoadMusic(Frame frame)
+        {
+            if(frame.music == null) return;
+            
+            MusicManager.ChangeAudioClip(_controller.GetClip(frame.music));
+        }
         private void LoadText([CanBeNull] string key)
         {
             textObj.SetActive(true);
@@ -83,10 +94,9 @@ namespace Story
 
         private void AnswerClick(string frameId, string action)
         {
-            Frame frame = _controller.GetFrame(frameId);
-            if(frameId == null || frame == null) return;
+            if(frameId == null) return;
 
-            LoadFrame(frame);
+            LoadFrame(_controller.GetFrame(frameId));
             
             if(action == null) return;
             Debug.Log("Action");

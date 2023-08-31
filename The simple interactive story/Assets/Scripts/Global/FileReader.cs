@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Global
 {
-    public class FileReader
+    public static class FileReader
     {
         public static Sprite ReadSprite(string fullPath, int width=2, int height=2)
         {
@@ -17,14 +18,15 @@ namespace Global
             return sprite;
         }
 
-        public static AudioClip ReadAudio(string name, string fullPath, int channels=1, int sampleRate=44100)
+        public static AudioClip ReadAudio(string name, string fullPath)
         {
-            byte[] bytes = AllFileReader.ReadBytes(fullPath);
-            float[] samples = new float[bytes.Length / 4];
-            Buffer.BlockCopy(bytes, 0, samples, 0, bytes.Length);
-
-            AudioClip clip = AudioClip.Create(name, samples.Length, channels, sampleRate, false);
-            clip.SetData(samples, 0);
+            UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(fullPath,
+                AudioType.MPEG);
+            www.SendWebRequest();
+            while (!www.isDone) {
+            }
+            AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
+            clip.name = name;
 
             return clip;
         }

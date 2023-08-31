@@ -42,6 +42,23 @@ namespace Global.Sound
                 Instance.audioSource.Play();
             }
         }
+
+        public void ChangeClip(AudioClip clip)
+        {
+            if(audioSource.isPlaying && audioSource.clip.name == clip.name) return;
+            
+            audioSource.Stop();
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+
+        public static void ChangeAudioClip(AudioClip clip)
+        {
+            if (Instance != null)
+            {
+                Instance.ChangeClip(clip);
+            }
+        }
         private void Start()
         {
             Play();

@@ -12,13 +12,16 @@ namespace Story
         private readonly LocalizationManagerInstance _localization;
 
         public Configuration Config { get; private set; }
+
+        private readonly string _path;
+        
         public StoryController(string storyId, string language)
         {
-            string path = $"{Application.streamingAssetsPath}/{storyId}";
-            Config = JsonObjectParser<Configuration>.Parse($"{path}/config");
+            _path = $"{Application.streamingAssetsPath}/{storyId}";
+            Config = JsonObjectParser<Configuration>.Parse($"{_path}/config");
             
-            _parser = new JsonStoryParser(path, Config.mainFrame);
-            _localization = new LocalizationManagerInstance($"{path}/Languages", language);
+            _parser = new JsonStoryParser(_path, Config.mainFrame);
+            _localization = new LocalizationManagerInstance($"{_path}/Languages", language);
         }
 
         public string GetWord(string key)
@@ -33,7 +36,12 @@ namespace Story
 
         public Sprite GetSprite(string key)
         {
-            return FileReader.ReadSprite($"{Application.streamingAssetsPath}/{Config.id}/{key}.png");
+            return FileReader.ReadSprite($"{_path}/{key}.png");
+        }
+
+        public AudioClip GetClip(string name)
+        {
+            return FileReader.ReadAudio(name, $"{_path}/Sounds/{name}.mp3");
         }
     }
 }

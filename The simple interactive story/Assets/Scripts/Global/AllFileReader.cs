@@ -18,7 +18,7 @@ namespace Global
                 www.SendWebRequest();
                 while (!www.isDone) {
                 }
-
+                
                 res = www.downloadHandler.text;
             } else {
                 res = File.ReadAllText(path);
