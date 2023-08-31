@@ -9,15 +9,17 @@ namespace Story.Data
     {
         public SortedDictionary<string, Frame> Frames { get; private set; } = new SortedDictionary<string, Frame>();
 
-        public JsonStoryParser(string mainFrame)
+        private readonly string _storyName;
+        public JsonStoryParser(string storyName, string mainFrame)
         {
+            _storyName = storyName;
             ReadFrame(mainFrame);
         }
         private void ReadFrame([CanBeNull] string frameName)
         {
             if(frameName == null || Frames.ContainsKey(frameName)) return;
             
-            string path = Application.streamingAssetsPath + "/Frames/" + frameName + ".json";
+            string path = $"{Application.streamingAssetsPath}/{_storyName}/Frames/{frameName}.json";
             
             string jsonData = AllFileReader.Read(path);
             Frame frame = JsonUtility.FromJson<Frame>(jsonData);

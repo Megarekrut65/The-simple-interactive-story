@@ -10,7 +10,7 @@ namespace Global.Json
     public static class JsonParser<TValueType> {
         public static SortedDictionary<string, TValueType> Parse(string path)
         {
-            path = Application.streamingAssetsPath + path + ".json";
+            path += ".json";
             string jsonData = AllFileReader.Read(path);
             
             JsonList<TValueType> list = JsonUtility.FromJson<JsonList<TValueType>>(jsonData);

@@ -15,19 +15,13 @@ namespace Global.Localization
         public static LocalizationManager Instance { get; private set; }
         public bool Ready { get; private set; } = true;
 
-        private SortedDictionary<string, string> _wordMap = new SortedDictionary<string, string>();
-        private string _currentLanguage = "";
+        private readonly LocalizationManagerInstance _instance = new LocalizationManagerInstance(
+            $"{Application.streamingAssetsPath}/{LanguageFolder}");
 
         public delegate void ChangeLanguageText();
         public event ChangeLanguageText OnLanguageChanged;
 
         public void ChangeLanguage(string language) {
-            if (language == _currentLanguage || !Ready) {
-                OnLanguageChanged?.Invoke();
-                return;
-            }
-
-            _currentLanguage = language;
             PlayerPrefs.SetString(LanguageKey, language);
             Ready = false;
             StartCoroutine(ChangeCoroutine(language));
@@ -35,7 +29,7 @@ namespace Global.Localization
 
         private IEnumerator ChangeCoroutine(string language)
         {
-            _wordMap = JsonParser<string>.Parse($"/{LanguageFolder}/{language}");
+            _instance.ChangeLanguage(language);
             yield return null;
             Ready = true;
             OnLanguageChanged?.Invoke();
@@ -64,14 +58,9 @@ namespace Global.Localization
 
             DontDestroyOnLoad(gameObject);
         }
-        public string GetWord(string key)
-        {
-            return _wordMap.ContainsKey(key) ? _wordMap[key] : key;
-        }
-
         public static string GetWordByKey(string key)
         {
-            return Instance == null ? key : Instance.GetWord(key);
+            return Instance == null ? key : Instance._instance.GetWord(key);
         }
     }
 }

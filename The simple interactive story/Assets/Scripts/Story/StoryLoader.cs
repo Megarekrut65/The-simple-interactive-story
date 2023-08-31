@@ -1,4 +1,5 @@
-﻿using Global;
+﻿using System;
+using Global;
 using Global.Localization;
 using JetBrains.Annotations;
 using Story.Data;
@@ -27,11 +28,13 @@ namespace Story
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
 
-        private JsonStoryParser parser;
+        private JsonStoryParser _parser;
+        private const string StoryName = "MySimpleStory";
+
         private void Start()
         {
-            parser = new JsonStoryParser(mainFrame);
-            LoadFrame(parser.Frames[mainFrame]);
+            _parser = new JsonStoryParser(StoryName, mainFrame);
+            LoadFrame(_parser.Frames[mainFrame]);
 
             /*foreach (var item in dic)
             {
@@ -82,9 +85,9 @@ namespace Story
 
         private void AnswerClick(string frameId, string action)
         {
-            if(frameId == null || !parser.Frames.ContainsKey(frameId)) return;
+            if(frameId == null || !_parser.Frames.ContainsKey(frameId)) return;
 
-            LoadFrame(parser.Frames[frameId]);
+            LoadFrame(_parser.Frames[frameId]);
             
             if(action == null) return;
             Debug.Log("Action");
@@ -94,7 +97,8 @@ namespace Story
         {
             if(filename == null) return;
 
-            Sprite sprite = FileReader.ReadSprite($"{Application.streamingAssetsPath}/{folder}/{filename}.png");
+            Sprite sprite = FileReader.ReadSprite($"{Application.streamingAssetsPath}/{StoryName}/" +
+                                                  $"{folder}/{filename}.png");
 
             if (sprite != null) img.sprite = sprite;
         }
