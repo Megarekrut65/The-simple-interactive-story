@@ -6,6 +6,7 @@ using Global.Sound;
 using JetBrains.Annotations;
 using Story.Data;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Story
@@ -27,11 +28,32 @@ namespace Story
         [Header("Texts")]
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
+        [SerializeField] private Font font;
+        [SerializeField] private FontManager fontManager;
 
         private StoryController _controller;
 
+        public IEnumerator FetchData()
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get("https://firestore.googleapis.com/v1/projects/boacourses/databases/(default)/documents/users/EH0K858qUWwKgFgY8CVE"))
+            {
+                yield return request.SendWebRequest();
+                if (request.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    Debug.Log(request.error);
+                }
+                else
+                {
+                    Debug.Log(request.downloadHandler.text);
+                    text.text = request.downloadHandler.text;
+                }
+            }
+        }
+
         private void Start()
         {
+            StartCoroutine(FetchData());
+            return;
             string storyId = LocalStorage.GetValue("storyId", "");
             string language = LocalStorage.GetValue("language", "en_US");
             if(storyId == "") return;
@@ -39,9 +61,15 @@ namespace Story
             StartCoroutine(Load(storyId, language));
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerator Load(string storyId, string language)
         {
             _controller = new StoryController(storyId, language);
+
+            Font frameFont = fontManager.GetFont(_controller.Config.font);
+            if (frameFont != null) font = frameFont;
+            text.GetComponent<Text>().font = font;
+            
             LoadFrame(_controller.GetFrame(_controller.Config.mainFrame));
             yield return null;
         }
@@ -88,7 +116,7 @@ namespace Story
                 GameObject obj = Instantiate(variantPrefab, content, false);
                 
                 answer.textKey = _controller.GetWord(answer.textKey);
-                obj.GetComponent<Variant>().SetData(answer, AnswerClick);
+                obj.GetComponent<Variant>().SetData(answer, AnswerClick, font);
             }
         }
 

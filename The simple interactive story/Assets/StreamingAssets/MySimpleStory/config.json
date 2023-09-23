@@ -3,5 +3,6 @@
   "title": "My Simple Story",
   "author": "megarekrut65",
   "authorId": null,
-  "mainFrame": "main"
+  "mainFrame": "main",
+  "font": "Minecraft"
 }

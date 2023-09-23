@@ -303,7 +303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 182.83998}
+  m_AnchoredPosition: {x: 0, y: 182.8397}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &197800037
@@ -674,8 +674,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1913856777}
   m_HandleRect: {fileID: 1913856776}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99998295
+  m_Value: 1
+  m_Size: 0.9997606
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1154,6 +1154,57 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &593467277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 593467279}
+  - component: {fileID: 593467278}
+  m_Layer: 0
+  m_Name: FontManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &593467278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593467277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447beaccb4054011857176e9a729bbcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fonts:
+  - {fileID: 12800000, guid: b8a357dafc455dc4bb46a1ada1652bbd, type: 3}
+  - {fileID: 12800000, guid: a81d40ee176c65d4397523556d1ac18a, type: 3}
+  - {fileID: 12800000, guid: 61f215f6f454d004d83052ba52773916, type: 3}
+  - {fileID: 12800000, guid: 20d001d9e07e66a4b859e3becda5be9b, type: 3}
+  - {fileID: 12800000, guid: 0f16c961d5cf0c248ac05c7a55d7592a, type: 3}
+  - {fileID: 12800000, guid: 7facd11376fd4e943b3f69513bcef87b, type: 3}
+--- !u!4 &593467279
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593467277}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14150408, y: 0.378291, z: 70.728714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &745703507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,6 +1568,8 @@ MonoBehaviour:
   centerOver: {fileID: 1438940369}
   textObj: {fileID: 1576636886}
   text: {fileID: 1516175692}
+  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  fontManager: {fileID: 593467278}
 --- !u!4 &1082260101
 Transform:
   m_ObjectHideFlags: 0

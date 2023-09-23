@@ -12,5 +12,7 @@ namespace Story.Data
         public string authorId;
         
         public string mainFrame;
+
+        public string font;
     }
 }
