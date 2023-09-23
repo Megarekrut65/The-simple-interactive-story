@@ -11,12 +11,12 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Login/Register - The simple interactive story creator</title>
+  <title>Story editor - The simple interactive story creator</title>
 
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
   <!-- ** Plugins Needed for the Project ** -->
   <!-- Bootstrap -->
   <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
@@ -39,7 +39,7 @@
 </head>
 
 <body>
-
+  
 
 <header class="navigation fixed-top" style="padding-bottom: 0; padding-top: 0;">
   <nav class="navbar navbar-expand-lg navbar-dark" style="padding-bottom: 0; padding-top: 0;">
@@ -76,7 +76,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h1 class="display-1 text-white font-weight-bold font-primary">Join us and create your story!</h1>
+        <h1 class="display-1 text-white font-weight-bold font-primary">Story name</h1>
       </div>
     </div>
   </div>
@@ -86,43 +86,55 @@
 <section class="section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-12">
-        <div class="border border-dark p-3 m-lg-3 m-1">
-          <h3>Login</h3>
+      <div class="col mx-auto">
+        <h3 class="font-tertiary mb-5">General story settings</h3>
+        <form onsubmit="return false;">
+          <table class="form-table">
+            <tr>
+              <td><label>Title</label><span></span></td>
+              <td><input id="title" name="title" type="text" placeholder="The simple story" required minlength="5"></td>
+            </tr>
 
-          <form action="" id="login-form" onsubmit="return false;">
-            <input type="email" id="email" name="email" autocomplete="email" placeholder="Email..." class="form-control mb-4 shadow rounded-0">
-            <input type="password" id="password" name="password" placeholder="Password..." class="form-control mb-4 shadow rounded-0">
-            
-            <div id="error-message"></div>
+            <tr>
+              <td><label>Preview</label></td>
+              <td><input id="preview" name="preview" type="file" accept="image/png"></td>
+            </tr>
+            <tr>
+              <td><label>Font</label><span></span></td>
+              <td>
+                <select id="font" name="font">
+                  <option>
+                    Arial
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Author</label><span></span></td>
+              <td><input id="author" name="author" type="text" readonly required value="author"></td>
+            </tr>
 
-            <p id="forgot-password">Forgot Password?</p>
-
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-        </div>
+            <tr>
+              <td></td>
+              <td>All mandatory fields are marked by <span></span></td>
+            </tr>
+            <tr>
+              <td><input type="submit" value="Save" style="margin-top: 20px;"></td>
+              <td></td>
+            </tr>
+          </table>
+          
+        </form>
       </div>
-
-      <div class="col-lg-6 col-12">
-        <div class="border border-dark p-3 m-lg-3 m-1">
-          <h3>Create new account</h3>
-
-          <form action="" id="register-form" onsubmit="return false;">
-            <input type="text" id="name" name="name" placeholder="Nickname..." required minlength="2" class="form-control mb-4 shadow rounded-0">
-            <input type="email" id="email" name="email" placeholder="Email..." required minlength="4" class="form-control mb-4 shadow rounded-0">
-
-            <input type="password" id="password" name="password" placeholder="Password..." required minlength="8" class="form-control mb-4 shadow rounded-0">
-            <input type="password" id="password-repeat" name="password-repeat" placeholder="Repeat password..." class="form-control mb-4 shadow rounded-0">
-
-            <div id="error-message"></div>
-
-            <button type="submit" class="btn btn-primary">Register</button>
-          </form>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col mx-auto">
+        <h3 class="font-tertiary mb-5">Frames</h3>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- footer -->
 <footer class="position-relative text-center" data-background="images/boa-background.png">
@@ -197,10 +209,9 @@
 <!-- card slider -->
 <script src="plugins/card-slider/js/card-slider-min.js"></script>
 
+
 <!-- Main Script -->
 <script src="js/script.js"></script>
-<script src="js/login-register/login.js" type="module"> </script>
-<script src="js/login-register/register.js" type="module"> </script>
 
 </body>
 </html>
