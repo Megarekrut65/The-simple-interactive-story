@@ -11,7 +11,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Story editor - The simple interactive story creator</title>
+  <title>Story editor - The simple interactive story</title>
 
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,6 +29,9 @@
   <!-- card slider -->
   <link rel="stylesheet" href="plugins/card-slider/css/style.css">
 
+  <link href='https://unpkg.com/css.gg@2.0.0/icons/css/close.css' rel='stylesheet'>
+  <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
+
   <!-- Main Stylesheet -->
   <link href="css/style.css" rel="stylesheet">
   
@@ -43,7 +46,7 @@
 
 <header class="navigation fixed-top" style="padding-bottom: 0; padding-top: 0;">
   <nav class="navbar navbar-expand-lg navbar-dark" style="padding-bottom: 0; padding-top: 0;">
-    <a class="navbar-brand" href="index.html"><img class="logo-img" src="images/logo.png" alt="Egen"></a>
+    <a class="navbar-brand" href="index.html"><img class="logo-img" src="images/logo.png" alt="Logo"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -91,13 +94,26 @@
         <form onsubmit="return false;">
           <table class="form-table">
             <tr>
+              <td><label class="star" for="identifier">Identifier</label></td>
+              <td><input id="identifier" name="identifier" type="text" required readonly value="Generated automatically after creating a story"></td>
+            </tr>
+
+            <tr>
               <td><label class="star" for="title">Title</label></td>
               <td><input id="title" name="title" type="text" placeholder="The simple story" required minlength="5"></td>
             </tr>
 
             <tr>
               <td><label for="preview">Preview</label></td>
-              <td><input id="preview" name="preview" type="file" accept="image/png"></td>
+              <td>
+                <div class="part-container">
+                  <input type="list" id="preview-saved" name="preview-saved" placeholder="Select old one..." autocomplete="off" list="preview-list">
+                  <datalist id="preview-list" class="image-list">
+                    <option>MyPreview.png</option>
+                  </datalist>
+                  <input id="preview" name="preview" type="file" accept="image/png">
+                </div>
+              </td>
             </tr>
             <tr>
               <td><label class="star" for="font">Font</label></td>
@@ -109,9 +125,15 @@
                 </select>
               </td>
             </tr>
+
             <tr>
               <td><label class="star" for="author">Author</label></td>
               <td><input id="author" name="author" type="text" readonly required value="author"></td>
+            </tr>
+
+            <tr>
+              <td><label for="private" title="To view a private history, you can use its ID. Public stories can be found by name in the search">Keep private</label></td>
+              <td><input id="private" name="private" type="checkbox" checked></td>
             </tr>
 
             <tr>
@@ -156,7 +178,7 @@
               <td><label class="star" for="background">Background</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="background-saved" name="background-saved" placeholder="Select old one" autocomplete="off" list="background-list">
+                  <input type="list" id="background-saved" name="background-saved" placeholder="Select old one..." autocomplete="off" list="background-list">
                   <datalist id="background-list" class="image-list">
                     <option>MyBackground.png</option>
                   </datalist>
@@ -169,7 +191,7 @@
               <td><label for="background-music">Background music</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="music-saved" name="music-saved" placeholder="Select old one" autocomplete="off" list="music-list">
+                  <input type="list" id="music-saved" name="music-saved" placeholder="Select old one..." autocomplete="off" list="music-list">
                   <datalist id="music-list" class="music-list">
                     <option>MySound.mp3</option>
                   </datalist>
@@ -187,14 +209,26 @@
 
             <tr>
               <td><label for="background-music">Answers</label></td>
-              <td></td>
+              <td>
+                <div>
+                  <img src="images/stories/plus.png" class="add-icon answer-icon" title="Add new answer">
+                  <div class="answer-list">
+                    <div class="part-container answer-container">
+                      <div class="close-button" title="Remove answer"><i class="gg-close"></i></div>
+                      <div class="edit-button" title="Edit answer"><i class="gg-pen"></i></div>
+                      
+                      <input type="text" value="Yes, of course" readonly>
+                      <input type="text" value="Main" readonly>
+                    </div>
+                </div>
+              </td>
             </tr>
 
             <tr>
               <td><label for="left-image">Left image</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="left-saved" name="left-saved" placeholder="Select old one" autocomplete="off" list="left-list">
+                  <input type="list" id="left-saved" name="left-saved" placeholder="Select old one..." autocomplete="off" list="left-list">
                   <datalist id="left-list" class="image-list">
                     <option>Left.png</option>
                   </datalist>
@@ -207,7 +241,7 @@
               <td><label for="under-image">Center under image</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="under-saved" name="under-saved" placeholder="Select old one" autocomplete="off" list="under-list">
+                  <input type="list" id="under-saved" name="under-saved" placeholder="Select old one..." autocomplete="off" list="under-list">
                   <datalist id="under-list" class="image-list">
                     <option>Under.png</option>
                   </datalist>
@@ -220,7 +254,7 @@
               <td><label for="over-image">Center over image</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="over-saved" name="over-saved" placeholder="Select old one" autocomplete="off" list="over-list">
+                  <input type="list" id="over-saved" name="over-saved" placeholder="Select old one..." autocomplete="off" list="over-list">
                   <datalist id="over-list" class="image-list">
                     <option>Over.png</option>
                   </datalist>
@@ -233,13 +267,18 @@
               <td><label for="right-image">Right image</label></td>
               <td>
                 <div class="part-container">
-                  <input type="list" id="right-saved" name="right-saved" placeholder="Select old one" autocomplete="off" list="right-list">
+                  <input type="list" id="right-saved" name="right-saved" placeholder="Select old one..." autocomplete="off" list="right-list">
                   <datalist id="right-list" class="image-list">
                     <option>Right.png</option>
                   </datalist>
                   <input id="right-image" name="right-image" type="file" accept="image/png">
                 </div>
               </td>
+            </tr>
+
+            <tr>
+              <td><label for="auto-save">Auto-save on frame changing</label></td>
+              <td><input id="auto-save" name="auto-save" type="checkbox" checked></td>
             </tr>
 
             <tr>
@@ -257,7 +296,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- footer -->
 <footer class="position-relative text-center" data-background="images/boa-background.png">
@@ -314,6 +352,59 @@
   </div>
 </footer>
 <!-- /footer -->
+
+
+<!--Answer form-->
+<div class="answer-form">
+  <form onsubmit="return false;" action="">
+    <h4>Add new answer</h4>
+    <br>
+    <table class="form-table">
+      <tr>
+        <td><label for="answer-text">Answer Text</label></td>
+        <td><input type="text" placeholder="Yes, of course..."></td>
+      </tr>
+
+      <tr>
+        <td><label for="frame-id">Next frame</label></td>
+        <td>
+          <input type="list" id="frame-id" name="frame-id" placeholder="Frame name..." autocomplete="off" list="frame-list">
+          <datalist id="frame-list">
+            <option>Main</option>
+          </datalist>
+        </td>
+      </tr>
+
+      <tr>
+        <td><label for="click-saved">Click sound</label></td>
+        <td>
+          <div class="part-container">
+            <input type="list" id="click-saved" name="click-saved" placeholder="Select old one..." autocomplete="off" list="click-list">
+            <datalist id="click-list">
+              <option>MyClick.mp3</option>
+            </datalist>
+            <input id="click-music" name="click-music" type="file" accept="audio/mp3">
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><label for="click-action">Click action</label></td>
+        <td><input id="click-action" name="click-action" placeholder="Action"></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td>
+          <div class="part-container">
+            <input type="submit" value="Add" style="margin-top: 20px;">
+            <input id="cancel" type="button" value="Cancel" style="margin-top: 20px;">
+          </div>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
 
 <!-- jQuery -->
 <script src="plugins/jQuery/jquery.min.js"></script>
