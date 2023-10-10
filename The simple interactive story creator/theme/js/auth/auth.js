@@ -2,6 +2,7 @@ import { getAuth,
     createUserWithEmailAndPassword, 
     onAuthStateChanged,
     signOut, 
+    updateProfile,
     sendPasswordResetEmail,
     signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
@@ -17,6 +18,10 @@ const auth = getAuth(app);
  */
 export const registerUserEmail = (email, password)=>{
     return createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const addUserName = (user, name)=>{
+    return updateProfile(user, {displayName: name});
 };
 
 /**

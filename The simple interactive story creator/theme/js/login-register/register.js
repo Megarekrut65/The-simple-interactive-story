@@ -1,5 +1,5 @@
-import {constructUser} from "../dataClasses/user.js";
-import {registerUserEmail} from "../auth/auth.js";
+import {constructUser} from "../data-classes/user.js";
+import {registerUserEmail, addUserName} from "../auth/auth.js";
 import { addUserData } from "../database/users.js";
 
 const registerForm = document.getElementById("register-form");
@@ -32,9 +32,13 @@ window.addEventListener("load", ()=>{
         
 
         registerUserEmail(email, password).then((result) => {
-            addUserData(result.user.uid, userData).then(()=>{
-                window.location.href = "account.html";
+            addUserName(result.user, name).then(()=>{
+                addUserData(result.user.uid, userData).then(()=>{
+                    window.location.href = "account.html";
+                }).catch(errorFunction);
+
             }).catch(errorFunction);
+
         }).catch(errorFunction);    
         
         return false;

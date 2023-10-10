@@ -34,6 +34,7 @@
 
   <!-- Main Stylesheet -->
   <link href="css/style.css" rel="stylesheet">
+  <link href="css/loader.css" rel="stylesheet">
   
   <!--Favicon-->
   <link rel="shortcut icon" href="images/boa.ico" type="image/x-icon">
@@ -91,11 +92,11 @@
     <div class="row">
       <div class="col mx-auto">
         <h3 class="font-tertiary mb-5">General story settings</h3>
-        <form onsubmit="return false;">
+        <form onsubmit="return false;" action="" id="general-form">
           <table class="form-table">
             <tr>
               <td><label class="star" for="identifier">Identifier</label></td>
-              <td><input id="identifier" name="identifier" type="text" required readonly value="Generated automatically after creating a story"></td>
+              <td><input id="identifier" name="identifier" type="text" required readonly value="Generated automatically from story title"></td>
             </tr>
 
             <tr>
@@ -118,11 +119,14 @@
             <tr>
               <td><label class="star" for="font">Font</label></td>
               <td>
-                <select id="font" name="font">
-                  <option>
-                    Arial
-                  </option>
-                </select>
+                <div class="part-container">
+                  <div style="color:black" id="font-example">Example</div>
+                  <select id="font" name="font">
+                    <option>
+                      Arial
+                    </option>
+                  </select>
+                </div>
               </td>
             </tr>
 
@@ -149,13 +153,18 @@
         </form>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-5" id="frames-row">
       <div class="col mx-auto">
         <h3 class="font-tertiary mb-5">Frames</h3>
-        <form onsubmit="return false;">
+        <form id="frame-form" onsubmit="return false;" action="">
           <table class="form-table">
             <tr>
-              <td><input type="button" value="View frame" style="margin-bottom: 40px;"></td>
+              <td><input id="view-frame" type="button" value="View frame" style="margin-bottom: 40px;"></td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td><input id="make-main" type="button" value="Make main" style="margin-bottom: 40px;"></td>
               <td></td>
             </tr>
 
@@ -211,15 +220,9 @@
               <td><label for="background-music">Answers</label></td>
               <td>
                 <div>
-                  <img src="images/stories/plus.png" class="add-icon answer-icon" title="Add new answer">
-                  <div class="answer-list">
-                    <div class="part-container answer-container">
-                      <div class="close-button" title="Remove answer"><i class="gg-close"></i></div>
-                      <div class="edit-button" title="Edit answer"><i class="gg-pen"></i></div>
-                      
-                      <input type="text" value="Yes, of course" readonly>
-                      <input type="text" value="Main" readonly>
-                    </div>
+                  <img id="answer-add" src="images/stories/plus.png" class="add-icon answer-icon" title="Add new answer">
+                  <div id="answer-list" class="answer-list">
+                    
                 </div>
               </td>
             </tr>
@@ -353,16 +356,21 @@
 </footer>
 <!-- /footer -->
 
+<!--Loader-->
+
+<div id="loader" class="loader">
+  <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+</div>
 
 <!--Answer form-->
-<div class="answer-form">
-  <form onsubmit="return false;" action="">
-    <h4>Add new answer</h4>
+<div id="answer-form-container" class="answer-form">
+  <form id="answer-form" onsubmit="return false;" action="">
+    <h4>Answer details</h4>
     <br>
     <table class="form-table">
       <tr>
         <td><label for="answer-text">Answer Text</label></td>
-        <td><input type="text" placeholder="Yes, of course..."></td>
+        <td><input id="answer-text" name="answer-text" type="text" placeholder="Yes, of course..."></td>
       </tr>
 
       <tr>
@@ -397,7 +405,7 @@
         <td></td>
         <td>
           <div class="part-container">
-            <input type="submit" value="Add" style="margin-top: 20px;">
+            <input type="submit" value="Save" style="margin-top: 20px;">
             <input id="cancel" type="button" value="Cancel" style="margin-top: 20px;">
           </div>
         </td>
@@ -426,6 +434,8 @@
 
 <!-- Main Script -->
 <script src="js/script.js"></script>
+
+<script src="js/story-editor/index.js" type="module"></script>
 
 </body>
 </html>

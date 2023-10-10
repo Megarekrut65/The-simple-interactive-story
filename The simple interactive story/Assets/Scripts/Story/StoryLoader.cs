@@ -35,7 +35,7 @@ namespace Story
 
         public IEnumerator FetchData()
         {
-            using (UnityWebRequest request = UnityWebRequest.Get("https://firestore.googleapis.com/v1/projects/boacourses/databases/(default)/documents/users/EH0K858qUWwKgFgY8CVE"))
+            using (UnityWebRequest request = UnityWebRequest.Get("https://firebasestorage.googleapis.com/v0/b/the-simple-interactive-story.appspot.com/o/royal-oak-commons.jpg?alt=media&token=e2a4af53-bbfa-48bf-9324-6501923b5f62"))
             {
                 yield return request.SendWebRequest();
                 if (request.result == UnityWebRequest.Result.ConnectionError)
@@ -44,8 +44,13 @@ namespace Story
                 }
                 else
                 {
-                    Debug.Log(request.downloadHandler.text);
-                    text.text = request.downloadHandler.text;
+                    Debug.Log(request.downloadHandler.data);
+                    byte[] bytes = request.downloadHandler.data;
+                    Texture2D texture = new Texture2D(2, 2);
+                    texture.LoadImage(bytes);
+            
+                    left.sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), 
+                        new Vector2(0.5f, 0.5f), 100.0f);
                 }
             }
         }
