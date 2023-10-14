@@ -57,8 +57,7 @@ namespace Story
 
         private void Start()
         {
-            StartCoroutine(FetchData());
-            return;
+
             string storyId = LocalStorage.GetValue("storyId", "");
             string language = LocalStorage.GetValue("language", "en_US");
             if(storyId == "") return;
