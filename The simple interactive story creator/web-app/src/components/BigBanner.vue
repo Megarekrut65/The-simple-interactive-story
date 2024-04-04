@@ -1,5 +1,11 @@
 <script setup>
 const image = new URL('@/assets/images/banner/banner2.jpg', import.meta.url).href;
+
+defineProps({
+    title: {
+        type: String,
+        required: false
+}});
 </script>
 
 <template>
@@ -8,7 +14,7 @@ const image = new URL('@/assets/images/banner/banner2.jpg', import.meta.url).hre
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1 class="display-1 text-white font-weight-bold font-primary">The simple interactive story</h1>
+                    <h1 class="display-1 text-white font-weight-bold font-primary">{{title}}</h1>
                 </div>
             </div>
         </div>

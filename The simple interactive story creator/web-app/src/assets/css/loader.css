@@ -1,3 +1,18 @@
+.loader{
+  z-index: 10000;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.519);
+}
+
 .lds-ellipsis {
     display: inline-block;
     position: relative;
