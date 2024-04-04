@@ -56,7 +56,7 @@ const logoutBtn = ()=>{
 
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="background-color: #07085d;">
                 <li><RouterLink class="dropdown-item" style="color: #fff;" to="/account">Account</RouterLink></li>
-                <li><RouterLink class="dropdown-item" style="color: #fff;" to="/">Create story</RouterLink></li>
+                <li><RouterLink class="dropdown-item" style="color: #fff;" to="/editor/new">Create story</RouterLink></li>
                 <li><a class="dropdown-item" style="color: #fff;" href="#" @click="logoutBtn">Logout</a></li>
               </ul>
             </div>

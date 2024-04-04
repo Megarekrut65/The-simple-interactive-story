@@ -19,6 +19,18 @@ const router = createRouter({
       name: 'account',
       component: () => import('../views/AccountView.vue'),
       beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/editor/:storyId',
+      name: 'editor',
+      component: () => import('../views/StoryEditorView.vue'),
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/editor/new',
+      name: 'new-editor',
+      component: () => import('../views/NewStoryEditorView.vue'),
+      beforeEnter: ifAuthenticated
     }
   ],
   scrollBehavior(to, from, savedPosition) {
