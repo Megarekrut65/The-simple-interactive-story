@@ -12,5 +12,12 @@ export const en = {
     myStories: "My stories",
     popularStories: "Popular Stories",
     account: "Account",
-    logout: "Log out"
+    logout: "Log out",
+
+    accountBanner: "Only you can write own story!",
+    yourStories: "Your stories",
+    selectStory: "Select an existing story or create a new one",
+
+    untitled: "Untitled",
+    generatedAuto: "Generated automatically from story name"
 };

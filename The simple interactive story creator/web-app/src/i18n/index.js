@@ -1,4 +1,4 @@
-import { createI18n } from 'vue-i18n';
+import { createI18n, useI18n } from 'vue-i18n';
 import { en } from './en';
 import { uk } from './uk';
 
@@ -18,7 +18,8 @@ const setup = (options = { locale: defaultLocale }) => {
 
         locale: options.locale,
         fallbackLocale: defaultLocale,
-        messages: messages
+        messages: messages,
+        legacy: false,
     });
 
     setLocale(options.locale);
@@ -29,11 +30,13 @@ const setup = (options = { locale: defaultLocale }) => {
 
 const setLocale = (newLocale) => {
     if (messages[newLocale])
-        _i18n.global.locale = newLocale;
+        _i18n.global.locale.value = newLocale;
 };
 const getLocale = () => {
-    return _i18n.global.locale;
+    return _i18n.global.locale.value;
 };
+
+const t = (key) => useI18n().t(key);
 
 export default {
 
@@ -42,7 +45,8 @@ export default {
     },
     setup,
     setLocale,
-    getLocale
+    getLocale,
+    t
 };
 
 export const supportedLocales = {

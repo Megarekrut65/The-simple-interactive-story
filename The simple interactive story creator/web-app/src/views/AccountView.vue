@@ -8,14 +8,14 @@ const image = new URL("@/assets/images/stories/post-1.jpg", import.meta.url).hre
 </script>
 
 <template>
-    <BigBanner title="Only you can write own story!"></BigBanner>
+    <BigBanner :title="$t('accountBanner')"></BigBanner>
 
     <section class="section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mx-auto text-center">
-                    <h2>Your stories</h2>
-                    <p>Select one to view or press plus button to add new</p>
+                    <h2>{{ $t('yourStories') }}</h2>
+                    <p>{{ $t('selectStory') }}</p>
                     <div class="section-border"></div>
                 </div>
             </div>

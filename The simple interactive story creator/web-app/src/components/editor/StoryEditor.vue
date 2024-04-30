@@ -3,6 +3,8 @@ import BigBanner from '../BigBanner.vue';
 import { ref } from 'vue';
 import FrameEditor from './FrameEditor.vue';
 import { textToId } from '@/js/text-utility';
+import i18n from '@/i18n';
+
 
 const props = defineProps({
     storyId: {
@@ -13,8 +15,8 @@ const props = defineProps({
 
 const user = localStorage.getItem("userData");
 
-const untitled = "Untitled";
-const generate = "Generated automatically from story title";
+const untitled = i18n.t("untitled");
+const generate = i18n.t("generatedAuto");
 
 const story = ref({
     id: props.storyId ? props.storyId : generate, title: untitled, preview: "Default", font: "Arial",

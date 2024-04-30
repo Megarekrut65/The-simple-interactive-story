@@ -12,5 +12,23 @@ export const uk = {
     myStories: "Мої історії",
     popularStories: "Популярні історії",
     account: "Акаунт",
-    logout: "Вийти"
+    logout: "Вийти",
+
+    accountBanner: "Тільки ти можеш написати власну історію!",
+    yourStories: "Твої історії",
+    selectStory: "Обери наявну історію або створи нову",
+
+    untitled: "Без назви",
+    generatedAuto: "Створено автоматично з назви історії",
+    storyTitle: "",
+    storyId: "",
+    storyPreview: "",
+    storyFont: "",
+    storyAuthor: "",
+    storyPrivate: "",
+    storyPrivateDes: "",
+
+    allFieldsMarked: "",
+    save: ""
+
 };
