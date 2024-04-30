@@ -3,5 +3,5 @@ import BigBanner from '@/components/BigBanner.vue';
 
 </script>
 <template>
-    <BigBanner title="The simple interactive story" min-height="100vh"></BigBanner>
+    <BigBanner :title="$t('title')" min-height="100vh"></BigBanner>
 </template>

@@ -9,6 +9,7 @@ import {
     signInWithPopup
 } from "firebase/auth";
 import { firebaseApp } from "./firebase";
+import { defaultLocale } from "../../i18n";
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -137,7 +138,7 @@ export const ifAuthenticated = (to, from, next) => {
             unsubscribe();
             return;
         }
-        next({ name: "auth", query: { next: to.name } });
+        next({ name: "auth", query: { next: to.name }, params: { locale: defaultLocale } });
         unsubscribe();
     });
 };

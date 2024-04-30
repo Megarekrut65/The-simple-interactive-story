@@ -16,16 +16,23 @@ const user = localStorage.getItem("userData");
 const untitled = "Untitled";
 const generate = "Generated automatically from story title";
 
-const story = ref({ id: props.storyId?props.storyId:generate, title: untitled,  preview: "Default", font: "Arial", 
-    author: user.displayName, private: true});
+const story = ref({
+    id: props.storyId ? props.storyId : generate, title: untitled, preview: "Default", font: "Arial",
+    author: user.displayName, private: true
+});
 
-const updateId=()=>{
-    if(story.value.title === "" || story.value.title === untitled){
+const updateId = () => {
+    if (story.value.title === "" || story.value.title === untitled) {
         story.value.id = generate;
         return;
     }
 
     story.value.id = textToId(story.value.title);
+};
+
+const submitStory = () => {
+    console.log(story.value);
+    return false;
 };
 
 </script>
@@ -38,7 +45,7 @@ const updateId=()=>{
             <div class="row">
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">General story settings</h3>
-                    <form onsubmit="return false;" action="#">
+                    <form onsubmit="return false;" action="#" :on-submit="submitStory">
                         <table class="form-table">
                             <tr>
                                 <td><label class="star" for="identifier">Identifier</label></td>
@@ -48,8 +55,8 @@ const updateId=()=>{
 
                             <tr>
                                 <td><label class="star" for="title">Title</label></td>
-                                <td><input v-model="story.title" @input="updateId" name="title" type="text" placeholder="The simple story" required
-                                        minlength="5" style="width: 100%;"></td>
+                                <td><input v-model="story.title" @input="updateId" name="title" type="text"
+                                        placeholder="The simple story" required minlength="5" style="width: 100%;"></td>
                             </tr>
 
                             <tr>
