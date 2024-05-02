@@ -4,7 +4,10 @@ import { ref } from 'vue';
 import FrameEditor from './FrameEditor.vue';
 import { textToId } from '@/js/text-utility';
 import i18n from '@/i18n';
+import { subscribeAuthChange } from '@/js/firebase/auth';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 
 const props = defineProps({
     storyId: {
@@ -16,21 +19,29 @@ const props = defineProps({
 const user = localStorage.getItem("userData");
 
 const untitled = i18n.t("untitled");
-const generate = i18n.t("generatedAuto");
 
 const story = ref({
-    id: props.storyId ? props.storyId : generate, title: untitled, preview: "Default", font: "Arial",
+    id: props.storyId ? props.storyId : "", title: untitled, preview: "Default", font: "Arial",
     author: user.displayName, private: true
 });
 
 const updateId = () => {
     if (story.value.title === "" || story.value.title === untitled) {
-        story.value.id = generate;
+        story.value.id = "";
         return;
     }
 
     story.value.id = textToId(story.value.title);
 };
+
+subscribeAuthChange((user) => {
+    if (user) {
+        story.value.author = user.displayName;
+        return;
+    }
+
+    router.go();
+});
 
 const submitStory = () => {
     console.log(story.value);
@@ -52,7 +63,7 @@ const submitStory = () => {
                             <tr>
                                 <td><label class="star" for="identifier">{{ $t("storyId") }}</label></td>
                                 <td><input v-model="story.id" name="identifier" type="text" required readonly
-                                        value="Generated automatically from story title" style="width: 100%;"></td>
+                                        :placeholder="$t('generatedAuto')" style="width: 100%;"></td>
                             </tr>
 
                             <tr>

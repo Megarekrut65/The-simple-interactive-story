@@ -1,6 +1,6 @@
 import { ifAuthenticated } from '@/js/firebase/auth';
 import { createRouter, createWebHistory } from 'vue-router';
-import i18n, { defaultLocale } from '../i18n';
+import i18n, { defaultLocale } from '@/i18n';
 
 
 const router = createRouter({
