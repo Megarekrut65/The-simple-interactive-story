@@ -28,16 +28,16 @@
   $('.venobox').venobox();
 
   // dropdown menu
-  var mobileWidth = 992;
+  //var mobileWidth = 992;
   var navcollapse = $('.navbar .dropdown');
   $(window).on('resize', function () {
     navcollapse.children('.dropdown-menu').hide();
   });
-  navcollapse.hover(function () {
+  /*navcollapse.hover(function () {
     if ($(window).innerWidth() >= mobileWidth) {
       $(this).children('.dropdown-menu').stop(true, false, true).slideToggle(250);
     }
-  });
+  });*/
 
   // Progress Bar
   $(window).on('load', function () {
@@ -99,33 +99,33 @@
     dots: false,
     arrows: false,
     responsive: [{
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 400,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1
       }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 400,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
     ]
   });
 
