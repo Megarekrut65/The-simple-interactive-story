@@ -19,5 +19,17 @@ export const en = {
     selectStory: "Select an existing story or create a new one",
 
     untitled: "Untitled",
-    generatedAuto: "Generated automatically from story name"
+    generatedAuto: "Generated automatically from story name",
+    storyTitle: "Title",
+    storyId: "ID",
+    storyBanner: "Banner",
+    storyFont: "Font",
+    storyAuthor: "Author",
+    storyPrivate: "Private story",
+    storyPrivateDes: "To view a private story, you can use its ID. Public stories can be found by name in search.",
+
+    generalSettings: "General History Settings",
+    allFieldsMarked: "All required fields are marked",
+    save: "Save",
+    selectOld: "Choose an existing one..."
 };

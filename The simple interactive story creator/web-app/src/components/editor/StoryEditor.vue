@@ -46,27 +46,27 @@ const submitStory = () => {
         <div class="container">
             <div class="row">
                 <div class="col mx-auto">
-                    <h3 class="font-tertiary mb-5">General story settings</h3>
+                    <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
                     <form onsubmit="return false;" action="#" :on-submit="submitStory">
                         <table class="form-table">
                             <tr>
-                                <td><label class="star" for="identifier">Identifier</label></td>
+                                <td><label class="star" for="identifier">{{ $t("storyId") }}</label></td>
                                 <td><input v-model="story.id" name="identifier" type="text" required readonly
                                         value="Generated automatically from story title" style="width: 100%;"></td>
                             </tr>
 
                             <tr>
-                                <td><label class="star" for="title">Title</label></td>
+                                <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
                                 <td><input v-model="story.title" @input="updateId" name="title" type="text"
                                         placeholder="The simple story" required minlength="5" style="width: 100%;"></td>
                             </tr>
 
                             <tr>
-                                <td><label for="preview">Preview</label></td>
+                                <td><label for="preview">{{ $t("storyBanner") }}</label></td>
                                 <td>
                                     <div class="part-container">
                                         <input type="list" id="preview-saved" name="preview-saved"
-                                            placeholder="Select old one..." autocomplete="off" list="preview-list">
+                                            :placeholder="$t('selectOld')" autocomplete="off" list="preview-list">
                                         <datalist id="preview-list" class="image-list">
                                             <option>MyPreview.png</option>
                                         </datalist>
@@ -75,7 +75,7 @@ const submitStory = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td><label class="star" for="font">Font</label></td>
+                                <td><label class="star" for="font">{{ $t("storyFont") }}</label></td>
                                 <td>
                                     <div class="part-container">
                                         <div style="color:black" id="font-example">Example</div>
@@ -89,23 +89,22 @@ const submitStory = () => {
                             </tr>
 
                             <tr>
-                                <td><label class="star" for="author">Author</label></td>
+                                <td><label class="star" for="author">{{ $t("storyAuthor") }}</label></td>
                                 <td><input id="author" name="author" type="text" readonly required value="author"></td>
                             </tr>
 
                             <tr>
-                                <td><label for="private"
-                                        title="To view a private history, you can use its ID. Public stories can be found by name in the search">Keep
-                                        private</label></td>
+                                <td><label for="private" :title="$t('storyPrivateDes')">{{ $t("storyPrivate") }}</label>
+                                </td>
                                 <td><input id="private" name="private" type="checkbox" checked></td>
                             </tr>
 
                             <tr>
                                 <td></td>
-                                <td>All mandatory fields are marked by <label class="star"></label></td>
+                                <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="Save" style="margin-top: 20px;"></td>
+                                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
                                 <td></td>
                             </tr>
                         </table>

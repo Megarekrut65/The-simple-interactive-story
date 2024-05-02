@@ -20,15 +20,17 @@ export const uk = {
 
     untitled: "Без назви",
     generatedAuto: "Створено автоматично з назви історії",
-    storyTitle: "",
-    storyId: "",
-    storyPreview: "",
-    storyFont: "",
-    storyAuthor: "",
-    storyPrivate: "",
-    storyPrivateDes: "",
+    storyTitle: "Назва",
+    storyId: "ІД",
+    storyBanner: "Банер",
+    storyFont: "Шрифт",
+    storyAuthor: "Автор",
+    storyPrivate: "Приватна історія",
+    storyPrivateDes: "Щоб переглянути приватну історію, ви можете використовувати її ідентифікатор. Публічні історії можна знайти за назвою в пошуку.",
 
-    allFieldsMarked: "",
-    save: ""
+    generalSettings: "Загальні налаштування історії",
+    allFieldsMarked: "Усі обов’язкові поля позначені",
+    save: "Зберегти",
+    selectOld: "Оберіть наявний..."
 
 };
