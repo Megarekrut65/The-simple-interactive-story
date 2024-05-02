@@ -31,6 +31,13 @@ export const uk = {
     generalSettings: "Загальні налаштування історії",
     allFieldsMarked: "Усі обов’язкові поля позначені",
     save: "Зберегти",
-    selectOld: "Оберіть наявний..."
+    selectOld: "Оберіть наявний...",
+
+    viewScene: "Подивитися сцену",
+    makeMain: "Зробити головною",
+    scenes: "Сцени",
+    scene: "Сцена",
+    mainScene: "головна сцена",
+
 
 };

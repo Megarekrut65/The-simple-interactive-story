@@ -31,5 +31,11 @@ export const en = {
     generalSettings: "General History Settings",
     allFieldsMarked: "All required fields are marked",
     save: "Save",
-    selectOld: "Choose an existing one..."
+    selectOld: "Choose an existing one...",
+
+    viewScene: "View Scene",
+    makeMain: "Make Main",
+    scenes: "Scenes",
+    scene: "Scene",
+    mainScene: "main scene",
 };

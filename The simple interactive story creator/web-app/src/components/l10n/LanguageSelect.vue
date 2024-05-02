@@ -25,12 +25,12 @@ const updateLocale = () => {
 </script>
 <template>
     <div class="dropdown">
-        <a class="btn dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" style="border:none;"
+        <a class="btn dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink2" style="border:none;"
             data-bs-toggle="dropdown" aria-expanded="false">
             <i :class="`${locale.flag} flag-icon m-0`" v-bind="updateLocale(onUpdated)"></i>
         </a>
 
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="background-color: #07085d;">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2" style="background-color: #07085d;">
             <li>
                 <a class="dropdown-item custom-item" href="#"><i :class="`${locale.flag} flag-icon`"></i> {{ locale.name
                     }}

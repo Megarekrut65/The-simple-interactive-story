@@ -54,12 +54,12 @@ const logoutBtn = () => {
           </li>
           <li class="nav-item" v-if="isLogin">
             <div class="dropdown">
-              <a class="btn dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink"
+              <a class="btn dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink1"
                 style="border:none;" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ username }}
               </a>
 
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="background-color: #07085d;">
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1" style="background-color: #07085d;">
                 <li>
                   <LocalizedLink class="dropdown-item custom-item" to="account">{{ $t('account') }}</LocalizedLink>
                 </li>
@@ -136,4 +136,5 @@ const logoutBtn = () => {
       </div>
     </div>
   </footer>
+
 </template>
