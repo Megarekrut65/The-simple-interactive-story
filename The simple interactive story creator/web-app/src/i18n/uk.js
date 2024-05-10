@@ -39,5 +39,16 @@ export const uk = {
     scene: "Сцена",
     mainScene: "головна сцена",
 
+    sceneTitle: "Назва сцени",
+    sceneBackground: "Фон",
+    sceneBackgroundMusic: "Фонова музика",
+    sceneText: "Основний текст",
+    sceneTextHint: "Жили колись...",
+    sceneAnswers: "Відповіді",
+    sceneImages: "Зображення",
+    sceneAutoSave: "Автозбереження",
+    sceneAutoSaveDes: "Автоматичне збереження поточної сцени при перемиканні на іншу сцену",
+    remove: "Видалити",
 
+    choseFile: "Оберіть зображення"
 };

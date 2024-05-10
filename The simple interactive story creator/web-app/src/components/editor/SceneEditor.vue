@@ -1,17 +1,22 @@
+<script setup>
+import ImagesEditor from './ImagesEditor.vue';
+</script>
+
 <template>
+    <ImagesEditor></ImagesEditor>
     <form onsubmit="return false;" action="#">
         <table class="form-table">
             <tr>
-                <td><label class="star" for="title">Title</label></td>
+                <td><label class="star" for="title">{{ $t('sceneTitle') }}</label></td>
                 <td><input id="title" name="title" type="text" placeholder="The main frame" value="Main" minlength="5"
                         required></td>
             </tr>
 
             <tr>
-                <td><label class="star" for="background">Background</label></td>
+                <td><label class="star" for="background">{{ $t('sceneBackground') }}</label></td>
                 <td>
                     <div class="part-container">
-                        <input type="list" id="background-saved" name="background-saved" placeholder="Select old one..."
+                        <input type="list" id="background-saved" name="background-saved" :placeholder="$t('selectOld')"
                             autocomplete="off" list="background-list">
                         <datalist id="background-list" class="image-list">
                             <option>MyBackground.png</option>
@@ -22,10 +27,10 @@
             </tr>
 
             <tr>
-                <td><label for="background-music">Background music</label></td>
+                <td><label for="background-music">{{ $t('sceneBackgroundMusic') }}</label></td>
                 <td>
                     <div class="part-container">
-                        <input type="list" id="music-saved" name="music-saved" placeholder="Select old one..."
+                        <input type="list" id="music-saved" name="music-saved" :placeholder="$t('selectOld')"
                             autocomplete="off" list="music-list">
                         <datalist id="music-list" class="music-list">
                             <option>MySound.mp3</option>
@@ -36,14 +41,15 @@
             </tr>
 
             <tr>
-                <td><label class="star" for="text">Text</label></td>
+                <td><label class="star" for="text">{{ $t('sceneText') }}</label></td>
                 <td>
-                    <textarea id="text" placeholder="The story I was told..." name="text" required></textarea>
+                    <textarea style="width: 100%;" id="text" :placeholder="$t('sceneTextHint')" name="text"
+                        required></textarea>
                 </td>
             </tr>
 
             <tr>
-                <td><label for="background-music">Answers</label></td>
+                <td><label for="background-music">{{ $t('sceneAnswers') }}</label></td>
                 <td>
                     <div>
                         <img id="answer-add" src="@/assets/images/stories/plus.png" class="add-icon answer-icon"
@@ -56,10 +62,10 @@
             </tr>
 
             <tr>
-                <td><label for="left-image">Left image</label></td>
+                <td><label for="left-image">{{ $t('sceneImages') }}</label></td>
                 <td>
                     <div class="part-container">
-                        <input type="list" id="left-saved" name="left-saved" placeholder="Select old one..."
+                        <input type="list" id="left-saved" name="left-saved" :placeholder="$t('selectOld')"
                             autocomplete="off" list="left-list">
                         <datalist id="left-list" class="image-list">
                             <option>Left.png</option>
@@ -70,59 +76,17 @@
             </tr>
 
             <tr>
-                <td><label for="under-image">Center under image</label></td>
-                <td>
-                    <div class="part-container">
-                        <input type="list" id="under-saved" name="under-saved" placeholder="Select old one..."
-                            autocomplete="off" list="under-list">
-                        <datalist id="under-list" class="image-list">
-                            <option>Under.png</option>
-                        </datalist>
-                        <input id="under-image" name="under-image" type="file" accept="image/png">
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td><label for="over-image">Center over image</label></td>
-                <td>
-                    <div class="part-container">
-                        <input type="list" id="over-saved" name="over-saved" placeholder="Select old one..."
-                            autocomplete="off" list="over-list">
-                        <datalist id="over-list" class="image-list">
-                            <option>Over.png</option>
-                        </datalist>
-                        <input id="over-image" name="over-image" type="file" accept="image/png">
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td><label for="right-image">Right image</label></td>
-                <td>
-                    <div class="part-container">
-                        <input type="list" id="right-saved" name="right-saved" placeholder="Select old one..."
-                            autocomplete="off" list="right-list">
-                        <datalist id="right-list" class="image-list">
-                            <option>Right.png</option>
-                        </datalist>
-                        <input id="right-image" name="right-image" type="file" accept="image/png">
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td><label for="auto-save">Auto-save on frame changing</label></td>
+                <td><label for="auto-save" :title="$t('sceneAutoSaveDes')">{{ $t('sceneAutoSave') }}</label></td>
                 <td><input id="auto-save" name="auto-save" type="checkbox" checked></td>
             </tr>
 
             <tr>
                 <td></td>
-                <td>All mandatory fields are marked by <label class="star"></label></td>
+                <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
             </tr>
             <tr>
-                <td><input type="submit" value="Save" style="margin-top: 20px;"></td>
-                <td></td>
+                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
+                <td><input type="button" :value="$t('remove')" style="margin-top: 20px;"></td>
             </tr>
         </table>
 

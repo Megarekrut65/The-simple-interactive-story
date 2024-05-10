@@ -38,4 +38,15 @@ export const en = {
     scenes: "Scenes",
     scene: "Scene",
     mainScene: "main scene",
+
+    sceneTitle: "Scene Title",
+    sceneBackground: "Background",
+    sceneBackgroundMusic: "Background Music",
+    sceneText: "Main text",
+    sceneTextHint: "The story I was told...",
+    sceneAnswers: "Answers",
+    sceneImages: "Images",
+    sceneAutoSave: "Autosave",
+    sceneAutoSaveDes: "Automatic saving of the current scene when switching to another scene",
+    remove: "Remove"
 };

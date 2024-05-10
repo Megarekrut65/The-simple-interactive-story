@@ -1,7 +1,7 @@
 <script setup>
 import BigBanner from '../BigBanner.vue';
 import { ref } from 'vue';
-import { textToId } from '@/js/text-utility';
+import { textToId } from '@/js/utilities/text-utility';
 import i18n from '@/i18n';
 import { subscribeAuthChange } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
@@ -24,13 +24,14 @@ const story = ref({
 });
 
 const updateId = () => {
-    if (story.value.title === "" || story.value.title === untitled) {
+    if (story.value.title === "") {
         story.value.id = "";
         return;
     }
 
     story.value.id = textToId(story.value.title);
 };
+updateId();
 
 subscribeAuthChange((user) => {
     if (user) {
