@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, watch } from "vue";
 import { collidePoint, drawResizingCircles, getCornerUnderMouse } from "@/js/utilities/canvas-utility";
-import { makeAspectRatio } from "@/js/utilities/size-utility";
+import { getNormSize } from "@/js/utilities/size-utility";
+
+//import { makeAspectRatio } from "@/js/utilities/size-utility";
 
 const props = defineProps({
     images: {
@@ -20,13 +22,14 @@ let prevX, prevY;
 let selectedImageIndex = -1;
 let selectedCornerIndex = -1;
 
+const size = { width: 1920, height: 1080 };
+
 
 const redrawCanvas = () => {
     // eslint-disable-next-line no-self-assign
     canvas.width = canvas.width; // clear canvas
-
-
     imagesContainer.forEach((image, index) => {
+
         ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
         drawResizingCircles(ctx, selectedImageIndex, index, image);
     });
@@ -38,9 +41,15 @@ const handleMouseUp = () => {
     isResizing = false;
 };
 
+const getMousePos = (event) => {
+    const normalSize = getNormSize({ height: event.offsetY, width: event.offsetX }, size, canvas)
+
+    return { mouseX: normalSize.width, mouseY: normalSize.height };
+}
+
 const handleMouseDown = (event) => {
-    const mouseX = event.offsetX;
-    const mouseY = event.offsetY;
+    const mousePos = getMousePos(event);
+    const { mouseX, mouseY } = mousePos;
 
     for (let i = imagesContainer.length - 1; i >= 0; i--) {
         const image = imagesContainer[i];
@@ -51,12 +60,11 @@ const handleMouseDown = (event) => {
             isResizing = true;
             prevX = mouseX;
             prevY = mouseY;
-            console.log("resize")
 
             return;
         }
 
-        if (collidePoint(event, image)) {
+        if (collidePoint(mousePos, image)) {
             selectedImageIndex = i;
             isDragging = true;
             prevX = mouseX;
@@ -70,8 +78,7 @@ const handleMouseDown = (event) => {
     selectedCornerIndex = -1;
 };
 const dragImage = (event) => {
-    const mouseX = event.offsetX;
-    const mouseY = event.offsetY;
+    const { mouseX, mouseY } = getMousePos(event);
     const dx = mouseX - prevX;
     const dy = mouseY - prevY;
 
@@ -80,9 +87,8 @@ const dragImage = (event) => {
     selectedImage.y += dy;
 };
 
-const reiszeImage = (event) => {
-    const mouseX = event.offsetX;
-    const mouseY = event.offsetY;
+const resizeImage = (event) => {
+    const { mouseX, mouseY } = getMousePos(event);
     const dx = mouseX - prevX;
     const dy = mouseY - prevY;
 
@@ -112,16 +118,19 @@ const reiszeImage = (event) => {
 };
 
 const handleMouseMove = (event) => {
+    redrawCanvas();
+
     if (!isDragging && !isResizing) return;
 
 
     if (isDragging && selectedImageIndex !== -1) dragImage(event);
-    else if (isResizing && selectedImageIndex !== -1 && selectedCornerIndex !== -1) reiszeImage(event);
+    else if (isResizing && selectedImageIndex !== -1 && selectedCornerIndex !== -1) resizeImage(event);
 
     redrawCanvas();
 
-    prevX = event.offsetX;
-    prevY = event.offsetY;
+    const { mouseX, mouseY } = getMousePos(event);
+    prevX = mouseX;
+    prevY = mouseY;
 };
 
 
@@ -133,14 +142,13 @@ const setUpCanvas = (canvasId) => {
         canvas.addEventListener("mousedown", handleMouseDown);
         canvas.addEventListener("mousemove", handleMouseMove);
         canvas.addEventListener("mouseup", handleMouseUp);
-        canvas.addEventListener("resize", () => {
-            ctx = canvas.getContext("2d");
-        });
 
-        makeAspectRatio(canvasId, (width) => width / 1.7, () => {
-            ctx = canvas.getContext("2d");
+        /*makeAspectRatio(canvasId, (width) => width / 1.7, () => {
+            canvas.height = canvas.getBoundingClientRect().height;
+            canvas.width = canvas.getBoundingClientRect().width;
+            canvas.renderAll();
             redrawCanvas();
-        });
+        });*/
     }
 };
 
@@ -175,7 +183,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <canvas class="my-canvas" id="canvas" width="1920" height="1080"></canvas>
+    <canvas class="my-canvas" id="canvas" :width="size.width" :height="size.height"></canvas>
 </template>
 <style>
 .my-canvas {

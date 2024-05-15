@@ -17,9 +17,8 @@ export const drawResizingCircles = (ctx, selectedImageIndex, index, image) => {
     ctx.strokeRect(image.x, image.y, image.width, image.height);
 };
 
-export const collidePoint = (event, image) => {
-    const mouseX = event.offsetX;
-    const mouseY = event.offsetY;
+export const collidePoint = (mousePos, image) => {
+    const { mouseX, mouseY } = mousePos;
 
     return mouseX >= image.x && mouseX <= image.x + image.width &&
         mouseY >= image.y && mouseY <= image.y + image.height;
