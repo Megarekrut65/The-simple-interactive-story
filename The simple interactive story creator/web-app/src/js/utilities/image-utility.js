@@ -1,3 +1,7 @@
+import { v4 as uuidv4 } from "uuid";
+
+
+
 export const loadImage = (event, success, reject) => {
     const files = event.target.files;
 
@@ -8,6 +12,7 @@ export const loadImage = (event, success, reject) => {
         reader.onload = function () {
             const img = new Image();
             img.onload = function () {
+                img.id = uuidv4();
                 success(img);
             }
             img.src = reader.result;

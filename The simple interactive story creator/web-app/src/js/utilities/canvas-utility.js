@@ -26,7 +26,7 @@ export const collidePoint = (mousePos, image) => {
 
 export const getCornerUnderMouse = (image, mouseX, mouseY) => {
     const tolerance = 5;
-    const circleRadius = 5;
+    const circleRadius = 15;
     const corners = [
         { x: image.x, y: image.y },
         { x: image.x + image.width, y: image.y },

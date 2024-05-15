@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { loadImage } from "@/js/utilities/image-utility";
 import BackgroundEditor from "./BackgroundEditor.vue";
+import ImageItem from "./ImageItem.vue";
 
 const images = ref([]);
 
@@ -18,13 +19,15 @@ const updateImage = (index, image) => {
     }
 };
 
-onMounted(() => {
-    const fileInput = document.getElementById("fileInput");
-    if (fileInput) fileInput.addEventListener("change", (event) => {
-        loadImage(event, successLoad, rejectLoad);
-    });
+const onInputChange = (event) => {
+    loadImage(event, successLoad, rejectLoad);
+};
 
-});
+const onRemove = (index) => {
+    if (index >= 0 && index < images.value.length)
+        images.value.splice(index, 1);
+};
+
 
 </script>
 
@@ -36,12 +39,15 @@ onMounted(() => {
             </div>
             <div class="col-12 col-md-3 col-xl-4 images-part">
                 <div>
-                    <label for="fileInput">{{ $t('choseFile') }}</label>
-                    <input type="file" id="fileInput" accept=".png">
+                    <label>{{ $t('choseFile') }}</label>
+                    <input type="file" @change="onInputChange" accept=".png" class="file-input">
                 </div>
 
                 <div class="images">
-                    <img v-for="(data, index) in images" :key="index" :src="data.src">
+                    <ImageItem v-for="(data, index) in images" :key="data.id" :src="data.src"
+                        :on-remove="() => onRemove(index)">
+                    </ImageItem>
+
                 </div>
 
             </div>
@@ -50,7 +56,7 @@ onMounted(() => {
     </div>
 </template>
 <style>
-#fileInput {
+.file-input {
     width: 50%;
 }
 
@@ -78,7 +84,7 @@ onMounted(() => {
     height: 80%;
 }
 
-.images img {
+.images div img {
     width: 90%;
     margin: 1%;
 }

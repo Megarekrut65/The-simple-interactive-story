@@ -3,8 +3,6 @@ import { onMounted, watch } from "vue";
 import { collidePoint, drawResizingCircles, getCornerUnderMouse } from "@/js/utilities/canvas-utility";
 import { getNormSize } from "@/js/utilities/size-utility";
 
-//import { makeAspectRatio } from "@/js/utilities/size-utility";
-
 const props = defineProps({
     images: {
         type: Array,
@@ -93,6 +91,9 @@ const resizeImage = (event) => {
     const dy = mouseY - prevY;
 
     const selectedImage = imagesContainer[selectedImageIndex];
+
+    const aspect = selectedImage.width / selectedImage.height;
+
     switch (selectedCornerIndex) {
         case 0: // Top-left corner
             selectedImage.x += dx;
@@ -114,6 +115,10 @@ const resizeImage = (event) => {
             selectedImage.width -= dx;
             selectedImage.height += dy;
             break;
+    }
+
+    if (!event.shiftKey) {
+        selectedImage.width = selectedImage.height * aspect;
     }
 };
 
@@ -142,13 +147,7 @@ const setUpCanvas = (canvasId) => {
         canvas.addEventListener("mousedown", handleMouseDown);
         canvas.addEventListener("mousemove", handleMouseMove);
         canvas.addEventListener("mouseup", handleMouseUp);
-
-        /*makeAspectRatio(canvasId, (width) => width / 1.7, () => {
-            canvas.height = canvas.getBoundingClientRect().height;
-            canvas.width = canvas.getBoundingClientRect().width;
-            canvas.renderAll();
-            redrawCanvas();
-        });*/
+        window.addEventListener("resize", redrawCanvas);
     }
 };
 
@@ -157,25 +156,35 @@ onMounted(() => {
     setUpCanvas("canvas");
 
     watch(props.images, (_, newOne) => {
-        let added = false;
-        for (let i in newOne) {
-            if (!imagesContainer.includes(newOne[i])) {
-                const newImage = {
-                    img: newOne[i],
-                    x: 5,
-                    y: 5,
-                    width: newOne[i].width,
-                    height: newOne[i].height
-                };
-                imagesContainer.push(newImage);
-                added = true;
-            }
-        }
+        let changed = false;
 
-        if (added) {
+        newOne.forEach(image => {
+            if (imagesContainer.some(item => item.id === image.id)) return;
+
+            const newImage = {
+                id: image.id,
+                img: image,
+                x: 5,
+                y: 5,
+                width: image.width,
+                height: image.height
+            };
+            imagesContainer.push(newImage);
+            changed = true;
+        });
+
+        imagesContainer.forEach((image, index) => {
+            if (newOne.some(item => item.id === image.id)) return;
+
+            imagesContainer.splice(index, 1);
+            changed = true;
+        });
+
+        if (changed) {
+            selectedImageIndex = -1;
+            selectedCornerIndex = -1;
             redrawCanvas();
         }
-
     });
 });
 
