@@ -1,9 +1,28 @@
 <script setup>
-import ImagesEditor from './ImagesEditor.vue';
+import { loadImage } from '@/js/utilities/image-utility';
+import ImagesEditor from './image-editor/ImagesEditor.vue';
+import { ref } from 'vue';
+
+const isActive = ref(false);
+
+const currentScene = ref({ background: new Image() });
+
+const successLoad = (res) => {
+    currentScene.value.background = res;
+};
+const rejectLoad = (err) => {
+    console.log(err);
+};
+const onInputChange = (event) => {
+    loadImage(event, successLoad, rejectLoad);
+};
+
+const onSceneClose = () => {
+    isActive.value = false;
+};
 </script>
 
 <template>
-    <ImagesEditor></ImagesEditor>
     <form onsubmit="return false;" action="#">
         <table class="form-table">
             <tr>
@@ -21,7 +40,7 @@ import ImagesEditor from './ImagesEditor.vue';
                         <datalist id="background-list" class="image-list">
                             <option>MyBackground.png</option>
                         </datalist>
-                        <input id="background" name="background" type="file" accept="image/png">
+                        <input id="background" name="background" type="file" accept="image/png" @change="onInputChange">
                     </div>
                 </td>
             </tr>
@@ -49,11 +68,10 @@ import ImagesEditor from './ImagesEditor.vue';
             </tr>
 
             <tr>
-                <td><label for="background-music">{{ $t('sceneAnswers') }}</label></td>
+                <td><label for="background-music">{{ $t('sceneAnswers') }} <i
+                            class="fa-regular fa-square-plus custom-btn"></i></label></td>
                 <td>
                     <div>
-                        <img id="answer-add" src="@/assets/images/stories/plus.png" class="add-icon answer-icon"
-                            title="Add new answer">
                         <div id="answer-list" class="answer-list">
 
                         </div>
@@ -62,16 +80,12 @@ import ImagesEditor from './ImagesEditor.vue';
             </tr>
 
             <tr>
-                <td><label for="left-image">{{ $t('sceneImages') }}</label></td>
+                <td><label for="left-image">{{ $t('sceneImages') }} <i class="fa-solid fa-pencil custom-btn"
+                            @click="isActive = !isActive"></i></label>
+                </td>
                 <td>
-                    <div class="part-container">
-                        <input type="list" id="left-saved" name="left-saved" :placeholder="$t('selectOld')"
-                            autocomplete="off" list="left-list">
-                        <datalist id="left-list" class="image-list">
-                            <option>Left.png</option>
-                        </datalist>
-                        <input id="left-image" name="left-image" type="file" accept="image/png">
-                    </div>
+                    <ImagesEditor :is-active="isActive" :currentScene="currentScene" :on-close="onSceneClose">
+                    </ImagesEditor>
                 </td>
             </tr>
 

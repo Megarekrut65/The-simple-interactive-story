@@ -7,6 +7,10 @@ const props = defineProps({
     images: {
         type: Array,
         required: true
+    },
+    currentScene: {
+        type: Object,
+        required: true
     }
 });
 
@@ -26,6 +30,9 @@ const size = { width: 1920, height: 1080 };
 const redrawCanvas = () => {
     // eslint-disable-next-line no-self-assign
     canvas.width = canvas.width; // clear canvas
+
+    ctx.drawImage(props.currentScene.background, 0, 0, size.width, size.height);
+
     imagesContainer.forEach((image, index) => {
 
         ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
@@ -185,6 +192,10 @@ onMounted(() => {
             selectedCornerIndex = -1;
             redrawCanvas();
         }
+    });
+
+    watch(props.currentScene, () => {
+        redrawCanvas();
     });
 });
 

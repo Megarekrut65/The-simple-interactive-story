@@ -15,7 +15,7 @@ defineProps({
     <div class="image-container">
         <img :src="src">
         <div class="panel">
-            <i class="fa-solid fa-trash-can text-danger custom-btn" @click="onRemove"></i>
+            <i class="fa-solid fa-trash-can text-danger custom-btn" @click="onRemove" :title="$t('removeImage')"></i>
         </div>
     </div>
 </template>
@@ -32,6 +32,10 @@ defineProps({
 .panel {
     display: flex;
     padding: 5px;
+    justify-content: space-between;
+}
 
+.panel i {
+    margin-left: 5px;
 }
 </style>
