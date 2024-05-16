@@ -7,6 +7,8 @@ import { subscribeAuthChange } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
+import { getSystemData } from '@/js/firebase/system';
+import { loadFont } from '@/js/utilities/font-utility';
 
 const router = useRouter();
 
@@ -14,6 +16,17 @@ const props = defineProps({
     storyId: {
         type: String,
         required: false
+    }
+});
+
+const fonts = ref([]);
+
+getSystemData("fonts").then(res => {
+    if (res) {
+        fonts.value = res.list;
+        res.list.forEach(font => {
+            loadFont(font.name, font.url);
+        })
     }
 });
 
@@ -114,10 +127,11 @@ const submitStory = () => {
                                 <td><label class="star" for="font">{{ $t("storyFont") }}</label></td>
                                 <td>
                                     <div class="part-container">
-                                        <div style="color:black" id="font-example">Example</div>
-                                        <select id="font" name="font">
-                                            <option>
-                                                Arial
+                                        <div class="text-black" :style="{ fontFamily: story.font }">{{ $t('sample') }}
+                                        </div>
+                                        <select v-model="story.font" required>
+                                            <option v-for="data in fonts" :key="data.id">
+                                                {{ data.name }}
                                             </option>
                                         </select>
                                     </div>

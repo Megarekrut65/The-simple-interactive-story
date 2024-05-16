@@ -19,6 +19,7 @@ export const uk = {
     selectStory: "Обери наявну історію або створи нову",
 
     untitled: "Без назви",
+    sample: "Зразок ТЕКСТУ 0123",
     generatedAuto: "Створено автоматично з назви історії",
     storyTitle: "Назва",
     storyId: "ІД",

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
-import { removeAt } from '@/js/utilities/array-utilities';
+import { removeAt } from '@/js/utilities/array-utility';
 
 
 const props = defineProps({
