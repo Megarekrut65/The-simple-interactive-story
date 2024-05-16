@@ -1,11 +1,12 @@
 <script setup>
 import BigBanner from '../BigBanner.vue';
 import { computed, ref } from 'vue';
-import { textToId } from '@/js/utilities/text-utility';
+import { getUniqueName, textToId } from '@/js/utilities/text-utility';
 import i18n from '@/i18n';
 import { subscribeAuthChange } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
+import { v4 } from 'uuid';
 
 const router = useRouter();
 
@@ -16,12 +17,36 @@ const props = defineProps({
     }
 });
 
+const userStorage = ref({ images: [{ id: "dwdwd", img: new Image(), name: "image" }], sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }] });
+
 const untitled = computed(() => i18n.t("untitled"));
 
 const story = ref({
     id: props.storyId ? props.storyId : "", title: untitled, preview: "Default", font: "Arial",
     author: "", private: true
 });
+const scenes = ref({});
+const currentSceneKey = ref(undefined);
+
+const addScene = () => {
+    const id = v4();
+    const size = Object.keys(scenes.value).length;
+
+    const title = getUniqueName(Object.values(scenes.value).map(item => item.title), untitled.value);
+    scenes.value[id] = {
+        id: id, title: title, background: undefined, music: undefined, text: "",
+        answers: [], images: [], isMain: size == 0
+    };
+    currentSceneKey.value = id;
+};
+
+if (Object.keys(scenes.value).length == 0) addScene();
+
+const makeMain = () => {
+    Object.values(scenes.value).forEach(scene => {
+        scene.isMain = scene.id === currentSceneKey.value;
+    });
+};
 
 const updateId = () => {
     if (story.value.title === "") {
@@ -46,6 +71,7 @@ const submitStory = () => {
     console.log(story.value);
     return false;
 };
+
 
 </script>
 
@@ -126,32 +152,29 @@ const submitStory = () => {
             <div class="row mt-5" id="frames-row">
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-4"><input id="make-main" type="button" :value="$t('addScene')"
+                                @click="addScene"></div>
+                        <div class="col-12 col-md-4"><input id="view-frame" type="button" :value="$t('viewScene')">
+                        </div>
+                        <div class="col-12 col-md-4"><input id="make-main" type="button" :value="$t('makeMain')"
+                                @click="makeMain"></div>
+                    </div>
                     <table>
                         <tr>
-                            <td><input id="view-frame" type="button" :value="$t('viewScene')"
-                                    style="margin-bottom: 40px;">
-                            </td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td><input id="make-main" type="button" :value="$t('makeMain')"
-                                    style="margin-bottom: 40px;">
-                            </td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td><label class="star" for="frame">{{ $t('scene') }}</label></td>
+                            <td><label class="star">{{ $t('scene') }}</label></td>
                             <td>
-                                <select id="frame" name="frame" required>
-                                    <option>Main(main frame)</option>
+                                <select required v-model="currentSceneKey">
+                                    <option v-for="data in scenes" :key="data.id" :value="data.id">{{ data.title
+                                        }}{{ data.isMain ? `(${$t('mainScene')})` : "" }}
+                                    </option>
                                 </select>
 
                             </td>
                         </tr>
                     </table>
-                    <SceneEditor></SceneEditor>
+                    <SceneEditor :scenes="scenes" :currentSceneKey="currentSceneKey" :user-storage="userStorage">
+                    </SceneEditor>
                 </div>
             </div>
         </div>

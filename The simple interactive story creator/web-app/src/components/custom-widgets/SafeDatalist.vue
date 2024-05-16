@@ -6,6 +6,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    contentKey: {
+        type: String,
+        required: true
+    },
     onSelect: {
         type: Function,
         required: true
@@ -34,7 +38,7 @@ const onChanged = () => {
     <input type="list" :list="id" :required="required" autocomplete="off" v-model="value"
         :placeholder="$t('unselected')" @change="onChanged">
     <datalist :id="id">
-        <option v-for="data in list" :key="data.id" :value="data.id">{{ data.text }}
+        <option v-for="data in list" :key="data.id" :value="data.id">{{ data[contentKey] }}
         </option>
     </datalist>
 </template>

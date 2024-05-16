@@ -33,11 +33,13 @@ export const uk = {
     save: "Зберегти",
     selectOld: "Оберіть наявний...",
 
+    addScene: "Додати сцену",
     viewScene: "Подивитися сцену",
     makeMain: "Зробити головною",
     scenes: "Сцени",
     scene: "Сцена",
     mainScene: "головна сцена",
+    sceneHint: "Сцена...",
 
     sceneTitle: "Назва сцени",
     sceneBackground: "Фон",

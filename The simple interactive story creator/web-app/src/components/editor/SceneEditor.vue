@@ -1,15 +1,32 @@
 <script setup>
 import { loadImage } from '@/js/utilities/image-utility';
 import ImagesEditor from './image-editor/ImagesEditor.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import SingleMiniImage from './SingleMiniImage.vue';
 import AnswersEditor from './AnswersEditor.vue';
 import { v4 } from 'uuid';
+import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
+
+const props = defineProps({
+    scenes: {
+        type: Object,
+        required: true
+    },
+    currentSceneKey: {
+        type: String,
+        required: true
+    },
+    userStorage: {
+        type: Object,
+        required: true
+    }
+});
 
 const isActive = ref(false);
 
-const scenes = ref([{ title: "Scene", id: "scene" }, { title: "Craken", id: "craken" }]);
-const currentScene = ref({ title: "", background: undefined, music: undefined, text: "", answers: [], images: [] });
+const scenes = computed(() => props.scenes);
+const currentKey = computed(() => props.currentSceneKey);
+const currentScene = computed(() => props.scenes[currentKey.value]);
 
 const backgroundSuccessLoad = (res) => {
     currentScene.value.background = res;
@@ -17,8 +34,19 @@ const backgroundSuccessLoad = (res) => {
 const rejectLoad = (err) => {
     console.log(err);
 };
-const onInputChange = (event) => {
+const onBackgroundInputChanged = (event) => {
     loadImage(event, backgroundSuccessLoad, rejectLoad);
+};
+
+const onBackgroundChanged = (value) => {
+    backgroundSuccessLoad(value);
+};
+
+const onMusicInputChanged = (value) => {
+    console.log(value)
+};
+const onMusicChanged = (value) => {
+    console.log(value)
 };
 
 const onSceneClose = () => {
@@ -44,36 +72,30 @@ const onSceneSave = () => {
     <form onsubmit="return false;" action="#">
         <table class="form-table">
             <tr>
-                <td><label class="star" for="title">{{ $t('sceneTitle') }}</label></td>
-                <td><input id="title" name="title" type="text" placeholder="The main frame" value="Main" minlength="5"
+                <td><label class="star">{{ $t('sceneTitle') }}</label></td>
+                <td><input type="text" :placeholder="$t('sceneHint')" v-model="currentScene.title" minlength="5"
                         required></td>
             </tr>
 
             <tr>
                 <td><label class="star" for="background">{{ $t('sceneBackground') }}</label></td>
-                <td>
+                <td class="form-right">
                     <div class="part-container">
-                        <input type="list" id="background-saved" name="background-saved" :placeholder="$t('selectOld')"
-                            autocomplete="off" list="background-list">
-                        <datalist id="background-list" class="image-list">
-                            <option>MyBackground.png</option>
-                        </datalist>
-                        <input id="background" name="background" type="file" accept="image/png" @change="onInputChange">
+                        <SafeDatalist :list="userStorage.images" content-key="name" :on-select="onBackgroundChanged">
+                        </SafeDatalist>
+                        <input type="file" accept="image/png" @change="onBackgroundInputChanged">
                     </div>
                     <SingleMiniImage :image="currentScene.background"></SingleMiniImage>
                 </td>
             </tr>
 
             <tr>
-                <td><label for="background-music">{{ $t('sceneBackgroundMusic') }}</label></td>
+                <td><label>{{ $t('sceneBackgroundMusic') }}</label></td>
                 <td>
                     <div class="part-container">
-                        <input type="list" id="music-saved" name="music-saved" :placeholder="$t('selectOld')"
-                            autocomplete="off" list="music-list">
-                        <datalist id="music-list" class="music-list">
-                            <option>MySound.mp3</option>
-                        </datalist>
-                        <input id="background-music" name="background-music" type="file" accept="audio/mp3">
+                        <SafeDatalist :list="userStorage.sounds" content-key="name" :on-select="onMusicChanged">
+                        </SafeDatalist>
+                        <input type="file" accept="audio/mp3" @change="onMusicInputChanged">
                     </div>
                 </td>
             </tr>
@@ -107,11 +129,6 @@ const onSceneSave = () => {
             </tr>
 
             <tr>
-                <td><label for="auto-save" :title="$t('sceneAutoSaveDes')">{{ $t('sceneAutoSave') }}</label></td>
-                <td><input id="auto-save" name="auto-save" type="checkbox" checked></td>
-            </tr>
-
-            <tr>
                 <td></td>
                 <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
             </tr>
@@ -123,3 +140,9 @@ const onSceneSave = () => {
 
     </form>
 </template>
+<style>
+.form-right {
+    background-color: rgba(0, 0, 0, 0.033);
+    padding: 10px;
+}
+</style>

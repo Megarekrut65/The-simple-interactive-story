@@ -17,3 +17,20 @@
   cursor: pointer;
   opacity: 0.7;
 }
+.part-container > * {
+  width: 45%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+@media screen and (max-width: 500px) {
+  .part-container > * {
+    width: 90%;
+  }
+}
+
+.part-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

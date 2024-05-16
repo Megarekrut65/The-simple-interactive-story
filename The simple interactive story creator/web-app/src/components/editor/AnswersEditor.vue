@@ -10,7 +10,7 @@ const props = defineProps({
         required: true
     },
     scenes: {
-        type: Array,
+        type: Object,
         required: true
     },
     onUpdate: {
@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 
-const scenes = computed(() => props.scenes.map(item => { return { text: item.title, id: item.id }; }));
+const scenes = computed(() => props.scenes);
 const answers = computed(() => props.answers);
 
 const onSceneSelect = (index, value) => {
@@ -49,7 +49,7 @@ const onRemove = (index) => {
                     <td><label class="star">{{ $t('nextScene') }}</label></td>
                     <td>
                         <SafeDatalist :list="scenes" :on-select="(value) => onSceneSelect(index, value)"
-                            :required="true"></SafeDatalist>
+                            :required="true" :content-key="title"></SafeDatalist>
                     </td>
                 </tr>
             </table>
