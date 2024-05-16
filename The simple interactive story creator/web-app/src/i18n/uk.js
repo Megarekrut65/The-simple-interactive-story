@@ -53,4 +53,12 @@ export const uk = {
     choseFile: "Оберіть зображення",
     removeImage: "Видалити зображення",
     bgImage: "Зробити зображення фоном сцени",
+
+    text: "Текст",
+    nextScene: "Наступна сцена",
+    removeAnswer: "Видалити відповідь",
+    anvancedOptions: "Продвинуті налаштування",
+    answerHint: "Чому? Тому що!",
+
+    unselected: "Не обрано"
 };

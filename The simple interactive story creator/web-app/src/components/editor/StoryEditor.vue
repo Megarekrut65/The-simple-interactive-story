@@ -1,6 +1,6 @@
 <script setup>
 import BigBanner from '../BigBanner.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { textToId } from '@/js/utilities/text-utility';
 import i18n from '@/i18n';
 import { subscribeAuthChange } from '@/js/firebase/auth';
@@ -16,7 +16,7 @@ const props = defineProps({
     }
 });
 
-const untitled = i18n.t("untitled");
+const untitled = computed(() => i18n.t("untitled"));
 
 const story = ref({
     id: props.storyId ? props.storyId : "", title: untitled, preview: "Default", font: "Arial",

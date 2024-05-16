@@ -2,23 +2,41 @@
 import { loadImage } from '@/js/utilities/image-utility';
 import ImagesEditor from './image-editor/ImagesEditor.vue';
 import { ref } from 'vue';
+import SingleMiniImage from './SingleMiniImage.vue';
+import AnswersEditor from './AnswersEditor.vue';
+import { v4 } from 'uuid';
 
 const isActive = ref(false);
 
-const currentScene = ref({ background: new Image() });
+const scenes = ref([{ title: "Scene", id: "scene" }, { title: "Craken", id: "craken" }]);
+const currentScene = ref({ title: "", background: undefined, music: undefined, text: "", answers: [], images: [] });
 
-const successLoad = (res) => {
+const backgroundSuccessLoad = (res) => {
     currentScene.value.background = res;
 };
 const rejectLoad = (err) => {
     console.log(err);
 };
 const onInputChange = (event) => {
-    loadImage(event, successLoad, rejectLoad);
+    loadImage(event, backgroundSuccessLoad, rejectLoad);
 };
 
 const onSceneClose = () => {
     isActive.value = false;
+};
+
+const onUpdateImages = (images) => {
+    currentScene.value.images = images;
+};
+const onUpdateAnswers = (answers) => {
+    currentScene.value.answers = answers;
+};
+const onAddAnswer = () => {
+    currentScene.value.answers.push({ text: "", nextScene: "", id: v4() });
+};
+
+const onSceneSave = () => {
+    console.log(currentScene.value);
 };
 </script>
 
@@ -42,6 +60,7 @@ const onSceneClose = () => {
                         </datalist>
                         <input id="background" name="background" type="file" accept="image/png" @change="onInputChange">
                     </div>
+                    <SingleMiniImage :image="currentScene.background"></SingleMiniImage>
                 </td>
             </tr>
 
@@ -68,14 +87,11 @@ const onSceneClose = () => {
             </tr>
 
             <tr>
-                <td><label for="background-music">{{ $t('sceneAnswers') }} <i
-                            class="fa-regular fa-square-plus custom-btn"></i></label></td>
+                <td><label>{{ $t('sceneAnswers') }} <i class="fa-regular fa-square-plus custom-btn"
+                            @click="onAddAnswer"></i></label></td>
                 <td>
-                    <div>
-                        <div id="answer-list" class="answer-list">
-
-                        </div>
-                    </div>
+                    <AnswersEditor :answers="currentScene.answers" :scenes="scenes" :on-update="onUpdateAnswers">
+                    </AnswersEditor>
                 </td>
             </tr>
 
@@ -84,7 +100,8 @@ const onSceneClose = () => {
                             @click="isActive = !isActive"></i></label>
                 </td>
                 <td>
-                    <ImagesEditor :is-active="isActive" :currentScene="currentScene" :on-close="onSceneClose">
+                    <ImagesEditor :is-active="isActive" :currentScene="currentScene" :on-close="onSceneClose"
+                        :on-update="onUpdateImages">
                     </ImagesEditor>
                 </td>
             </tr>
@@ -99,7 +116,7 @@ const onSceneClose = () => {
                 <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
             </tr>
             <tr>
-                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
+                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;" @click="onSceneSave"></td>
                 <td><input type="button" :value="$t('remove')" style="margin-top: 20px;"></td>
             </tr>
         </table>
