@@ -109,7 +109,7 @@ const onSceneSave = () => {
             </tr>
 
             <tr>
-                <td><label>{{ $t('sceneAnswers') }} <i class="fa-regular fa-square-plus custom-btn"
+                <td><label class="td-icon">{{ $t('sceneAnswers') }}<i class="fa-regular fa-square-plus custom-btn"
                             @click="onAddAnswer"></i></label></td>
                 <td>
                     <AnswersEditor :answers="currentScene.answers" :scenes="scenes" :on-update="onUpdateAnswers">
@@ -118,7 +118,7 @@ const onSceneSave = () => {
             </tr>
 
             <tr>
-                <td><label for="left-image">{{ $t('sceneImages') }} <i class="fa-solid fa-pencil custom-btn"
+                <td><label class="td-icon">{{ $t('sceneImages') }}<i class="fa-solid fa-pencil custom-btn"
                             @click="isActive = !isActive"></i></label>
                 </td>
                 <td>
@@ -144,5 +144,14 @@ const onSceneSave = () => {
 .form-right {
     background-color: rgba(0, 0, 0, 0.033);
     padding: 10px;
+}
+
+.td-icon {
+    display: flex;
+    align-items: center;
+}
+
+.td-icon>i {
+    margin-left: 5px;
 }
 </style>

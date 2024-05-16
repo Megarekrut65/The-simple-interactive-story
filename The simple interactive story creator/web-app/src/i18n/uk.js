@@ -60,7 +60,7 @@ export const uk = {
     text: "Текст",
     nextScene: "Наступна сцена",
     removeAnswer: "Видалити відповідь",
-    anvancedOptions: "Продвинуті налаштування",
+    advancedOptions: "Продвинуті налаштування",
     answerHint: "Чому? Тому що!",
 
     unselected: "Не обрано"

@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 
-const scenes = computed(() => props.scenes);
+const scenes = computed(() => Object.values(props.scenes));
 const answers = computed(() => props.answers);
 
 const onSceneSelect = (index, value) => {
@@ -49,12 +49,12 @@ const onRemove = (index) => {
                     <td><label class="star">{{ $t('nextScene') }}</label></td>
                     <td>
                         <SafeDatalist :list="scenes" :on-select="(value) => onSceneSelect(index, value)"
-                            :required="true" :content-key="title"></SafeDatalist>
+                            :required="true" content-key="title" value-key="title"></SafeDatalist>
                     </td>
                 </tr>
             </table>
             <div class="options-container">
-                <i class="fa-solid fa-sliders custom-btn text-waring" :title="$t('anvancedOptions')"></i>
+                <i class="fa-solid fa-sliders custom-btn text-waring" :title="$t('advancedOptions')"></i>
                 <i class="fa-solid fa-x custom-btn text-danger" @click="() => onRemove(index)"
                     :title="$t('removeAnswer')"></i>
 

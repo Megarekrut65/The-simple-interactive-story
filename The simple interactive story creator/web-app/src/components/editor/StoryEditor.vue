@@ -7,8 +7,7 @@ import { subscribeAuthChange } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
-import { getSystemData } from '@/js/firebase/system';
-import { loadFont } from '@/js/utilities/font-utility';
+import { unityFonts } from '@/unity-assets/fonts/fonts';
 
 const router = useRouter();
 
@@ -19,16 +18,8 @@ const props = defineProps({
     }
 });
 
-const fonts = ref([]);
+const fonts = ref(unityFonts);
 
-getSystemData("fonts").then(res => {
-    if (res) {
-        fonts.value = res.list;
-        res.list.forEach(font => {
-            loadFont(font.name, font.url);
-        })
-    }
-});
 
 const userStorage = ref({ images: [{ id: "dwdwd", img: new Image(), name: "image" }], sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }] });
 
@@ -94,7 +85,7 @@ const submitStory = () => {
     <section class="section">
         <div class="container">
             <div class="row">
-                <div class="col mx-auto">
+                <div class="col">
                     <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
                     <form onsubmit="return false;" action="#" :on-submit="submitStory">
                         <table class="form-table">

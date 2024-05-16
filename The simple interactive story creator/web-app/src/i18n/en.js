@@ -1,5 +1,5 @@
 export const en = {
-    title: "The simple interactive story",
+    title: "A simple interactive story",
     home: "Home",
     news: "News",
     about: "About us",
@@ -8,17 +8,18 @@ export const en = {
     contacts: "Contacts",
     signInUp: "Sign in/register.",
     support: "Support",
-    createStory: "Create a story",
+    createStory: "Create Story",
     myStories: "My stories",
     popularStories: "Popular Stories",
     account: "Account",
     logout: "Log out",
 
-    accountBanner: "Only you can write own story!",
+    accountBanner: "Only you can write your own story!",
     yourStories: "Your stories",
     selectStory: "Select an existing story or create a new one",
 
     untitled: "Untitled",
+    sample: "Sample TEXT 0123",
     generatedAuto: "Generated automatically from story name",
     storyTitle: "Title",
     storyId: "ID",
@@ -31,22 +32,36 @@ export const en = {
     generalSettings: "General History Settings",
     allFieldsMarked: "All required fields are marked",
     save: "Save",
-    selectOld: "Choose an existing one...",
+    selectOld: "Select an existing...",
 
+    addScene: "Add Scene",
     viewScene: "View Scene",
     makeMain: "Make Main",
     scenes: "Scenes",
     scene: "Scene",
     mainScene: "main scene",
+    sceneHint: "Scene...",
 
     sceneTitle: "Scene Title",
     sceneBackground: "Background",
     sceneBackgroundMusic: "Background Music",
     sceneText: "Main text",
-    sceneTextHint: "The story I was told...",
+    sceneTextHint: "Once upon a time...",
     sceneAnswers: "Answers",
     sceneImages: "Images",
     sceneAutoSave: "Autosave",
-    sceneAutoSaveDes: "Automatic saving of the current scene when switching to another scene",
-    remove: "Remove"
+    sceneAutoSaveDes: "Auto save current scene when switching to another scene",
+    remove: "Remove",
+
+    choseFile: "Choose an image",
+    removeImage: "Remove Image",
+    bgImage: "Make the image the background of the scene",
+
+    text: "Text",
+    nextScene: "Next Scene",
+    removeAnswer: "Remove Answer",
+    advancedOptions: "Advanced Settings",
+    answerHint: "Why? Because!",
+
+    unselected: "Not selected"
 };
