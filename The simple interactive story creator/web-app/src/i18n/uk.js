@@ -63,5 +63,5 @@ export const uk = {
     advancedOptions: "Продвинуті налаштування",
     answerHint: "Чому? Тому що!",
 
-    unselected: "Не обрано"
+    notSupportAudio: "Ваш браузер не підтримує аудіо елементи"
 };

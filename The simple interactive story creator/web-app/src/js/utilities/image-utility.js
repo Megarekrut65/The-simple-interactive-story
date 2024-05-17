@@ -1,6 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
 
-
+export const loadImageUrl = (url, name, success) => {
+    const img = new Image();
+    img.onload = () => {
+        img.id = uuidv4();
+        img.name = name;
+        success(img);
+    };
+    img.src = url;
+};
 
 export const loadImage = (event, success, reject) => {
     const files = event.target.files;
@@ -9,14 +17,7 @@ export const loadImage = (event, success, reject) => {
         const file = files[i];
         const reader = new FileReader();
 
-        reader.onload = function () {
-            const img = new Image();
-            img.onload = function () {
-                img.id = uuidv4();
-                success(img);
-            }
-            img.src = reader.result;
-        };
+        reader.onload = () => loadImageUrl(reader.result, file.name, success);
         reader.onerror = reader.onabort = reject;
 
         reader.readAsDataURL(file);

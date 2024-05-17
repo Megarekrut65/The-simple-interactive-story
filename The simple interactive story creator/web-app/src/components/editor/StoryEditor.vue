@@ -8,8 +8,7 @@ import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
-import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
-import { loadImage } from '@/js/utilities/image-utility';
+import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 
 const router = useRouter();
 
@@ -23,7 +22,10 @@ const props = defineProps({
 const fonts = ref(unityFonts);
 
 
-const userStorage = ref({ images: [{ id: "dwdwd", img: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", name: "image" }], sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }] });
+const userStorage = ref({
+    images: [{ id: "dwdwd", img: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", name: "image" }],
+    sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }]
+});
 
 const untitled = computed(() => i18n.t("untitled"));
 
@@ -73,18 +75,9 @@ subscribeAuthChange((user) => {
     router.go();
 });
 
-const bannerSuccessLoad = (res) => {
-    story.value.banner = res;
-};
-const rejectLoad = (err) => {
-    console.log(err);
-};
-const onBannerInputChanged = (event) => {
-    loadImage(event, bannerSuccessLoad, rejectLoad);
-};
 
 const onBannerChanged = (value) => {
-    bannerSuccessLoad(value.img);
+    story.value.banner = value;
 };
 
 const submitStory = () => {
@@ -105,7 +98,7 @@ const submitStory = () => {
             <div class="row">
                 <div class="col">
                     <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
-                    <form onsubmit="return false;" action="#" :on-submit="submitStory">
+                    <form onsubmit="return false;" action="#" @submit="submitStory">
                         <table class="form-table">
                             <tr>
                                 <td><label class="star" for="identifier">{{ $t("storyId") }}</label></td>
@@ -122,12 +115,9 @@ const submitStory = () => {
                             <tr>
                                 <td><label for="preview">{{ $t("storyBanner") }}</label></td>
                                 <td>
-                                    <div class="part-container">
-                                        <SafeDatalist :list="userStorage.images" content-key="name" value-key="name"
-                                            :on-select="onBannerChanged">
-                                        </SafeDatalist>
-                                        <input type="file" accept="image/png" @change="onBannerInputChanged">
-                                    </div>
+                                    <PreviewImageSelect :images="userStorage.images" :initial="story.banner"
+                                        :on-selected="onBannerChanged">
+                                    </PreviewImageSelect>
                                 </td>
                             </tr>
                             <tr>

@@ -3,8 +3,8 @@ import ImagesEditor from './image-editor/ImagesEditor.vue';
 import { computed, ref } from 'vue';
 import AnswersEditor from './AnswersEditor.vue';
 import { v4 } from 'uuid';
-import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
+import PreviewSoundSelect from '../custom-widgets/PreviewSoundSelect.vue';
 
 const props = defineProps({
     scenes: {
@@ -30,11 +30,8 @@ const onBackgroundSelect = (value) => {
     currentScene.value.background = value;
 };
 
-const onMusicInputChanged = (value) => {
-    console.log(value)
-};
-const onMusicChanged = (value) => {
-    console.log(value)
+const onMusicSelected = (value) => {
+    currentScene.value.music = value;
 };
 
 const onSceneClose = () => {
@@ -77,12 +74,8 @@ const onSceneSave = () => {
             <tr>
                 <td><label>{{ $t('sceneBackgroundMusic') }}</label></td>
                 <td>
-                    <div class="part-container">
-                        <SafeDatalist :list="userStorage.sounds" content-key="name" value-key="name"
-                            :on-select="onMusicChanged">
-                        </SafeDatalist>
-                        <input type="file" accept="audio/mp3" @change="onMusicInputChanged">
-                    </div>
+                    <PreviewSoundSelect :sounds="userStorage.sounds" :initial="currentScene.music"
+                        :on-selected="onMusicSelected"></PreviewSoundSelect>
                 </td>
             </tr>
 
@@ -109,7 +102,7 @@ const onSceneSave = () => {
                 </td>
                 <td>
                     <ImagesEditor :is-active="isActive" :currentScene="currentScene" :on-close="onSceneClose"
-                        :on-update="onUpdateImages">
+                        :on-update="onUpdateImages" :user-images="userStorage.images">
                     </ImagesEditor>
                 </td>
             </tr>

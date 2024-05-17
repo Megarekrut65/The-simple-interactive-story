@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
-import SingleMiniImage from '../editor/SingleMiniImage.vue';
-import ImageSelect from './ImageSelect.vue';
+import SingleMiniImage from './SingleMiniImage.vue';
+import ItemSelect from './ItemSelect.vue';
+import { loadImage } from '@/js/utilities/image-utility';
 
 const props = defineProps({
     images: {
@@ -33,6 +34,7 @@ const onImageSelected = (value) => {
 </script>
 
 <template>
-    <ImageSelect :images="images" :on-selected="onImageSelected" :initial="image?.name"></ImageSelect>
+    <ItemSelect :items="images" :on-selected="onImageSelected" :initial="image?.name" item-key="img" content-key="name"
+        value-key="name" file-type="image/png" :load-function="loadImage"></ItemSelect>
     <SingleMiniImage :image="image"></SingleMiniImage>
 </template>

@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from "vue";
-import { loadImage } from "@/js/utilities/image-utility";
 import BackgroundEditor from "./BackgroundEditor.vue";
 import ImageItem from "./ImageItem.vue";
 import MiniImagesList from "@/components/custom-widgets/MiniImagesList.vue";
+import ItemSelect from "@/components/custom-widgets/ItemSelect.vue";
+import { loadImage, loadImageUrl } from "@/js/utilities/image-utility";
 
 const props = defineProps({
     isActive: {
@@ -20,6 +21,10 @@ const props = defineProps({
     },
     onUpdate: {
         type: Function,
+        required: true
+    },
+    userImages: {
+        type: Array,
         required: true
     }
 });
@@ -38,15 +43,6 @@ const createImage = (image) => {
     return newImage;
 };
 
-const successLoad = (res) => {
-    images.value.push(createImage(res));
-
-    props.onUpdate(images.value);
-};
-const rejectLoad = (err) => {
-    console.log(err);
-};
-
 const updateImage = (index, image) => {
     if (index >= 0 && index < images.value.length) {
         images.value[index] = image;
@@ -54,8 +50,19 @@ const updateImage = (index, image) => {
     }
 };
 
-const onInputChange = (event) => {
-    loadImage(event, successLoad, rejectLoad);
+const addImage = (value) => {
+    images.value.push(createImage(value));
+
+    props.onUpdate(images.value);
+};
+
+const onImageSelect = (value) => {
+    if (typeof value.img === "string") {
+        loadImageUrl(value.img, value.name, addImage);
+        return;
+    }
+
+    addImage(value.img);
 };
 
 const onRemove = (index) => {
@@ -82,7 +89,9 @@ const onRemove = (index) => {
                 <div class="col-12 col-md-3 col-xl-4 images-part">
                     <div>
                         <label>{{ $t('choseFile') }}</label>
-                        <input type="file" @change="onInputChange" accept=".png" class="file-input">
+                        <ItemSelect :items="userImages" :on-selected="onImageSelect" item-key="img" content-key="name"
+                            value-key="name" file-type="image/png" :load-function="loadImage">
+                        </ItemSelect>
                     </div>
 
                     <div class="images">
