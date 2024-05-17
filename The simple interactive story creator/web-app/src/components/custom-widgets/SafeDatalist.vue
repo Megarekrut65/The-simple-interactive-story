@@ -40,8 +40,8 @@ const onChanged = () => {
 
 </script>
 <template>
-    <input type="list" :list="id" :required="required" autocomplete="off" v-model="value"
-        :placeholder="$t('unselected')" @change="onChanged">
+    <input type="list" :list="id" :required="required" autocomplete="off" v-model="value" :placeholder="$t('selectOld')"
+        @change="onChanged">
     <datalist :id="id">
         <option v-for="data in list" :key="data.id" :value="data[valueKey]">{{ data[contentKey] }}
         </option>

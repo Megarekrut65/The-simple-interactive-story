@@ -24,8 +24,7 @@ const props = defineProps({
 const isActive = ref(false);
 
 const scenes = computed(() => props.scenes);
-const currentKey = computed(() => props.currentSceneKey);
-const currentScene = computed(() => props.scenes[currentKey.value]);
+const currentScene = computed(() => props.scenes[props.currentSceneKey]);
 
 const onBackgroundSelect = (value) => {
     currentScene.value.background = value;
@@ -69,7 +68,8 @@ const onSceneSave = () => {
             <tr>
                 <td><label class="star" for="background">{{ $t('sceneBackground') }}</label></td>
                 <td class="form-right">
-                    <PreviewImageSelect :images="userStorage.images" :on-selected="onBackgroundSelect">
+                    <PreviewImageSelect :images="userStorage.images" :initial="currentScene.background"
+                        :on-selected="onBackgroundSelect">
                     </PreviewImageSelect>
                 </td>
             </tr>

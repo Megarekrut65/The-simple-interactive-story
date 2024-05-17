@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SafeDatalist from './SafeDatalist.vue';
 import { loadImage } from '@/js/utilities/image-utility';
 
@@ -11,10 +11,19 @@ const props = defineProps({
     onSelected: {
         type: Function,
         required: true
+    },
+    initial: {
+        type: String,
+        required: false,
+        default: ""
     }
 });
 
-const selectImage = ref("");
+const selectImage = ref(props.initial);
+
+watch(() => props.initial, () => {
+    selectImage.value = props.initial;
+})
 
 const image = ref(undefined);
 

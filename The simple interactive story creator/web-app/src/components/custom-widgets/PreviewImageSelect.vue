@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import SingleMiniImage from '../editor/SingleMiniImage.vue';
 import ImageSelect from './ImageSelect.vue';
 
@@ -11,12 +11,19 @@ const props = defineProps({
     onSelected: {
         type: Function,
         required: true
+    },
+    initial: {
+        required: false,
+        default: undefined
     }
-
 });
 
 
-const image = ref(undefined);
+const image = ref(props.initial);
+
+watch(() => props.initial, () => {
+    image.value = props.initial;
+});
 
 const onImageSelected = (value) => {
     image.value = value;
@@ -26,6 +33,6 @@ const onImageSelected = (value) => {
 </script>
 
 <template>
-    <ImageSelect :images="images" :on-selected="onImageSelected"></ImageSelect>
+    <ImageSelect :images="images" :on-selected="onImageSelected" :initial="image?.name"></ImageSelect>
     <SingleMiniImage :image="image"></SingleMiniImage>
 </template>
