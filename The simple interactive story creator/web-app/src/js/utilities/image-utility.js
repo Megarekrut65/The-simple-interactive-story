@@ -22,3 +22,13 @@ export const loadImage = (event, success, reject) => {
         reader.readAsDataURL(file);
     }
 };
+
+export const imageToSrc = (image) => {
+    if (image === undefined) return "";
+    if (image instanceof Image) return image.src;
+    if (typeof image === "string") return image;
+    if (typeof image === "object" && "img" in image)
+        return imageToSrc(image.img);
+
+    return "";
+};

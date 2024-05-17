@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { loadImage } from "@/js/utilities/image-utility";
 import BackgroundEditor from "./BackgroundEditor.vue";
 import ImageItem from "./ImageItem.vue";
-import MiniImagesList from "./MiniImagesList.vue";
+import MiniImagesList from "@/components/custom-widgets/MiniImagesList.vue";
 
 const props = defineProps({
     isActive: {

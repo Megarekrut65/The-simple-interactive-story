@@ -1,6 +1,6 @@
 <script setup>
 import { v4 as uuid4 } from "uuid";
-import { ref } from "vue";
+import { toRaw } from "vue";
 const props = defineProps({
     list: {
         type: Array,
@@ -27,7 +27,7 @@ const props = defineProps({
 });
 
 const id = uuid4();
-const value = ref("");
+const value = defineModel({ default: "" });
 
 const onChanged = () => {
     const result = props.list.find(item => item[props.valueKey] === value.value);
@@ -35,7 +35,7 @@ const onChanged = () => {
         value.value = "";
     }
 
-    props.onSelect(result);
+    props.onSelect(toRaw(result));
 };
 
 </script>

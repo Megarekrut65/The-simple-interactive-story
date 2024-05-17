@@ -1,11 +1,10 @@
 <script setup>
-import { loadImage } from '@/js/utilities/image-utility';
 import ImagesEditor from './image-editor/ImagesEditor.vue';
 import { computed, ref } from 'vue';
-import SingleMiniImage from './SingleMiniImage.vue';
 import AnswersEditor from './AnswersEditor.vue';
 import { v4 } from 'uuid';
 import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
+import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 
 const props = defineProps({
     scenes: {
@@ -28,18 +27,8 @@ const scenes = computed(() => props.scenes);
 const currentKey = computed(() => props.currentSceneKey);
 const currentScene = computed(() => props.scenes[currentKey.value]);
 
-const backgroundSuccessLoad = (res) => {
-    currentScene.value.background = res;
-};
-const rejectLoad = (err) => {
-    console.log(err);
-};
-const onBackgroundInputChanged = (event) => {
-    loadImage(event, backgroundSuccessLoad, rejectLoad);
-};
-
-const onBackgroundChanged = (value) => {
-    backgroundSuccessLoad(value);
+const onBackgroundSelect = (value) => {
+    currentScene.value.background = value;
 };
 
 const onMusicInputChanged = (value) => {
@@ -80,12 +69,8 @@ const onSceneSave = () => {
             <tr>
                 <td><label class="star" for="background">{{ $t('sceneBackground') }}</label></td>
                 <td class="form-right">
-                    <div class="part-container">
-                        <SafeDatalist :list="userStorage.images" content-key="name" :on-select="onBackgroundChanged">
-                        </SafeDatalist>
-                        <input type="file" accept="image/png" @change="onBackgroundInputChanged">
-                    </div>
-                    <SingleMiniImage :image="currentScene.background"></SingleMiniImage>
+                    <PreviewImageSelect :images="userStorage.images" :on-selected="onBackgroundSelect">
+                    </PreviewImageSelect>
                 </td>
             </tr>
 
@@ -93,7 +78,8 @@ const onSceneSave = () => {
                 <td><label>{{ $t('sceneBackgroundMusic') }}</label></td>
                 <td>
                     <div class="part-container">
-                        <SafeDatalist :list="userStorage.sounds" content-key="name" :on-select="onMusicChanged">
+                        <SafeDatalist :list="userStorage.sounds" content-key="name" value-key="name"
+                            :on-select="onMusicChanged">
                         </SafeDatalist>
                         <input type="file" accept="audio/mp3" @change="onMusicInputChanged">
                     </div>

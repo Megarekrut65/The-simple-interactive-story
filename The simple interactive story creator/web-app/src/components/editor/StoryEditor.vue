@@ -8,6 +8,8 @@ import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
+import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
+import { loadImage } from '@/js/utilities/image-utility';
 
 const router = useRouter();
 
@@ -21,12 +23,12 @@ const props = defineProps({
 const fonts = ref(unityFonts);
 
 
-const userStorage = ref({ images: [{ id: "dwdwd", img: new Image(), name: "image" }], sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }] });
+const userStorage = ref({ images: [{ id: "dwdwd", img: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", name: "image" }], sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }] });
 
 const untitled = computed(() => i18n.t("untitled"));
 
 const story = ref({
-    id: props.storyId ? props.storyId : "", title: untitled, preview: "Default", font: "Arial",
+    id: props.storyId ? props.storyId : "", title: untitled, banner: undefined, font: "Arial",
     author: "", private: true
 });
 const scenes = ref({});
@@ -71,10 +73,26 @@ subscribeAuthChange((user) => {
     router.go();
 });
 
+const bannerSuccessLoad = (res) => {
+    story.value.banner = res;
+};
+const rejectLoad = (err) => {
+    console.log(err);
+};
+const onBannerInputChanged = (event) => {
+    loadImage(event, bannerSuccessLoad, rejectLoad);
+};
+
+const onBannerChanged = (value) => {
+    bannerSuccessLoad(value.img);
+};
+
 const submitStory = () => {
     console.log(story.value);
     return false;
 };
+
+
 
 
 </script>
@@ -105,12 +123,10 @@ const submitStory = () => {
                                 <td><label for="preview">{{ $t("storyBanner") }}</label></td>
                                 <td>
                                     <div class="part-container">
-                                        <input type="list" id="preview-saved" name="preview-saved"
-                                            :placeholder="$t('selectOld')" autocomplete="off" list="preview-list">
-                                        <datalist id="preview-list" class="image-list">
-                                            <option>MyPreview.png</option>
-                                        </datalist>
-                                        <input id="preview" name="preview" type="file" accept="image/png">
+                                        <SafeDatalist :list="userStorage.images" content-key="name" value-key="name"
+                                            :on-select="onBannerChanged">
+                                        </SafeDatalist>
+                                        <input type="file" accept="image/png" @change="onBannerInputChanged">
                                     </div>
                                 </td>
                             </tr>
