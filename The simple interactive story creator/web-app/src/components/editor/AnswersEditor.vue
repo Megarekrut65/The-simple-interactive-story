@@ -25,7 +25,7 @@ const answers = computed(() => props.answers);
 
 const onSceneSelect = (index, value) => {
     if (index >= 0 && index < answers.value.length) {
-        answers.value[index].nextScene = value;
+        answers.value[index].nextScene = value.id;
         props.onUpdate(answers.value);
     }
 };
@@ -42,7 +42,8 @@ const onRemove = (index) => {
                 <tr>
                     <td><label class="star">{{ $t('text') }}</label></td>
                     <td>
-                        <textarea style="width: 100%;" :placeholder="$t('answerHint')" required></textarea>
+                        <textarea style="width: 100%;" :placeholder="$t('answerHint')" v-model="answers[index].text"
+                            required></textarea>
                     </td>
                 </tr>
                 <tr>

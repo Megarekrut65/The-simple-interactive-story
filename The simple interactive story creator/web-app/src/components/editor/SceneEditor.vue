@@ -1,6 +1,6 @@
 <script setup>
 import ImagesEditor from './image-editor/ImagesEditor.vue';
-import { computed, ref } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 import AnswersEditor from './AnswersEditor.vue';
 import { v4 } from 'uuid';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
@@ -60,7 +60,7 @@ const onAddAnswer = () => {
 };
 
 const onSceneSave = () => {
-    console.log(currentScene.value);
+    console.log(toRaw(currentScene.value));
 };
 </script>
 
@@ -91,10 +91,10 @@ const onSceneSave = () => {
             </tr>
 
             <tr>
-                <td><label class="star" for="text">{{ $t('sceneText') }}</label></td>
+                <td><label class="star">{{ $t('sceneText') }}</label></td>
                 <td>
-                    <textarea style="width: 100%;" id="text" :placeholder="$t('sceneTextHint')" name="text"
-                        required></textarea>
+                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')" required
+                        v-model="currentScene.text"></textarea>
                 </td>
             </tr>
 

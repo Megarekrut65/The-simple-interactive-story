@@ -2,6 +2,7 @@
 import { computed, onMounted, watch } from "vue";
 import { collidePoint, drawResizingCircles, getCornerUnderMouse } from "@/js/utilities/canvas-utility";
 import { getNormSize } from "@/js/utilities/size-utility";
+import { imageToSrc } from "@/js/utilities/image-utility";
 
 const props = defineProps({
     images: {
@@ -35,18 +36,40 @@ let selectedCornerIndex = -1;
 
 const size = { width: 1920, height: 1080 };
 
+const drawBackground = (resolve) => {
+    const background = props.currentScene.background;
+
+    if (!background) {
+        resolve();
+        return;
+    }
+    if (background.img instanceof Image) {
+        ctx.drawImage(background.img, 0, 0, size.width, size.height);
+        resolve();
+        return;
+    }
+
+    const src = imageToSrc(background);
+    const image = new Image();
+    image.onload = () => {
+        ctx.drawImage(image, 0, 0, size.width, size.height);
+        resolve();
+    };
+    image.src = src;
+};
 
 const redrawCanvas = () => {
     // eslint-disable-next-line no-self-assign
     canvas.width = canvas.width; // clear canvas
-    if (props.currentScene.background)
-        ctx.drawImage(props.currentScene.background, 0, 0, size.width, size.height);
 
-    imagesContainer.value.forEach((image, index) => {
-        ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
-        drawResizingCircles(ctx, selectedImageIndex, index, image);
+    const promise = new Promise(drawBackground);
+
+    promise.then(() => {
+        imagesContainer.value.forEach((image, index) => {
+            ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
+            drawResizingCircles(ctx, selectedImageIndex, index, image);
+        });
     });
-
 };
 
 const handleMouseUp = () => {
