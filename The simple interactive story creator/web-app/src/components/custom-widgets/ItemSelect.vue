@@ -49,9 +49,9 @@ watch(() => props.initial, () => {
 
 const item = ref(undefined);
 
-const successLoad = (res) => {
+const successLoad = (res, file) => {
     selectItem.value = "";
-    item.value = { id: res.id, [props.itemKey]: res, name: res.name };
+    item.value = { id: res.id, [props.itemKey]: res, name: res.name, file: file };
 
     props.onSelected(item.value);
 };

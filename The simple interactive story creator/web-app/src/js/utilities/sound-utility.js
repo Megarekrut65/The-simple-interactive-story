@@ -9,7 +9,7 @@ export const loadSound = (event, success, reject) => {
         sound.id = v4();
         sound.name = file.name;
         if (sound)
-            success(sound);
+            success(sound, file);
         else reject("Error");
 
     }

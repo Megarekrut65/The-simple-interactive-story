@@ -1,14 +1,16 @@
 <script setup>
 import BigBanner from '../BigBanner.vue';
-import { computed, ref } from 'vue';
-import { getUniqueName, textToId } from '@/js/utilities/text-utility';
+import { computed, ref, toRaw } from 'vue';
+import { getUniqueName } from '@/js/utilities/text-utility';
 import i18n from '@/i18n';
-import { subscribeAuthChange } from '@/js/firebase/auth';
+import { getUser, subscribeAuthChange } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
 import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
+import { uploadFileAndGetUrl } from '@/js/firebase/storage';
+import { setStory } from '@/js/firebase/story';
 
 const router = useRouter();
 
@@ -29,8 +31,10 @@ const userStorage = ref({
 
 const untitled = computed(() => i18n.t("untitled"));
 
+const id = ref(props.storyId);
+
 const story = ref({
-    id: props.storyId ? props.storyId : "", title: untitled, banner: undefined, font: "Arial",
+    id: id.value ? id : v4(), title: untitled.value, banner: undefined, font: "Arial",
     author: "", private: true
 });
 const scenes = ref({});
@@ -56,16 +60,6 @@ const makeMain = () => {
     });
 };
 
-const updateId = () => {
-    if (story.value.title === "") {
-        story.value.id = "";
-        return;
-    }
-
-    story.value.id = textToId(story.value.title);
-};
-updateId();
-
 subscribeAuthChange((user) => {
     if (user) {
         story.value.author = user.displayName;
@@ -80,8 +74,46 @@ const onBannerChanged = (value) => {
     story.value.banner = value;
 };
 
+const uploadBanner = (user, value, resolve) => {
+    if (!value.banner) {
+        value.banner = null;
+        resolve();
+        return;
+    }
+
+    if (!value.banner.file) {
+        value.banner = value.banner.img;
+        resolve();
+        return;
+    }
+
+    uploadFileAndGetUrl(user.uid, "images", value.banner.file).then((res) => {
+        value.banner = res;
+        resolve();
+    });
+};
+
 const submitStory = () => {
-    console.log(story.value);
+    const user = getUser();
+    if (!user) {
+        return false;
+    }
+
+    const value = toRaw(story.value);
+
+    console.log(value);
+    id.value = story.value.id;
+
+    const promise = new Promise((resolve) => uploadBanner(user, value, resolve));
+    promise.then(() => {
+        return setStory(user.uid, value).then(() => {
+
+        });
+    })
+        .catch(err => {
+            console.log(err);
+        });
+
     return false;
 };
 
@@ -100,12 +132,6 @@ const submitStory = () => {
                     <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
                     <form onsubmit="return false;" action="#" @submit="submitStory">
                         <table class="form-table">
-                            <tr>
-                                <td><label class="star" for="identifier">{{ $t("storyId") }}</label></td>
-                                <td><input v-model="story.id" name="identifier" type="text" required readonly
-                                        :placeholder="$t('generatedAuto')" style="width: 100%;"></td>
-                            </tr>
-
                             <tr>
                                 <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
                                 <td><input v-model="story.title" @input="updateId" name="title" type="text"
@@ -160,7 +186,7 @@ const submitStory = () => {
                     </form>
                 </div>
             </div>
-            <div class="row mt-5" id="frames-row">
+            <div class="row mt-5" v-if="id">
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
                     <div class="row">
@@ -184,7 +210,8 @@ const submitStory = () => {
                             </td>
                         </tr>
                     </table>
-                    <SceneEditor :scenes="scenes" :currentSceneKey="currentSceneKey" :user-storage="userStorage">
+                    <SceneEditor :scenes="scenes" :currentSceneKey="currentSceneKey" :user-storage="userStorage"
+                        :story-id="story.id">
                     </SceneEditor>
                 </div>
             </div>

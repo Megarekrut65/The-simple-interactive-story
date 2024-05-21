@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { firebaseApp } from "./firebase";
 import i18n from "@/i18n";
+import { createUserStory } from "./story";
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -61,7 +62,10 @@ export const createNewUser = (name, email, password) => {
                 displayName: name
             }).then(() => {
                 localStorage.setItem("userData", JSON.stringify(userCredential.user));
-                callEvents(userCredential.user);
+                console.log(userCredential.user.uid)
+                return createUserStory(userCredential.user.uid).then(() => {
+                    callEvents(userCredential.user);
+                });
             });
         });
 };
@@ -106,7 +110,9 @@ export const logout = () => {
 
 export const getUser = () => {
     const userData = localStorage.getItem("userData");
-    if (userData) return auth.currentUser;
+    if (userData && auth.currentUser) return auth.currentUser;
+    if (userData) return JSON.parse(userData);
+
     return undefined;
 };
 

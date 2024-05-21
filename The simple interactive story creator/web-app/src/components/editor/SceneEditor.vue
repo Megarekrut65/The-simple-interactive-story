@@ -19,6 +19,10 @@ const props = defineProps({
     userStorage: {
         type: Object,
         required: true
+    },
+    storyId: {
+        type: String,
+        required: true
     }
 });
 
@@ -60,7 +64,9 @@ const onAddAnswer = () => {
 };
 
 const onSceneSave = () => {
-    console.log(toRaw(currentScene.value));
+    const scene = toRaw(currentScene.value);
+    console.log(scene);
+
 };
 </script>
 

@@ -12,8 +12,8 @@ const isLoading = ref(false);
 const nickname = ref(""), email = ref(""), password = ref(""), passwordRepeat = ref("");
 const error = ref("");
 
-const onSubmit = ()=>{
-    if(password.value != passwordRepeat.value){
+const onSubmit = () => {
+    if (password.value != passwordRepeat.value) {
         error.value = "Passwords don't match!";
         return;
     }
@@ -23,13 +23,14 @@ const onSubmit = ()=>{
 
 
     createNewUser(nickname.value, email.value, password.value)
-    .then(()=>{
-        router.push({name:next?next:"home"});
-    })
-    .catch(err=>{
-        isLoading.value = false;
-        error.value = err;
-    });
+        .then(() => {
+            router.push({ name: next ? next : "home" });
+        })
+        .catch(err => {
+            console.log(err);
+            isLoading.value = false;
+            error.value = err;
+        });
 };
 
 </script>
@@ -45,12 +46,12 @@ const onSubmit = ()=>{
             <input v-model.trim="email" type="email" name="email" placeholder="Email..." required minlength="4"
                 class="form-control mb-4 shadow rounded-0" maxlength="1000">
 
-            <input v-model.trim="password" type="password" name="password" placeholder="Password..." required minlength="8"
-                class="form-control mb-4 shadow rounded-0" maxlength="2000">
+            <input v-model.trim="password" type="password" name="password" placeholder="Password..." required
+                minlength="8" class="form-control mb-4 shadow rounded-0" maxlength="2000">
             <input v-model.trim="passwordRepeat" type="password" name="password-repeat" placeholder="Repeat password..."
                 class="form-control mb-4 shadow rounded-0">
 
-            <div class="error-message">{{error}}</div>
+            <div class="error-message">{{ error }}</div>
 
             <button type="submit" class="btn btn-primary">Register</button>
         </form>

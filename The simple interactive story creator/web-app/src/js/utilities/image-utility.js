@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const loadImageUrl = (url, name, success) => {
+export const loadImageUrl = (file, url, name, success) => {
     const img = new Image();
     img.onload = () => {
         img.id = uuidv4();
         img.name = name;
-        success(img);
+        success(img, file);
     };
     img.src = url;
 };
@@ -17,7 +17,7 @@ export const loadImage = (event, success, reject) => {
         const file = files[i];
         const reader = new FileReader();
 
-        reader.onload = () => loadImageUrl(reader.result, file.name, success);
+        reader.onload = () => loadImageUrl(file, reader.result, file.name, success);
         reader.onerror = reader.onabort = reject;
 
         reader.readAsDataURL(file);

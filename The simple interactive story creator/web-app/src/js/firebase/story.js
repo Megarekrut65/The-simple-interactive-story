@@ -1,15 +1,15 @@
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
 
 
 const getStoryCollection = (userId) => {
-    return collection(db, `${mainCollection}/${userId}/${storyCollection}`);
+    return `${mainCollection}/${userId}/${storyCollection}`;
 };
 
 const getSceneCollection = (userId, storyId) => {
-    return collection(db, `${getStoryCollection(userId)}/${storyId}/${scenesCollection}`);
+    return `${getStoryCollection(userId)}/${storyId}/${scenesCollection}`;
 };
 
 export const setScene = (userId, storyId, scene) => {
@@ -29,4 +29,8 @@ export const setStory = (userId, story) => {
     const coll = getStoryCollection(userId);
 
     return setDoc(doc(db, coll, story.id), story);
+};
+
+export const createUserStory = (userId) => {
+    return setDoc(doc(db, mainCollection, userId), { images: [], sounds: [] })
 };
