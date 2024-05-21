@@ -5,6 +5,7 @@ import AnswersEditor from './AnswersEditor.vue';
 import { v4 } from 'uuid';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import PreviewSoundSelect from '../custom-widgets/PreviewSoundSelect.vue';
+import { getUniqueName } from '@/js/utilities/text-utility';
 
 const props = defineProps({
     scenes: {
@@ -25,6 +26,16 @@ const isActive = ref(false);
 
 const scenes = computed(() => props.scenes);
 const currentScene = computed(() => props.scenes[props.currentSceneKey]);
+
+const onTitleChanged = () => {
+    const scene = currentScene.value;
+
+    for (let i in scenes.value) {
+        if (scenes.value[i].title === scene.title && scenes.value[i].id !== scene.id) {
+            scene.title = getUniqueName(Object.values(scenes.value).map(item => item.title), scene.title);
+        }
+    }
+};
 
 const onBackgroundSelect = (value) => {
     currentScene.value.background = value;
@@ -59,7 +70,7 @@ const onSceneSave = () => {
             <tr>
                 <td><label class="star">{{ $t('sceneTitle') }}</label></td>
                 <td><input type="text" :placeholder="$t('sceneHint')" v-model="currentScene.title" minlength="5"
-                        required></td>
+                        required @change="onTitleChanged"></td>
             </tr>
 
             <tr>
