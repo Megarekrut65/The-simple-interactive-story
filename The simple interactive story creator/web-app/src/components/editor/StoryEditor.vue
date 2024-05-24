@@ -12,6 +12,7 @@ import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { uploadFileAndGetUrl } from '@/js/firebase/storage';
 import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene, setStorageImages, setStory } from '@/js/firebase/story';
 import { imageToSrc } from '@/js/utilities/image-utility';
+import LoadingWindow from '../LoadingWindow.vue';
 
 const router = useRouter();
 
@@ -21,6 +22,8 @@ const props = defineProps({
         required: false
     }
 });
+
+const isLoading = ref(true);
 
 const fonts = ref(unityFonts);
 
@@ -62,25 +65,32 @@ subscribeAuthChange((user) => {
 });
 
 const loadStoryData = () => {
+    isLoading.value = true;
 
-    if (!props.storyId) return;
+    if (!props.storyId) return Promise.reject();
     const user = getUser();
-    if (!user) return;
+    if (!user) return Promise.reject();
 
-    getStory(user.uid, props.storyId).then(res => {
-        if (!res) return;
+    return getStory(user.uid, props.storyId).then(res => {
+        if (!res) return Promise.reject();
 
         story.value = res;
-        getStoryScenes(user.uid, props.storyId).then(scenesRes => {
+        return getStoryScenes(user.uid, props.storyId).then(scenesRes => {
             scenesRes.forEach(scene => {
                 scenes.value[scene.id] = scene;
                 if (scene.isMain) currentSceneKey.value = scene.id;
             });
-        })
+
+            return Promise.resolve();
+        });
     });
 };
 
-loadStoryData();
+loadStoryData().catch(err => {
+    console.log(err);
+}).finally(() => {
+    isLoading.value = false;
+});;
 
 const makeMain = () => {
     Object.values(scenes.value).forEach(scene => {
@@ -111,24 +121,16 @@ const onBannerChanged = (value) => {
     story.value.banner = value;
 };
 
-const uploadBanner = (user, value, resolve) => {
-    if (!value.banner) {
-        resolve();
-        return;
-    }
+const uploadImage = (user, item) => {
+    if (!item) return Promise.resolve(null);
 
-    if (!value.banner.file) {
-        value.banner = imageToSrc(value.banner);
-        resolve();
-        return;
-    }
+    if (!item.file) return Promise.resolve(imageToSrc(item));
 
-    uploadFileAndGetUrl(user.uid, "images", value.banner.file).then((res) => {
-        const image = { id: value.banner.id, name: value.banner.name, img: res };
+    return uploadFileAndGetUrl(user.uid, "images", item.file).then((res) => {
+        const image = { id: item.id, name: item.name, img: res };
         userStorage.value.images.push(image);
-        value.banner = res;
 
-        return setStorageImages(user.uid, userStorage.value.images).then(resolve);
+        return setStorageImages(user.uid, userStorage.value.images).then(() => res);
     });
 };
 
@@ -138,13 +140,16 @@ const submitStory = () => {
         return false;
     }
 
+    isLoading.value = true;
+
     const value = toRaw(story.value);
     if (!value.creatingDate) value.creatingDate = new Date();
 
-    const promise = new Promise((resolve) => uploadBanner(user, value, resolve));
-    promise.then(() => {
+    uploadImage(user, value.banner).then(banner => {
+        value.banner = banner;
+
         return setStory(user.uid, value).then(() => {
-            if (props.storyId) return;
+            if (props.storyId) return Promise.resolve();
 
             return setScene(user.uid, value.id, createEmptyScene()).then(() => {
                 router.push({ name: "editor", params: { storyId: value.id } });
@@ -153,6 +158,8 @@ const submitStory = () => {
     })
         .catch(err => {
             console.log(err);
+        }).finally(() => {
+            isLoading.value = false;
         });
 
     return false;
@@ -161,16 +168,22 @@ const submitStory = () => {
 const removeStoryAction = () => {
     const user = getUser();
     if (!user || !props.storyId) return;
+    isLoading.value = true;
 
     cascadeRemoveStory(user.uid, props.storyId).then(() => {
         router.push({ name: "account" });
-    });
+    })
+        .catch(err => {
+            console.log(err);
+            isLoading.value = false;
+        });
 };
 
 
 </script>
 
 <template>
+    <LoadingWindow :is-loading="isLoading"></LoadingWindow>
     <BigBanner min-height="50vh" :title="story.title" :image-href="story.banner"></BigBanner>
 
     <section class="section">
