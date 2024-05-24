@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { uploadFileAndGetUrl } from '@/js/firebase/storage';
-import { getStory, getUserStorage, setStorageImages, setStory } from '@/js/firebase/story';
+import { getStory, getStoryScenes, getUserStorage, removeStory, setScene, setStorageImages, setStory } from '@/js/firebase/story';
 import { imageToSrc } from '@/js/utilities/image-utility';
 
 const router = useRouter();
@@ -47,6 +47,8 @@ const story = ref({
     id: v4(), title: untitled.value, banner: undefined, font: "Arial",
     author: "", private: true
 });
+const scenes = ref({});
+const currentSceneKey = ref(undefined);
 
 subscribeAuthChange((user) => {
     if (props.storyId) return;
@@ -59,31 +61,23 @@ subscribeAuthChange((user) => {
     router.go();
 });
 
-if (props.storyId) {
+const loadStoryData = () => {
+
+    if (!props.storyId) return;
     const user = getUser();
-    if (user) {
-        getStory(user.uid, props.storyId).then(res => {
-            if (res) story.value = res;
-        });
-    }
-}
+    if (!user) return;
 
-const scenes = ref({});
-const currentSceneKey = ref(undefined);
+    getStory(user.uid, props.storyId).then(res => {
+        if (!res) return;
 
-const addScene = () => {
-    const id = v4();
-    const size = Object.keys(scenes.value).length;
-
-    const title = getUniqueName(Object.values(scenes.value).map(item => item.title), untitled.value);
-    scenes.value[id] = {
-        id: id, title: title, background: undefined, music: undefined, text: "",
-        answers: [], images: [], isMain: size == 0
-    };
-    currentSceneKey.value = id;
+        story.value = res;
+        getStoryScenes(user.uid, props.storyId).then(scenesRes => {
+            console.log(scenesRes);
+        })
+    });
 };
 
-if (Object.keys(scenes.value).length == 0) addScene();
+loadStoryData();
 
 const makeMain = () => {
     Object.values(scenes.value).forEach(scene => {
@@ -91,8 +85,24 @@ const makeMain = () => {
     });
 };
 
+const createEmptyScene = () => {
+    const id = v4();
+    const size = Object.keys(scenes.value).length;
 
+    const title = getUniqueName(Object.values(scenes.value).map(item => item.title), untitled.value);
+    const scene = {
+        id: id, title: title, background: undefined, music: undefined, text: "",
+        answers: [], images: [], isMain: size == 0
+    };
 
+    return scene;
+};
+
+const addScene = () => {
+    const scene = createEmptyScene();
+    scenes.value[scene.id] = scene;
+    currentSceneKey.value = scene.id;
+};
 
 const onBannerChanged = (value) => {
     story.value.banner = value;
@@ -135,11 +145,11 @@ const submitStory = () => {
     const promise = new Promise((resolve) => uploadBanner(user, value, resolve));
     promise.then(() => {
         return setStory(user.uid, value).then(() => {
-            if (props.storyId) {
-                return;
-            }
+            if (props.storyId) return;
 
-            router.push({ name: "editor", params: { storyId: value.id } });
+            return setScene(user.uid, value.id, createEmptyScene()).then(() => {
+                router.push({ name: "editor", params: { storyId: value.id } });
+            });
         });
     })
         .catch(err => {
@@ -149,7 +159,14 @@ const submitStory = () => {
     return false;
 };
 
+const removeStoryAction = () => {
+    const user = getUser();
+    if (!user || !props.storyId) return;
 
+    removeStory(user.id, props.storyId).then(() => {
+        router.push({ name: "account" });
+    });
+};
 
 
 </script>
@@ -224,12 +241,12 @@ const submitStory = () => {
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
                     <div class="row">
-                        <div class="col-12 col-md-4"><input id="make-main" type="button" :value="$t('addScene')"
-                                @click="addScene"></div>
-                        <div class="col-12 col-md-4"><input id="view-frame" type="button" :value="$t('viewScene')">
+                        <div class="col-12 col-md-4"><input type="button" :value="$t('addScene')" @click="addScene">
                         </div>
-                        <div class="col-12 col-md-4"><input id="make-main" type="button" :value="$t('makeMain')"
-                                @click="makeMain"></div>
+                        <div class="col-12 col-md-4"><input type="button" :value="$t('viewScene')">
+                        </div>
+                        <div class="col-12 col-md-4"><input type="button" :value="$t('makeMain')" @click="makeMain">
+                        </div>
                     </div>
                     <table>
                         <tr>
@@ -244,9 +261,19 @@ const submitStory = () => {
                             </td>
                         </tr>
                     </table>
-                    <SceneEditor :scenes="scenes" :currentSceneKey="currentSceneKey" :user-storage="userStorage"
-                        :story-id="story.id">
+                    <SceneEditor v-if="Object.keys(scenes).length > 0" :scenes="scenes"
+                        :currentSceneKey="currentSceneKey" :user-storage="userStorage" :story-id="story.id">
                     </SceneEditor>
+                </div>
+            </div>
+            <div class="row mt-5" v-if="storyId">
+                <div class="col mx-auto">
+                    <h3 class="font-tertiary mb-5">{{ $t('settings') }}</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-4"><input type="button" :value="$t('remove')"
+                                @click="removeStoryAction">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

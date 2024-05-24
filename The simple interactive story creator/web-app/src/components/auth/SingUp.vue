@@ -3,9 +3,9 @@ import { ref } from 'vue'
 import { createNewUser } from '@/js/firebase/auth';
 import { useRouter } from 'vue-router';
 import LoadingWindow from '../LoadingWindow.vue';
+import { goNext } from '@/js/utilities/router-utility';
 
 const router = useRouter();
-const next = router.currentRoute.value.query.next;
 
 const isLoading = ref(false);
 
@@ -23,9 +23,7 @@ const onSubmit = () => {
 
 
     createNewUser(nickname.value, email.value, password.value)
-        .then(() => {
-            router.push({ name: next ? next : "home" });
-        })
+        .then(() => goNext(router))
         .catch(err => {
             console.log(err);
             isLoading.value = false;

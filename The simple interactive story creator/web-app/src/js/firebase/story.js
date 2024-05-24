@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
@@ -36,6 +36,9 @@ const dataOrNull = (res) => {
 
     return null;
 };
+const dataDocs = (res) => {
+    return res.docs.map(item => item.data());
+};
 
 export const getStory = (userId, storyId) => {
     const coll = getStoryCollection(userId);
@@ -50,7 +53,11 @@ export const getUserStories = (userId, perPage, after = null) => {
         startAfter(after),
         limit(perPage));
 
-    return getDocs(q).then(res => res.docs);
+    return getDocs(q).then(dataDocs);
+};
+
+export const getStoryScenes = (userId, storyId) => {
+    return getDocs(collection(db, getSceneCollection(userId, storyId))).then(dataDocs);
 };
 
 export const createUserStory = (userId) => {
@@ -66,4 +73,9 @@ export const setStorageImages = (userId, images) => {
 };
 export const setStorageSounds = (userId, sounds) => {
     return setDoc(doc(db, mainCollection, userId), { sounds: sounds }, { merge: true });
+};
+
+export const removeStory = (userId, storyId) => {
+    const coll = getStoryCollection(userId);
+    return deleteDoc(doc(db, coll, storyId));
 };

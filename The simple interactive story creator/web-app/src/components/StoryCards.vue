@@ -28,7 +28,7 @@ const loadMore = () => {
     isAll.value = true;
 
     props.loadFunction(props.perPage, after).then(res => {
-        stories.value = stories.value.concat(res.map(item => item.data()));
+        stories.value = stories.value.concat(res);
         if (res.length > 0) {
             after = res[res.length - 1]
             isAll.value = false;

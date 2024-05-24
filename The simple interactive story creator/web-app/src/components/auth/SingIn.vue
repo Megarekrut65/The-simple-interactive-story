@@ -1,28 +1,26 @@
 <script setup>
 import { ref } from 'vue'
 import { loginUserEmail } from '@/js/firebase/auth';
-import { useRouter } from 'vue-router';
 import LoadingWindow from '../LoadingWindow.vue';
+import { goNext } from '@/js/utilities/router-utility';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const next = router.currentRoute.value.query.next;
-
 const isLoading = ref(false);
 
 const email = ref(""), password = ref("");
 const error = ref("");
 
-const onSubmit = ()=>{
+const onSubmit = () => {
     error.value = "";
     isLoading.value = true;
 
-    loginUserEmail(email.value, password.value).then(()=>{
-        router.push({name:next?next:"home"});
-    })
-    .catch(err=>{
-        isLoading.value = false;
-        error.value = err;
-    });
+    loginUserEmail(email.value, password.value).then(() => goNext(router))
+        .catch(err => {
+            console.log(err)
+            isLoading.value = false;
+            error.value = err;
+        });
 };
 
 </script>

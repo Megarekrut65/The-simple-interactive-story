@@ -144,7 +144,11 @@ export const ifAuthenticated = (to, from, next) => {
             unsubscribe();
             return;
         }
-        next({ name: "auth", query: { next: to.name }, params: { locale: i18n.getLocale() } });
+        const query = to.params;
+        query.next = to.name;
+        delete query.locale;
+
+        next({ name: "auth", query: query, params: { locale: i18n.getLocale() } });
         unsubscribe();
     });
 };

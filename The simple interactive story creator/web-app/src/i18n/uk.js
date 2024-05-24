@@ -52,6 +52,7 @@ export const uk = {
     sceneAutoSave: "Автозбереження",
     sceneAutoSaveDes: "Автоматичне збереження поточної сцени при перемиканні на іншу сцену",
     remove: "Видалити",
+    settings: "Налаштування",
 
     choseFile: "Оберіть зображення",
     removeImage: "Видалити зображення",
