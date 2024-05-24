@@ -1,38 +1,45 @@
 <script setup>
+import { imageToSrc } from '@/js/utilities/image-utility';
 import { RouterLink } from 'vue-router'
 
-defineProps({
-    id:{
-        type:String,
-        required: true
-    },
-    title:{
-        type:String,
-        required: true
-    },
-    date:{
-        type:String,
-        required: true
-    },
-    image:{
-        type:String,
+const props = defineProps({
+    data: {
+        type: Object,
         required: true
     }
 });
 
+
+const image = props.data.banner ? imageToSrc(props.data.banner) :
+    new URL("@/assets/images/banner/banner2.jpg", import.meta.url).href;
+
 </script>
 
 <template>
-    <div class="col-lg-4 col-md-6 mb-4 m-1">
-        <article class="card">
-            <img :src="image" alt="Story icon" class="card-img-top mb-2">
-            <div class="card-body p-1">
-                <time>{{date}}</time>
-                <RouterLink :to="{ name: 'editor', params: { storyId: `${id}` } }" class="h4 card-title d-block my-3 text-dark hover-text-underline">
-                    {{ title }}
-                </RouterLink>
-                <RouterLink class="btn btn-transparent" :to="{ name: 'editor', params: { storyId: `${id}` } }">View</RouterLink>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card story-card">
+            <img :src="image" alt="Story banner" class="card-img-top mb-2">
+            <div class="card-body p-1 story-card-body">
+                <time>{{ data.creatingDate.toDate().toLocaleDateString() }}</time>
+                <p class="h4 card-title d-block my-3 text-dark">
+                    {{ data.title }}
+                </p>
+
             </div>
+            <RouterLink class="btn btn-transparent text-left pl-2"
+                :to="{ name: 'editor', params: { storyId: `${data.id}` } }">{{
+                    $t('view') }}
+            </RouterLink>
         </article>
     </div>
 </template>
+<style>
+.story-card {
+    height: 100%;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+</style>

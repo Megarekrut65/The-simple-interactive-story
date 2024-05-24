@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
@@ -41,6 +41,16 @@ export const getStory = (userId, storyId) => {
     const coll = getStoryCollection(userId);
 
     return getDoc(doc(db, coll, storyId)).then(dataOrNull);
+};
+
+export const getUserStories = (userId, perPage, after = null) => {
+    const q = query(collection(db, getStoryCollection(userId)),
+        orderBy("title"),
+        orderBy("creatingDate", "desc"),
+        startAfter(after),
+        limit(perPage));
+
+    return getDocs(q).then(res => res.docs);
 };
 
 export const createUserStory = (userId) => {

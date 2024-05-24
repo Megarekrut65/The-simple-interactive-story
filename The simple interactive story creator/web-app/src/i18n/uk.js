@@ -63,5 +63,8 @@ export const uk = {
     advancedOptions: "Продвинуті налаштування",
     answerHint: "Чому? Тому що!",
 
-    notSupportAudio: "Ваш браузер не підтримує аудіо елементи"
+    notSupportAudio: "Ваш браузер не підтримує аудіо елементи",
+
+    loadMore: "Більше...",
+    view: "Переглянути"
 };

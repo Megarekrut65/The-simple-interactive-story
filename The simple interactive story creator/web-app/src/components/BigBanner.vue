@@ -39,7 +39,6 @@ const image = computed(() => props.imageHref ? imageToSrc(props.imageHref) :
 .banner-title {
     overflow-y: hidden;
     font-size: 50px;
-    -webkit-text-stroke: 1px black;
 }
 
 @media (max-width: 575px) {
