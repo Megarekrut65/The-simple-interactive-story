@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { uploadFileAndGetUrl } from '@/js/firebase/storage';
-import { setStory } from '@/js/firebase/story';
+import { getStory, getUserStorage, setStorageImages, setStory } from '@/js/firebase/story';
 
 const router = useRouter();
 
@@ -25,18 +25,48 @@ const fonts = ref(unityFonts);
 
 
 const userStorage = ref({
-    images: [{ id: "dwdwd", img: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", name: "image" }],
-    sounds: [{ id: "wdwdw", sound: new Audio(), name: "sww.mp3" }]
+    images: [],
+    sounds: []
 });
+
+const updateStorage = () => {
+    const user = getUser();
+    if (!user) return;
+
+    return getUserStorage(user.uid).then(res => {
+        if (res) userStorage.value = res;
+    });
+};
+
+updateStorage();
 
 const untitled = computed(() => i18n.t("untitled"));
 
-const id = ref(props.storyId);
-
 const story = ref({
-    id: id.value ? id : v4(), title: untitled.value, banner: undefined, font: "Arial",
+    id: v4(), title: untitled.value, banner: undefined, font: "Arial",
     author: "", private: true
 });
+
+subscribeAuthChange((user) => {
+    if (props.storyId) return;
+
+    if (user) {
+        story.value.author = user.displayName;
+        return;
+    }
+
+    router.go();
+});
+
+if (props.storyId) {
+    const user = getUser();
+    if (user) {
+        getStory(user.uid, props.storyId).then(res => {
+            if (res) story.value = res;
+        });
+    }
+}
+
 const scenes = ref({});
 const currentSceneKey = ref(undefined);
 
@@ -60,14 +90,7 @@ const makeMain = () => {
     });
 };
 
-subscribeAuthChange((user) => {
-    if (user) {
-        story.value.author = user.displayName;
-        return;
-    }
 
-    router.go();
-});
 
 
 const onBannerChanged = (value) => {
@@ -88,8 +111,11 @@ const uploadBanner = (user, value, resolve) => {
     }
 
     uploadFileAndGetUrl(user.uid, "images", value.banner.file).then((res) => {
+        const image = { id: value.banner.id, name: value.banner.name, img: res };
+        userStorage.value.images.push(image);
         value.banner = res;
-        resolve();
+
+        return setStorageImages(user.uid, userStorage.value.images).then(resolve);
     });
 };
 
@@ -100,14 +126,19 @@ const submitStory = () => {
     }
 
     const value = toRaw(story.value);
+    if (!value.creatingDate) value.creatingDate = new Date();
 
     console.log(value);
-    id.value = story.value.id;
+
 
     const promise = new Promise((resolve) => uploadBanner(user, value, resolve));
     promise.then(() => {
         return setStory(user.uid, value).then(() => {
+            if (props.storyId) {
+                return;
+            }
 
+            router.push({ name: "editor", params: { storyId: value.id } });
         });
     })
         .catch(err => {
@@ -123,7 +154,7 @@ const submitStory = () => {
 </script>
 
 <template>
-    <BigBanner min-height="50vh" :title="story.title"></BigBanner>
+    <BigBanner min-height="50vh" :title="story.title" :image-href="story.banner"></BigBanner>
 
     <section class="section">
         <div class="container">
@@ -135,7 +166,8 @@ const submitStory = () => {
                             <tr>
                                 <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
                                 <td><input v-model="story.title" @input="updateId" name="title" type="text"
-                                        placeholder="The simple story" required minlength="5" style="width: 100%;"></td>
+                                        placeholder="The simple story" required minlength="5" maxlength="50"
+                                        style="width: 100%;"></td>
                             </tr>
 
                             <tr>
@@ -150,7 +182,8 @@ const submitStory = () => {
                                 <td><label class="star" for="font">{{ $t("storyFont") }}</label></td>
                                 <td>
                                     <div class="part-container">
-                                        <div class="text-black" :style="{ fontFamily: story.font }">{{ $t('sample') }}
+                                        <div class="text-black font-label" :style="{ fontFamily: story.font }">{{
+                                            $t('sample') }}
                                         </div>
                                         <select v-model="story.font" required>
                                             <option v-for="data in fonts" :key="data.id">
@@ -186,7 +219,7 @@ const submitStory = () => {
                     </form>
                 </div>
             </div>
-            <div class="row mt-5" v-if="id">
+            <div class="row mt-5" v-if="storyId">
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
                     <div class="row">
@@ -218,3 +251,10 @@ const submitStory = () => {
         </div>
     </section>
 </template>
+
+<style>
+.font-label {
+    margin-top: 10px;
+    vertical-align: middle;
+}
+</style>

@@ -1,4 +1,7 @@
 <script setup>
+import { imageToSrc } from '@/js/utilities/image-utility';
+import { computed } from 'vue';
+
 
 const props = defineProps({
     title: {
@@ -11,12 +14,13 @@ const props = defineProps({
         default: "70vh"
     },
     imageHref: {
-        type: String,
+        type: [Object, String, Image],
         required: false
     }
 });
 
-const image = props.imageHref ? props.imageHref : new URL("@/assets/images/banner/banner2.jpg", import.meta.url).href;
+const image = computed(() => props.imageHref ? imageToSrc(props.imageHref) :
+    new URL("@/assets/images/banner/banner2.jpg", import.meta.url).href);
 </script>
 
 <template>
@@ -25,9 +29,22 @@ const image = props.imageHref ? props.imageHref : new URL("@/assets/images/banne
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1 class="display-1 text-white font-weight-bold font-primary">{{ title }}</h1>
+                    <h1 class="text-white font-weight-bold font-primary banner-title">{{ title }}</h1>
                 </div>
             </div>
         </div>
     </section>
 </template>
+<style>
+.banner-title {
+    overflow-y: hidden;
+    font-size: 50px;
+    -webkit-text-stroke: 1px black;
+}
+
+@media (max-width: 575px) {
+    .banner-title {
+        font-size: 25px;
+    }
+}
+</style>

@@ -2,9 +2,10 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { firebaseApp } from "./firebase";
 
 const storage = getStorage(firebaseApp);
+const defaultFolder = "user-data";
 
 export const uploadFile = (userId, subfolder, file) => {
-    const fileRef = ref(storage, `${userId}/${subfolder}/${file.name}`);
+    const fileRef = ref(storage, `${defaultFolder}/${userId}/${subfolder}/${file.name}`);
 
     return uploadBytes(fileRef, file);
 };

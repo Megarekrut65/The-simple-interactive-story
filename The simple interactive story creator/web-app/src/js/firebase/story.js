@@ -31,6 +31,29 @@ export const setStory = (userId, story) => {
     return setDoc(doc(db, coll, story.id), story);
 };
 
+const dataOrNull = (res) => {
+    if (res.exists()) return res.data();
+
+    return null;
+};
+
+export const getStory = (userId, storyId) => {
+    const coll = getStoryCollection(userId);
+
+    return getDoc(doc(db, coll, storyId)).then(dataOrNull);
+};
+
 export const createUserStory = (userId) => {
-    return setDoc(doc(db, mainCollection, userId), { images: [], sounds: [] })
+    return setDoc(doc(db, mainCollection, userId), { images: [], sounds: [] });
+};
+
+export const getUserStorage = (userId) => {
+    return getDoc(doc(db, mainCollection, userId)).then(dataOrNull);
+};
+
+export const setStorageImages = (userId, images) => {
+    return setDoc(doc(db, mainCollection, userId), { images: images }, { merge: true });
+};
+export const setStorageSounds = (userId, sounds) => {
+    return setDoc(doc(db, mainCollection, userId), { sounds: sounds }, { merge: true });
 };

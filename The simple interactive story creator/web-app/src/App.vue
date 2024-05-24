@@ -36,7 +36,7 @@ const logoutBtn = () => {
       </button>
 
       <div class="collapse navbar-collapse text-center" id="navigation">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto outline">
           <li class="nav-item active">
             <LocalizedLink class="nav-link" to="">{{ $t('home') }}</LocalizedLink>
           </li>
