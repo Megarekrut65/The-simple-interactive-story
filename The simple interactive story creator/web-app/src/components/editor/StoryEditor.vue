@@ -11,6 +11,7 @@ import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { uploadFileAndGetUrl } from '@/js/firebase/storage';
 import { getStory, getUserStorage, setStorageImages, setStory } from '@/js/firebase/story';
+import { imageToSrc } from '@/js/utilities/image-utility';
 
 const router = useRouter();
 
@@ -105,7 +106,7 @@ const uploadBanner = (user, value, resolve) => {
     }
 
     if (!value.banner.file) {
-        value.banner = value.banner.img;
+        value.banner = imageToSrc(value.banner);
         resolve();
         return;
     }

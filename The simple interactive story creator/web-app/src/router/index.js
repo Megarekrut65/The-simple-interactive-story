@@ -41,13 +41,13 @@ const router = createRouter({
           component: () => import('../views/NewStoryEditorView.vue'),
           beforeEnter: ifAuthenticated
         }
-      ],
-      scrollBehavior(to, from, savedPosition) {
-        if (to == from) return savedPosition;
+      ]
+    }],
+  scrollBehavior(to, from, savedPosition) {
+    if (to === from) return savedPosition;
 
-        return { top: 0 };
-      },
-    }]
+    return { top: 0 };
+  },
 });
 
 router.beforeEach((to, from) => {
