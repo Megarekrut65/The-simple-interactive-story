@@ -25,7 +25,7 @@ export const loadImage = (event, success, reject) => {
 };
 
 export const imageToSrc = (image) => {
-    if (image === undefined) return "";
+    if (!image) return "";
     if (image instanceof Image) return image.src;
     if (typeof image === "string") return image;
     if (typeof image === "object" && "img" in image)

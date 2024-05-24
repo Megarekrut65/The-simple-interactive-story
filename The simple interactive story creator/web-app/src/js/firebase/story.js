@@ -75,7 +75,20 @@ export const setStorageSounds = (userId, sounds) => {
     return setDoc(doc(db, mainCollection, userId), { sounds: sounds }, { merge: true });
 };
 
-export const removeStory = (userId, storyId) => {
-    const coll = getStoryCollection(userId);
-    return deleteDoc(doc(db, coll, storyId));
+export const cascadeRemoveStory = (userId, storyId) => {
+    const storyColl = getStoryCollection(userId);
+    const sceneColl = getSceneCollection(userId, storyId);
+    const docs = getDocs(collection(db, sceneColl));
+
+    return docs.then(res => {
+        const promises = [];
+        for (let i in res.docs) {
+            const id = res.docs[i].id;
+            promises.push(deleteDoc(doc(db, sceneColl, id)));
+        }
+
+        return Promise.all(promises).then(() => {
+            return deleteDoc(doc(db, storyColl, storyId));
+        });
+    });
 };

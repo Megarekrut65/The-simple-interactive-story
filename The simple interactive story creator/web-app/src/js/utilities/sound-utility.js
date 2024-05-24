@@ -16,7 +16,7 @@ export const loadSound = (event, success, reject) => {
 };
 
 export const soundToSrc = (sound) => {
-    if (sound === undefined) return "";
+    if (!sound) return "";
     if (sound instanceof Audio) return sound.src;
     if (typeof sound === "string") return sound;
     if (typeof sound === "object" && "sound" in sound)

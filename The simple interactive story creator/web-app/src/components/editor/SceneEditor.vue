@@ -6,6 +6,8 @@ import { v4 } from 'uuid';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import PreviewSoundSelect from '../custom-widgets/PreviewSoundSelect.vue';
 import { getUniqueName } from '@/js/utilities/text-utility';
+import { setScene } from '@/js/firebase/story';
+import { getUser } from '@/js/firebase/auth';
 
 const props = defineProps({
     scenes: {
@@ -64,8 +66,15 @@ const onAddAnswer = () => {
 };
 
 const onSceneSave = () => {
+    const user = getUser();
+    if (!user) return false;
+
     const scene = toRaw(currentScene.value);
     console.log(scene);
+
+    return setScene(user.uid, props.storyId, scene).then(() => {
+
+    });
 
 };
 </script>

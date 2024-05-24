@@ -10,7 +10,7 @@ import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { uploadFileAndGetUrl } from '@/js/firebase/storage';
-import { getStory, getStoryScenes, getUserStorage, removeStory, setScene, setStorageImages, setStory } from '@/js/firebase/story';
+import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene, setStorageImages, setStory } from '@/js/firebase/story';
 import { imageToSrc } from '@/js/utilities/image-utility';
 
 const router = useRouter();
@@ -23,7 +23,6 @@ const props = defineProps({
 });
 
 const fonts = ref(unityFonts);
-
 
 const userStorage = ref({
     images: [],
@@ -42,9 +41,10 @@ const updateStorage = () => {
 updateStorage();
 
 const untitled = computed(() => i18n.t("untitled"));
+const removeTitle = ref("");
 
 const story = ref({
-    id: v4(), title: untitled.value, banner: undefined, font: "Arial",
+    id: v4(), title: untitled.value, banner: null, font: "Arial",
     author: "", private: true
 });
 const scenes = ref({});
@@ -72,7 +72,10 @@ const loadStoryData = () => {
 
         story.value = res;
         getStoryScenes(user.uid, props.storyId).then(scenesRes => {
-            console.log(scenesRes);
+            scenesRes.forEach(scene => {
+                scenes.value[scene.id] = scene;
+                if (scene.isMain) currentSceneKey.value = scene.id;
+            });
         })
     });
 };
@@ -91,7 +94,7 @@ const createEmptyScene = () => {
 
     const title = getUniqueName(Object.values(scenes.value).map(item => item.title), untitled.value);
     const scene = {
-        id: id, title: title, background: undefined, music: undefined, text: "",
+        id: id, title: title, background: null, music: null, text: "",
         answers: [], images: [], isMain: size == 0
     };
 
@@ -110,7 +113,6 @@ const onBannerChanged = (value) => {
 
 const uploadBanner = (user, value, resolve) => {
     if (!value.banner) {
-        value.banner = null;
         resolve();
         return;
     }
@@ -139,9 +141,6 @@ const submitStory = () => {
     const value = toRaw(story.value);
     if (!value.creatingDate) value.creatingDate = new Date();
 
-    console.log(value);
-
-
     const promise = new Promise((resolve) => uploadBanner(user, value, resolve));
     promise.then(() => {
         return setStory(user.uid, value).then(() => {
@@ -163,7 +162,7 @@ const removeStoryAction = () => {
     const user = getUser();
     if (!user || !props.storyId) return;
 
-    removeStory(user.id, props.storyId).then(() => {
+    cascadeRemoveStory(user.uid, props.storyId).then(() => {
         router.push({ name: "account" });
     });
 };
@@ -183,7 +182,7 @@ const removeStoryAction = () => {
                         <table class="form-table">
                             <tr>
                                 <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
-                                <td><input v-model="story.title" @input="updateId" name="title" type="text"
+                                <td><input v-model.trim="story.title" name="title" type="text"
                                         placeholder="The simple story" required minlength="5" maxlength="50"
                                         style="width: 100%;"></td>
                             </tr>
@@ -213,15 +212,14 @@ const removeStoryAction = () => {
                             </tr>
 
                             <tr>
-                                <td><label class="star" for="author">{{ $t("storyAuthor") }}</label></td>
-                                <td><input id="author" name="author" type="text" readonly required
-                                        :value="story.author"></td>
+                                <td><label class="star">{{ $t("storyAuthor") }}</label></td>
+                                <td><input type="text" readonly required :value="story.author"></td>
                             </tr>
 
                             <tr>
                                 <td><label for="private" :title="$t('storyPrivateDes')">{{ $t("storyPrivate") }}</label>
                                 </td>
-                                <td><input id="private" name="private" type="checkbox" checked></td>
+                                <td><input type="checkbox" checked v-model="story.private"></td>
                             </tr>
 
                             <tr>
@@ -270,8 +268,11 @@ const removeStoryAction = () => {
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('settings') }}</h3>
                     <div class="row">
-                        <div class="col-12 col-md-4"><input type="button" :value="$t('remove')"
-                                @click="removeStoryAction">
+                        <div class="col-12 border p-4">
+                            <p lass="font-tertiary mb-1">{{ $t('removeTitle') }}</p>
+                            <input type="text" v-model.trim="removeTitle">
+                            <input type="button" :value="$t('remove')" @click="removeStoryAction"
+                                :disabled="removeTitle !== story.title">
                         </div>
                     </div>
                 </div>
