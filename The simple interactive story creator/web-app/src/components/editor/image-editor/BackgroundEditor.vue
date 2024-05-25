@@ -36,39 +36,25 @@ let selectedCornerIndex = -1;
 
 const size = { width: 1920, height: 1080 };
 
-const drawBackground = (resolve) => {
-    const background = props.currentScene.background;
+const background = computed(() => {
+    if (!props.currentScene.background) return null;
+    if (props.currentScene.background.img instanceof Image) return props.currentScene.background.img;
 
-    if (!background) {
-        resolve();
-        return;
-    }
-    if (background.img instanceof Image) {
-        ctx.drawImage(background.img, 0, 0, size.width, size.height);
-        resolve();
-        return;
-    }
-
-    const src = imageToSrc(background);
+    const src = imageToSrc(props.currentScene.background);
     const image = new Image();
-    image.onload = () => {
-        ctx.drawImage(image, 0, 0, size.width, size.height);
-        resolve();
-    };
     image.src = src;
-};
+    return image;
+});
 
 const redrawCanvas = () => {
     // eslint-disable-next-line no-self-assign
     canvas.width = canvas.width; // clear canvas
 
-    const promise = new Promise(drawBackground);
+    if (background.value) ctx.drawImage(background.value, 0, 0, size.width, size.height);
 
-    promise.then(() => {
-        imagesContainer.value.forEach((image, index) => {
-            ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
-            drawResizingCircles(ctx, selectedImageIndex, index, image);
-        });
+    imagesContainer.value.forEach((image, index) => {
+        ctx.drawImage(image.draw, image.params.x, image.params.y, image.params.width, image.params.height);
+        drawResizingCircles(ctx, selectedImageIndex, index, image.params);
     });
 };
 
@@ -89,7 +75,7 @@ const handleMouseDown = (event) => {
 
     for (let i = imagesContainer.value.length - 1; i >= 0; i--) {
         const image = imagesContainer.value[i];
-        const corner = getCornerUnderMouse(image, mouseX, mouseY);
+        const corner = getCornerUnderMouse(image.params, mouseX, mouseY);
         if (corner !== -1) {
             selectedImageIndex = i;
             selectedCornerIndex = corner;
@@ -100,7 +86,7 @@ const handleMouseDown = (event) => {
             return;
         }
 
-        if (collidePoint(mousePos, image)) {
+        if (collidePoint(mousePos, image.params)) {
             selectedImageIndex = i;
             isDragging = true;
             prevX = mouseX;
@@ -119,7 +105,7 @@ const dragImage = (event) => {
     const dx = mouseX - prevX;
     const dy = mouseY - prevY;
 
-    const selectedImage = imagesContainer.value[selectedImageIndex];
+    const selectedImage = imagesContainer.value[selectedImageIndex].params;
     selectedImage.x += dx;
     selectedImage.y += dy;
 };
@@ -129,7 +115,7 @@ const resizeImage = (event) => {
     const dx = mouseX - prevX;
     const dy = mouseY - prevY;
 
-    const selectedImage = imagesContainer.value[selectedImageIndex];
+    const selectedImage = imagesContainer.value[selectedImageIndex].params;
 
     const aspect = selectedImage.width / selectedImage.height;
 

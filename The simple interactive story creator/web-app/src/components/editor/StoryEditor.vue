@@ -195,7 +195,7 @@ const removeStoryAction = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td><label class="star" for="font">{{ $t("storyFont") }}</label></td>
+                                <td><label class="star">{{ $t("storyFont") }}</label></td>
                                 <td>
                                     <div class="part-container">
                                         <div class="text-black font-label" :style="{ fontFamily: story.font }">{{

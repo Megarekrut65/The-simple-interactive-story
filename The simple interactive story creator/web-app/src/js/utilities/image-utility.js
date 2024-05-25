@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const loadImageUrl = (file, url, name, success) => {
+export const objToImage = (obj, success) => {
+    const img = new Image();
+    img.onload = () => {
+        img.id = obj.id;
+        img.name = obj.name;
+        success(obj, img);
+    };
+    img.src = obj.img;
+};
+
+const loadImageUrl = (file, url, name, success) => {
     const img = new Image();
     img.onload = () => {
         img.id = uuidv4();

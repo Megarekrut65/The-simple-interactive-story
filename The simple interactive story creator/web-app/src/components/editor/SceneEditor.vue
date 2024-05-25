@@ -6,8 +6,9 @@ import { v4 } from 'uuid';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import PreviewSoundSelect from '../custom-widgets/PreviewSoundSelect.vue';
 import { getUniqueName } from '@/js/utilities/text-utility';
-import { setScene } from '@/js/firebase/story';
+//import { setScene } from '@/js/firebase/story';
 import { getUser } from '@/js/firebase/auth';
+import LoadingWindow from '../LoadingWindow.vue';
 
 const props = defineProps({
     scenes: {
@@ -28,7 +29,8 @@ const props = defineProps({
     }
 });
 
-const isActive = ref(false);
+const editorIsActive = ref(false);
+const isLoading = ref(false);
 
 const scenes = computed(() => props.scenes);
 const currentScene = computed(() => props.scenes[props.currentSceneKey]);
@@ -52,7 +54,7 @@ const onMusicSelected = (value) => {
 };
 
 const onSceneClose = () => {
-    isActive.value = false;
+    editorIsActive.value = false;
 };
 
 const onUpdateImages = (images) => {
@@ -69,18 +71,22 @@ const onSceneSave = () => {
     const user = getUser();
     if (!user) return false;
 
+    isLoading.value = true;
+
     const scene = toRaw(currentScene.value);
     console.log(scene);
 
-    return setScene(user.uid, props.storyId, scene).then(() => {
-
-    });
+    return false;
+    /*setScene(user.uid, props.storyId, scene).then(() => {
+        isLoading.value = false;
+    });*/
 
 };
 </script>
 
 <template>
-    <form onsubmit="return false;" action="#">
+    <LoadingWindow :is-loading="isLoading"></LoadingWindow>
+    <form @submit="onSceneSave" onsubmit="return false;" action="#">
         <table class="form-table">
             <tr>
                 <td><label class="star">{{ $t('sceneTitle') }}</label></td>
@@ -100,6 +106,7 @@ const onSceneSave = () => {
             <tr>
                 <td><label>{{ $t('sceneBackgroundMusic') }}</label></td>
                 <td>
+                    <br>
                     <PreviewSoundSelect :sounds="userStorage.sounds" :initial="currentScene.music"
                         :on-selected="onMusicSelected"></PreviewSoundSelect>
                 </td>
@@ -124,10 +131,10 @@ const onSceneSave = () => {
 
             <tr>
                 <td><label class="td-icon">{{ $t('sceneImages') }}<i class="fa-solid fa-pencil custom-btn"
-                            @click="isActive = !isActive"></i></label>
+                            @click="editorIsActive = !editorIsActive"></i></label>
                 </td>
                 <td>
-                    <ImagesEditor :is-active="isActive" :currentScene="currentScene" :on-close="onSceneClose"
+                    <ImagesEditor :is-active="editorIsActive" :currentScene="currentScene" :on-close="onSceneClose"
                         :on-update="onUpdateImages" :user-images="userStorage.images">
                     </ImagesEditor>
                 </td>
@@ -138,7 +145,7 @@ const onSceneSave = () => {
                 <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
             </tr>
             <tr>
-                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;" @click="onSceneSave"></td>
+                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
                 <td><input type="button" :value="$t('remove')" style="margin-top: 20px;"></td>
             </tr>
         </table>

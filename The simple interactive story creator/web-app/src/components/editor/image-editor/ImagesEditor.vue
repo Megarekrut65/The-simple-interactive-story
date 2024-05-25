@@ -4,7 +4,7 @@ import BackgroundEditor from "./BackgroundEditor.vue";
 import ImageItem from "./ImageItem.vue";
 import MiniImagesList from "@/components/custom-widgets/MiniImagesList.vue";
 import ItemSelect from "@/components/custom-widgets/ItemSelect.vue";
-import { loadImage, loadImageUrl } from "@/js/utilities/image-utility";
+import { loadImage, objToImage } from "@/js/utilities/image-utility";
 
 const props = defineProps({
     isActive: {
@@ -31,16 +31,19 @@ const props = defineProps({
 
 const images = computed(() => props.currentScene.images), length = computed(() => images.value.length);
 
-const createImage = (image) => {
-    const newImage = {
-        id: image.id,
+const createImage = (image, draw) => {
+    const obj = {
         img: image,
-        x: 5,
-        y: 5,
-        width: image.width,
-        height: image.height
+        draw: draw,
+        params: {
+            x: 5,
+            y: 5,
+            width: draw.width,
+            height: draw.height
+        }
     };
-    return newImage;
+
+    return obj;
 };
 
 const updateImage = (index, image) => {
@@ -50,19 +53,20 @@ const updateImage = (index, image) => {
     }
 };
 
-const addImage = (value) => {
-    images.value.push(createImage(value));
+const addImage = (image, draw) => {
+    images.value.push(createImage(image, draw));
 
     props.onUpdate(images.value);
 };
 
 const onImageSelect = (value) => {
+    console.log(value)
     if (typeof value.img === "string") {
-        loadImageUrl(value.img, value.name, addImage);
+        objToImage(value, addImage);
         return;
     }
 
-    addImage(value.img);
+    addImage(value, value.img);
 };
 
 const onRemove = (index) => {
@@ -95,7 +99,7 @@ const onRemove = (index) => {
                     </div>
 
                     <div class="images">
-                        <ImageItem v-for="(data, index) in images" :key="data.id" :src="data.img.src"
+                        <ImageItem v-for="(data, index) in images" :key="data.id" :src="data.draw.src"
                             :on-remove="() => onRemove(index)">
                         </ImageItem>
 
