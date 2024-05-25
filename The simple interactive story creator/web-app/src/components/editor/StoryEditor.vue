@@ -24,6 +24,8 @@ const props = defineProps({
     }
 });
 
+const storyLoaded = ref(true);
+
 const isLoading = ref(true);
 const message = ref({
     active: false,
@@ -73,12 +75,12 @@ subscribeAuthChange((user) => {
 const loadStoryData = () => {
     isLoading.value = true;
 
-    if (!props.storyId) return Promise.reject();
+    if (!props.storyId) return Promise.resolve();
     const user = getUser();
-    if (!user) return Promise.reject();
+    if (!user) return Promise.reject("User not defined");
 
     return getStory(user.uid, props.storyId).then(res => {
-        if (!res) return Promise.reject();
+        if (!res) return Promise.reject("There no story with given id");
 
         story.value = res;
         return getStoryScenes(user.uid, props.storyId).then(scenesRes => {
@@ -100,6 +102,12 @@ const loadStoryData = () => {
 
 loadStoryData().catch(err => {
     console.log(err);
+    storyLoaded.value = false;
+    message.value = {
+        active: true,
+        title: i18n.t("error"),
+        message: i18n.t("storyError"),
+    }
 }).finally(() => {
     isLoading.value = false;
 });;
@@ -215,7 +223,7 @@ const removeStoryAction = () => {
     <BigBanner min-height="50vh" :title="story.title" :image-href="story.banner"></BigBanner>
 
     <section class="section">
-        <div class="container">
+        <div class="container" v-if="storyLoaded">
             <div class="row">
                 <div class="col">
                     <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
