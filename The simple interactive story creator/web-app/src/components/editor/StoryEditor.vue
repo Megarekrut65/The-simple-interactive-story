@@ -9,10 +9,9 @@ import SceneEditor from './SceneEditor.vue';
 import { v4 } from 'uuid';
 import { unityFonts } from '@/unity-assets/fonts/fonts';
 import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
-import { uploadFileAndGetUrl } from '@/js/firebase/storage';
-import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene, setStorageImages, setStory } from '@/js/firebase/story';
-import { imageToSrc } from '@/js/utilities/image-utility';
+import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene, setStory } from '@/js/firebase/story';
 import LoadingWindow from '../LoadingWindow.vue';
+import { uploadImage } from '@/js/storage-uploading';
 
 const router = useRouter();
 
@@ -121,19 +120,6 @@ const onBannerChanged = (value) => {
     story.value.banner = value;
 };
 
-const uploadImage = (user, item) => {
-    if (!item) return Promise.resolve(null);
-
-    if (!item.file) return Promise.resolve(imageToSrc(item));
-
-    return uploadFileAndGetUrl(user.uid, "images", item.file).then((res) => {
-        const image = { id: item.id, name: item.name, img: res };
-        userStorage.value.images.push(image);
-
-        return setStorageImages(user.uid, userStorage.value.images).then(() => res);
-    });
-};
-
 const submitStory = () => {
     const user = getUser();
     if (!user) {
@@ -145,7 +131,7 @@ const submitStory = () => {
     const value = toRaw(story.value);
     if (!value.creatingDate) value.creatingDate = new Date();
 
-    uploadImage(user, value.banner).then(banner => {
+    uploadImage(userStorage.value.images, value.banner).then(banner => {
         value.banner = banner;
 
         return setStory(user.uid, value).then(() => {
