@@ -68,11 +68,8 @@ export const getUserStorage = (userId) => {
     return getDoc(doc(db, mainCollection, userId)).then(dataOrNull);
 };
 
-export const setStorageImages = (userId, images) => {
-    return setDoc(doc(db, mainCollection, userId), { images: images }, { merge: true });
-};
-export const setStorageSounds = (userId, sounds) => {
-    return setDoc(doc(db, mainCollection, userId), { sounds: sounds }, { merge: true });
+export const setStorageList = (userId, list, listKey) => {
+    return setDoc(doc(db, mainCollection, userId), { [listKey]: list }, { merge: true });
 };
 
 export const cascadeRemoveStory = (userId, storyId) => {

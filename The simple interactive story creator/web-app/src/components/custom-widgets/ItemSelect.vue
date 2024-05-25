@@ -74,7 +74,7 @@ const onItemSelected = (value) => {
 <template>
     <div class="item-container">
         <SafeDatalist v-model="selectItem" :list="items" :content-key="contentKey" :value-key="valueKey"
-            :on-select="onItemSelected">
+            :on-select="onItemSelected" :initial="initial">
         </SafeDatalist>
         <input type="file" :accept="fileType" @change="onInputChanged">
     </div>

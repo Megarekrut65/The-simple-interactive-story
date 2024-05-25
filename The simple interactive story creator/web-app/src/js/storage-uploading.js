@@ -1,28 +1,26 @@
 import { getUser } from "./firebase/auth";
 import { uploadFileAndGetUrl } from "./firebase/storage";
-import { setStorageImages } from "./firebase/story";
-import { imageToSrc } from "./utilities/image-utility";
-import { soundToSrc } from "./utilities/sound-utility";
+import { setStorageList } from "./firebase/story";
 
 
-const uploadFile = (items, newItem, toSrcFunction, type, key) => {
+const uploadFile = (items, newItem, type, key) => {
     const user = getUser();
     if (!user || !newItem) return Promise.resolve(null);
 
-    if (!newItem.file) return Promise.resolve(toSrcFunction(newItem));
+    if (!newItem.file) return Promise.resolve(newItem);
 
     return uploadFileAndGetUrl(user.uid, type, newItem.file).then((res) => {
         const item = { id: newItem.id, name: newItem.name, [key]: res };
         items.push(item);
 
-        return setStorageImages(user.uid, items).then(() => res);
+        return setStorageList(user.uid, items, type).then(() => item);
     });
 }
 
 export const uploadImage = (images, image) => {
-    return uploadFile(images, image, imageToSrc, "images", "img");
+    return uploadFile(images, image, "images", "img");
 };
 
 export const uploadSound = (sounds, sound) => {
-    return uploadFile(sounds, sound, soundToSrc, "sounds", "sound");
+    return uploadFile(sounds, sound, "sounds", "sound");
 };

@@ -4,7 +4,7 @@ import BackgroundEditor from "./BackgroundEditor.vue";
 import ImageItem from "./ImageItem.vue";
 import MiniImagesList from "@/components/custom-widgets/MiniImagesList.vue";
 import ItemSelect from "@/components/custom-widgets/ItemSelect.vue";
-import { loadImage, objToImage } from "@/js/utilities/image-utility";
+import { imageToSrc, loadImage, objToImage } from "@/js/utilities/image-utility";
 
 const props = defineProps({
     isActive: {
@@ -60,7 +60,6 @@ const addImage = (image, draw) => {
 };
 
 const onImageSelect = (value) => {
-    console.log(value)
     if (typeof value.img === "string") {
         objToImage(value, addImage);
         return;
@@ -99,7 +98,7 @@ const onRemove = (index) => {
                     </div>
 
                     <div class="images">
-                        <ImageItem v-for="(data, index) in images" :key="data.id" :src="data.draw.src"
+                        <ImageItem v-for="(data, index) in images" :key="data.id" :src="imageToSrc(data.img)"
                             :on-remove="() => onRemove(index)">
                         </ImageItem>
 

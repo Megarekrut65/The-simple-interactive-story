@@ -19,9 +19,9 @@ const props = defineProps({
     }
 });
 
-
-const scenes = computed(() => Object.values(props.scenes));
+const sceneList = computed(() => Object.values(props.scenes));
 const answers = computed(() => props.answers);
+const scenes = computed(() => props.scenes);
 
 const onSceneSelect = (index, value) => {
     if (index >= 0 && index < answers.value.length) {
@@ -49,8 +49,9 @@ const onRemove = (index) => {
                 <tr>
                     <td><label class="star">{{ $t('nextScene') }}</label></td>
                     <td>
-                        <SafeDatalist :list="scenes" :on-select="(value) => onSceneSelect(index, value)"
-                            :required="true" content-key="title" value-key="title"></SafeDatalist>
+                        <SafeDatalist :list="sceneList" :on-select="(value) => onSceneSelect(index, value)"
+                            :required="true" content-key="title" value-key="title"
+                            :initial="scenes[data.nextScene] ? scenes[data.nextScene].title : ''"></SafeDatalist>
                     </td>
                 </tr>
             </table>

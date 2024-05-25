@@ -11,6 +11,8 @@ import { getUser } from '@/js/firebase/auth';
 import LoadingWindow from '../LoadingWindow.vue';
 import QuestionWindow from '../QuestionWindow.vue';
 import i18n from '@/i18n';
+import { uploadImage, uploadSound } from '@/js/storage-uploading';
+import { setScene } from '@/js/firebase/story';
 
 const props = defineProps({
     scenes: {
@@ -82,10 +84,34 @@ const onSceneSave = () => {
     const scene = toRaw(currentScene.value);
     console.log(scene);
 
+    const uploadBackground = uploadImage(props.userStorage.images, scene.background).then(background => {
+        scene.background = background;
+        return Promise.resolve();
+    });
+    const uploadMusic = uploadSound(props.userStorage.sounds, scene.music).then(music => {
+        scene.music = music;
+        return Promise.resolve();
+    });
+
+    Promise.all([uploadBackground, uploadMusic]).then(() => {
+
+        const allImages = scene.images.map((image) =>
+            uploadImage(props.userStorage.images, image.img).then(res => {
+                image.img = res;
+                delete image.draw;
+
+                return Promise.resolve();
+            })
+        );
+
+        return Promise.all(allImages);
+    }).then(() => {
+        return setScene(user.uid, props.storyId, scene);
+    }).catch(err => {
+        console.log(err);
+    }).finally(() => isLoading.value = false);
+
     return false;
-    /*setScene(user.uid, props.storyId, scene).then(() => {
-        isLoading.value = false;
-    });*/
 
 };
 
@@ -120,7 +146,7 @@ const removeCurrentScene = () => {
             </tr>
 
             <tr>
-                <td><label class="star" for="background">{{ $t('sceneBackground') }}</label></td>
+                <td><label>{{ $t('sceneBackground') }}</label></td>
                 <td class="form-right">
                     <PreviewImageSelect :images="userStorage.images" :initial="currentScene.background"
                         :on-selected="onBackgroundSelect">
@@ -138,9 +164,9 @@ const removeCurrentScene = () => {
             </tr>
 
             <tr>
-                <td><label class="star">{{ $t('sceneText') }}</label></td>
+                <td><label>{{ $t('sceneText') }}</label></td>
                 <td>
-                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')" required
+                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')"
                         v-model="currentScene.text"></textarea>
                 </td>
             </tr>

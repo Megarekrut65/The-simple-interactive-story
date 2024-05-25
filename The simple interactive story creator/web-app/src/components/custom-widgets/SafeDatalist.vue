@@ -1,6 +1,6 @@
 <script setup>
 import { v4 as uuid4 } from "uuid";
-import { toRaw } from "vue";
+import { toRaw, watch } from "vue";
 const props = defineProps({
     list: {
         type: Array,
@@ -23,11 +23,22 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    initial: {
+        type: String,
+        required: false,
+        default: ""
     }
 });
 
 const id = uuid4();
 const value = defineModel({ default: "" });
+value.value = props.initial;
+
+watch(() => props.initial, (newOne, oldOne) => {
+    if (oldOne === value.value) value.value = newOne;
+})
+
 
 const onChanged = () => {
     const result = props.list.find(item => item[props.valueKey] === value.value);

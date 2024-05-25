@@ -13,6 +13,7 @@ import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene,
 import LoadingWindow from '../LoadingWindow.vue';
 import { uploadImage } from '@/js/storage-uploading';
 import InfoWindow from '../InfoWindow.vue';
+import { objToImage } from '@/js/utilities/image-utility';
 
 const router = useRouter();
 
@@ -84,6 +85,12 @@ const loadStoryData = () => {
             scenesRes.forEach(scene => {
                 scenes.value[scene.id] = scene;
                 if (scene.isMain) currentSceneKey.value = scene.id;
+
+                scene.images.forEach(item => {
+                    objToImage(item.img, (_, draw) => {
+                        item.draw = draw;
+                    });
+                });
             });
 
             return Promise.resolve();
@@ -176,12 +183,11 @@ const submitStory = () => {
                 router.push({ name: "editor", params: { storyId: value.id } });
             });
         });
-    })
-        .catch(err => {
-            console.log(err);
-        }).finally(() => {
-            isLoading.value = false;
-        });
+    }).catch(err => {
+        console.log(err);
+    }).finally(() => {
+        isLoading.value = false;
+    });
 
     return false;
 };
