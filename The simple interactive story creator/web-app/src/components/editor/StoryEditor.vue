@@ -12,6 +12,7 @@ import PreviewImageSelect from '../custom-widgets/PreviewImageSelect.vue';
 import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene, setStory } from '@/js/firebase/story';
 import LoadingWindow from '../LoadingWindow.vue';
 import { uploadImage } from '@/js/storage-uploading';
+import InfoWindow from '../InfoWindow.vue';
 
 const router = useRouter();
 
@@ -23,6 +24,11 @@ const props = defineProps({
 });
 
 const isLoading = ref(true);
+const message = ref({
+    active: false,
+    title: "",
+    message: ""
+});
 
 const fonts = ref(unityFonts);
 
@@ -116,6 +122,35 @@ const addScene = () => {
     currentSceneKey.value = scene.id;
 };
 
+const removeCurrentScene = () => {
+    const current = scenes.value[currentSceneKey.value];
+    if (current.isMain || Object.keys(scenes.value).length <= 1) {
+        message.value = {
+            active: true,
+            title: i18n.t("removeSceneTitle"),
+            message: i18n.t("infoMainMessage"),
+        }
+        return;
+    }
+
+    for (let i in scenes.value) {
+        for (let j in scenes.value[i].answers) {
+            const answer = scenes.value[i].answers[j];
+            if (answer.nextScene === current.id) {
+                message.value = {
+                    active: true,
+                    title: i18n.t("removeSceneTitle"),
+                    message: i18n.t("infoAnswerMessage") + " " + scenes.value[i].title,
+                }
+                return;
+            }
+        }
+    }
+
+    delete scenes.value[currentSceneKey.value];
+    currentSceneKey.value = scenes.value[Object.keys(scenes.value)[0]].id;
+}
+
 const onBannerChanged = (value) => {
     story.value.banner = value;
 };
@@ -169,6 +204,7 @@ const removeStoryAction = () => {
 </script>
 
 <template>
+    <InfoWindow :title="message.title" :message="message.message" v-model="message.active"></InfoWindow>
     <LoadingWindow :is-loading="isLoading"></LoadingWindow>
     <BigBanner min-height="50vh" :title="story.title" :image-href="story.banner"></BigBanner>
 
@@ -259,7 +295,8 @@ const removeStoryAction = () => {
                         </tr>
                     </table>
                     <SceneEditor v-if="Object.keys(scenes).length > 0" :scenes="scenes"
-                        :currentSceneKey="currentSceneKey" :user-storage="userStorage" :story-id="story.id">
+                        :currentSceneKey="currentSceneKey" :user-storage="userStorage" :story-id="story.id"
+                        :remove-scene="removeCurrentScene">
                     </SceneEditor>
                 </div>
             </div>

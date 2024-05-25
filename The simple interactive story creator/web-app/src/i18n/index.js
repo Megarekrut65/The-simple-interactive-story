@@ -6,6 +6,7 @@ import { uk } from './uk';
 export const defaultLocale = "en";
 
 let _i18n;
+let use;
 
 const messages = {
     en: en,
@@ -36,7 +37,11 @@ const getLocale = () => {
     return _i18n.global.locale.value;
 };
 
-const t = (key) => useI18n().t(key);
+const t = (key) => {
+    if (!use) use = useI18n();
+
+    return use.t(key);
+};
 
 export default {
 

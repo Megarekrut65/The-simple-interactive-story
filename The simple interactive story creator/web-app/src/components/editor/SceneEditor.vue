@@ -9,6 +9,8 @@ import { getUniqueName } from '@/js/utilities/text-utility';
 //import { setScene } from '@/js/firebase/story';
 import { getUser } from '@/js/firebase/auth';
 import LoadingWindow from '../LoadingWindow.vue';
+import QuestionWindow from '../QuestionWindow.vue';
+import i18n from '@/i18n';
 
 const props = defineProps({
     scenes: {
@@ -25,6 +27,10 @@ const props = defineProps({
     },
     storyId: {
         type: String,
+        required: true
+    },
+    removeScene: {
+        type: Function,
         required: true
     }
 });
@@ -82,9 +88,28 @@ const onSceneSave = () => {
     });*/
 
 };
+
+const question = ref({
+    title: "",
+    question: "",
+    active: false,
+    yes: () => { }
+});
+
+const removeCurrentScene = () => {
+    question.value = {
+        title: i18n.t("removeSceneTitle"),
+        question: i18n.t("removeSceneQuestion"),
+        active: true,
+        yes: props.removeScene
+    };
+};
+
 </script>
 
 <template>
+    <QuestionWindow v-model="question.active" :title="question.title" :question="question.question"
+        :yes-function="question.yes"></QuestionWindow>
     <LoadingWindow :is-loading="isLoading"></LoadingWindow>
     <form @submit="onSceneSave" onsubmit="return false;" action="#">
         <table class="form-table">
@@ -146,7 +171,8 @@ const onSceneSave = () => {
             </tr>
             <tr>
                 <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
-                <td><input type="button" :value="$t('remove')" style="margin-top: 20px;"></td>
+                <td><input type="button" :value="$t('remove')" style="margin-top: 20px;" @click="removeCurrentScene">
+                </td>
             </tr>
         </table>
 
