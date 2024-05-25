@@ -13,6 +13,7 @@ import { getStory, getStoryScenes, getUserStorage, cascadeRemoveStory, setScene,
 import LoadingWindow from '../LoadingWindow.vue';
 import { uploadImage } from '@/js/storage-uploading';
 import InfoWindow from '../InfoWindow.vue';
+import PublishWindow from './PublishWindow.vue';
 import { objToImage } from '@/js/utilities/image-utility';
 
 const router = useRouter();
@@ -56,7 +57,7 @@ const removeTitle = ref("");
 
 const story = ref({
     id: v4(), title: untitled.value, banner: null, font: "Arial",
-    author: "", private: true
+    author: "", publish: null, authorId: null
 });
 const scenes = ref({});
 const currentSceneKey = ref(undefined);
@@ -66,6 +67,7 @@ subscribeAuthChange((user) => {
 
     if (user) {
         story.value.author = user.displayName;
+        story.value.authorId = user.uid;
         return;
     }
 
@@ -170,10 +172,10 @@ const onBannerChanged = (value) => {
     story.value.banner = value;
 };
 
-const submitStory = () => {
+const saveStory = () => {
     const user = getUser();
     if (!user) {
-        return false;
+        return Promise.reject("No user");
     }
 
     isLoading.value = true;
@@ -181,7 +183,7 @@ const submitStory = () => {
     const value = toRaw(story.value);
     if (!value.creatingDate) value.creatingDate = new Date();
 
-    uploadImage(userStorage.value.images, value.banner).then(banner => {
+    return uploadImage(userStorage.value.images, value.banner).then(banner => {
         value.banner = banner;
 
         return setStory(user.uid, value).then(() => {
@@ -196,6 +198,10 @@ const submitStory = () => {
     }).finally(() => {
         isLoading.value = false;
     });
+};
+
+const submitStory = () => {
+    saveStory();
 
     return false;
 };
@@ -214,10 +220,21 @@ const removeStoryAction = () => {
         });
 };
 
+const publishActive = ref(false);
+const storyForm = ref(null);
+
+const onPublish = () => {
+    if (!storyForm.value.checkValidity()) return;
+
+    saveStory().then(() => {
+        publishActive.value = true;
+    });
+};
 
 </script>
 
 <template>
+    <PublishWindow v-model="publishActive" :story="story"></PublishWindow>
     <InfoWindow :title="message.title" :message="message.message" v-model="message.active"></InfoWindow>
     <LoadingWindow :is-loading="isLoading"></LoadingWindow>
     <BigBanner min-height="50vh" :title="story.title" :image-href="story.banner"></BigBanner>
@@ -227,12 +244,12 @@ const removeStoryAction = () => {
             <div class="row">
                 <div class="col">
                     <h3 class="font-tertiary mb-5">{{ $t("generalSettings") }}</h3>
-                    <form onsubmit="return false;" action="#" @submit="submitStory">
+                    <form onsubmit="return false;" action="#" @submit="submitStory" ref="storyForm">
                         <table class="form-table">
                             <tr>
                                 <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
                                 <td><input v-model.trim="story.title" name="title" type="text"
-                                        placeholder="The simple story" required minlength="5" maxlength="50"
+                                        :placeholder="$t('storyHint')" required minlength="5" maxlength="50"
                                         style="width: 100%;"></td>
                             </tr>
 
@@ -266,18 +283,13 @@ const removeStoryAction = () => {
                             </tr>
 
                             <tr>
-                                <td><label for="private" :title="$t('storyPrivateDes')">{{ $t("storyPrivate") }}</label>
-                                </td>
-                                <td><input type="checkbox" checked v-model="story.private"></td>
-                            </tr>
-
-                            <tr>
                                 <td></td>
                                 <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
                             </tr>
                             <tr>
                                 <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
-                                <td></td>
+                                <td><input type="button" :value="$t('publish')" style="margin-top: 20px;"
+                                        @click="onPublish" :disabled="!storyId"></td>
                             </tr>
                         </table>
 

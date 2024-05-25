@@ -2,7 +2,7 @@ import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, set
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
-
+const publishCollection = "publishStories";
 
 const getStoryCollection = (userId) => {
     return `${mainCollection}/${userId}/${storyCollection}`;
@@ -17,10 +17,16 @@ export const setScene = (userId, storyId, scene) => {
     return setDoc(doc(db, coll, scene.id), scene);
 };
 
-export const storyExists = (userId, storyId) => {
-    const coll = getStoryCollection(userId);
+export const publishStory = (story) => {
+    return setDoc(doc(db, publishCollection, story.id), story).then(() => {
+        const coll = getStoryCollection(story.authorId);
 
-    return getDoc(doc(db, coll, storyId)).then(res => {
+        return setDoc(doc(db, coll, story.storyId), { publish: story }, { merge: true });
+    });
+};
+
+export const storyExists = (storyId) => {
+    return getDoc(doc(db, publishCollection, storyId)).then(res => {
         return res.exists();
     });
 };

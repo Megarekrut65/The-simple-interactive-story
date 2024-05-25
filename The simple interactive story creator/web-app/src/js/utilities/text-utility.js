@@ -6,6 +6,12 @@ export const textToId = (text) => {
     return latin;
 };
 
+export const getRandomLetter = () => {
+    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    const randomIndex = Math.floor(Math.random() * alphabet.length);
+    return alphabet[randomIndex];
+};
+
 export const getUniqueName = (container, name) => {
     if (!container.includes(name)) return name;
 
