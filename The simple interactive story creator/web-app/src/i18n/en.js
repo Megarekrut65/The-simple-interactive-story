@@ -14,6 +14,8 @@ export const en = {
     account: "Account",
     logout: "Log out",
 
+    authBanner: "Join us and create your story!",
+
     accountBanner: "Only you can write your own story!",
     yourStories: "Your stories",
     selectStory: "Select an existing story or create a new one",
@@ -22,6 +24,7 @@ export const en = {
     sample: "Sample TEXT 0123",
     generatedAuto: "Generated automatically from story name",
     storyTitle: "Title",
+    storyHint: "A simple story...",
     storyId: "ID",
     storyBanner: "Banner",
     storyFont: "Font",
@@ -52,6 +55,8 @@ export const en = {
     sceneAutoSave: "Autosave",
     sceneAutoSaveDes: "Auto save current scene when switching to another scene",
     remove: "Remove",
+    settings: "Settings",
+    removeTitle: "Type a story name to remove it",
 
     choseFile: "Choose an image",
     removeImage: "Remove Image",
@@ -60,8 +65,31 @@ export const en = {
     text: "Text",
     nextScene: "Next Scene",
     removeAnswer: "Remove Answer",
-    advancedOptions: "Advanced Settings",
+    advancedOptions: "Advanced Options",
     answerHint: "Why? Because!",
 
-    unselected: "Not selected"
+    notSupportAudio: "Your browser does not support audio elements",
+
+    loadMore: "More...",
+    view: "View",
+    yes: "Yes",
+    no: "No",
+    ok: "Understood",
+    removeSceneTitle: "Remove Scene",
+    removeSceneQuestion: "Are you sure you want to delete the scene? It will not be able to be restored!",
+    infoMainMessage: "Unable to delete main scene.\nMake another scene main first.",
+    infoAnswerMessage: "Unable to delete a scene to which transitions from other scenes have been added.\nPlease remove the transitions in the answers first.\nThe transition is from the following scene: ",
+    storyError: "Failed to load story. This story may have been deleted or you may have entered an incorrect ID.",
+    error: "Error",
+
+    publish: "Publish",
+    publishTitle: "Publication",
+    publishDescription: "Once published, your story will be viewable by other people you send the link to. Or if you mark the story as non-private, it will be available to all users on our platform.",
+    publishTitleAlready: "Story published",
+    publishDescriptionAlready: "Your story has already been published and is available with the following url:",
+    unpublish: "Unpublish",
+    cancel: "Cancel",
+
+    publishError: "Failed to load story. This story may have been deleted, closed, or you may have entered an incorrect ID.\nPlease contact the author of the story if possible.",
+    selectPopular: "Enjoy other people's stories"
 };

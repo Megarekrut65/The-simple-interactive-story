@@ -56,7 +56,7 @@ const untitled = computed(() => i18n.t("untitled"));
 const removeTitle = ref("");
 
 const story = ref({
-    id: v4(), title: untitled.value, banner: null, font: "Arial",
+    id: v4(), title: untitled.value, banner: null, font: "Arial", description: "",
     author: "", publish: null, authorId: null
 });
 const scenes = ref({});
@@ -252,7 +252,13 @@ const onPublish = () => {
                                         :placeholder="$t('storyHint')" required minlength="5" maxlength="50"
                                         style="width: 100%;"></td>
                             </tr>
-
+                            <tr>
+                                <td><label class="star">{{ $t('storyDes') }}</label></td>
+                                <td>
+                                    <textarea style="width: 100%;" :placeholder="$t('storyDesHint')"
+                                        v-model="story.description" required maxlength="3000"></textarea>
+                                </td>
+                            </tr>
                             <tr>
                                 <td><label for="preview">{{ $t("storyBanner") }}</label></td>
                                 <td>

@@ -166,8 +166,8 @@ const removeCurrentScene = () => {
             <tr>
                 <td><label>{{ $t('sceneText') }}</label></td>
                 <td>
-                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')"
-                        v-model="currentScene.text"></textarea>
+                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')" v-model="currentScene.text"
+                        maxlength="3000"></textarea>
                 </td>
             </tr>
 
