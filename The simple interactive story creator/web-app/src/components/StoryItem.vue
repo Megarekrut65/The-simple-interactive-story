@@ -6,6 +6,10 @@ const props = defineProps({
     data: {
         type: Object,
         required: true
+    },
+    toLink: {
+        type: Function,
+        required: false
     }
 });
 
@@ -26,9 +30,8 @@ const image = props.data.banner ? imageToSrc(props.data.banner) :
                 </p>
 
             </div>
-            <RouterLink class="btn btn-transparent text-left pl-2"
-                :to="{ name: 'editor', params: { storyId: `${data.id}` } }">{{
-                    $t('view') }}
+            <RouterLink v-if="toLink" class="btn btn-transparent text-left pl-2" :to="toLink(data)">
+                {{ $t('view') }}
             </RouterLink>
         </article>
     </div>

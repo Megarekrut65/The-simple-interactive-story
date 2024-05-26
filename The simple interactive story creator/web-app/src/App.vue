@@ -44,9 +44,6 @@ const logoutBtn = () => {
             <LocalizedLink class="nav-link" to="/">{{ $t('news') }}</LocalizedLink>
           </li>
           <li class="nav-item">
-            <LocalizedLink class="nav-link" to="/">{{ $t('about') }}</LocalizedLink>
-          </li>
-          <li class="nav-item">
             <LocalizedLink class="nav-link" to="/">{{ $t('contacts') }}</LocalizedLink>
           </li>
           <li class="nav-item">

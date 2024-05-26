@@ -22,6 +22,8 @@ const loadMore = (perPage, after) => {
 
 loadMore();
 
+const toLink = (data) => { return { name: 'editor', params: { storyId: `${data.id}` } } };
+
 </script>
 
 <template>
@@ -37,6 +39,6 @@ loadMore();
                 </div>
             </div>
         </div>
-        <StoryCards :load-function="loadMore" :per-page="5" :add-new="true"></StoryCards>
+        <StoryCards :load-function="loadMore" :per-page="5" :add-new="true" :to-link="toLink"></StoryCards>
     </section>
 </template>

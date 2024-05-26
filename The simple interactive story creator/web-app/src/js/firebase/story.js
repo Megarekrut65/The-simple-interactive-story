@@ -73,6 +73,16 @@ export const getUserStories = (userId, perPage, after = null) => {
     return getDocs(q).then(dataDocs);
 };
 
+export const getPublishStories = (perPage, after = null) => {
+    const q = query(collection(db, publishCollection),
+        orderBy("id"),
+        orderBy("publishDate", "desc"),
+        startAfter(after),
+        limit(perPage));
+
+    return getDocs(q).then(dataDocs);
+};
+
 export const getStoryScenes = (userId, storyId) => {
     return getDocs(collection(db, getSceneCollection(userId, storyId))).then(dataDocs);
 };

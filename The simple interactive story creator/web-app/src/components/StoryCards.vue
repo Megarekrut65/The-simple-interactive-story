@@ -17,6 +17,10 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    toLink: {
+        type: Function,
+        required: false
     }
 });
 
@@ -48,7 +52,7 @@ loadMore();
                 <LocalizedLink to="editor/new"><img src="@/assets/images/stories/plus.png" class="add-icon">
                 </LocalizedLink>
             </div>
-            <StoryItem v-for="data in stories" :key="data.id" :data="data"></StoryItem>
+            <StoryItem v-for="data in stories" :key="data.id" :data="data" :to-link="toLink"></StoryItem>
         </div>
         <div class="row" v-if="!isAll">
             <div class="col-lg-4 col-md-6 mb-4 m-1">
