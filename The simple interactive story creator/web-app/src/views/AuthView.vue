@@ -5,7 +5,7 @@ import BigBanner from '@/components/BigBanner.vue';
 
 </script>
 <template>
-    <BigBanner title="Join us and create your story!"></BigBanner>
+    <BigBanner :title="$t('authBanner')"></BigBanner>
     <section class="section">
         <div class="container">
             <div class="row">

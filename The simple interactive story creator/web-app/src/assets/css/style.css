@@ -1087,3 +1087,7 @@ label.star::after {
   color: red;
   content: '*';
 }
+
+.basic-page {
+  min-height: 50vh;
+}

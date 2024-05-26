@@ -37,8 +37,12 @@ const getLocale = () => {
     return _i18n.global.locale.value;
 };
 
-const t = (key) => {
+const useT = () => {
     if (!use) use = useI18n();
+};
+
+const t = (key) => {
+    useT();
 
     return use.t(key);
 };
@@ -51,7 +55,8 @@ export default {
     setup,
     setLocale,
     getLocale,
-    t
+    t,
+    useT
 };
 
 export const supportedLocales = {

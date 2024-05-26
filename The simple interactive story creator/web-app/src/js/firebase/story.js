@@ -11,7 +11,14 @@ const getStoryCollection = (userId) => {
 const getSceneCollection = (userId, storyId) => {
     return `${getStoryCollection(userId)}/${storyId}/${scenesCollection}`;
 };
+const dataOrNull = (res) => {
+    if (res.exists()) return res.data();
 
+    return null;
+};
+const dataDocs = (res) => {
+    return res.docs.map(item => item.data());
+};
 export const setScene = (userId, storyId, scene) => {
     const coll = getSceneCollection(userId, storyId);
     return setDoc(doc(db, coll, scene.id), scene);
@@ -32,6 +39,10 @@ export const unpublishStory = (authorId, storyId, publishId) => {
     });
 };
 
+export const getPublish = (publishId) => {
+    return getDoc(doc(db, publishCollection, publishId)).then(dataOrNull);
+};
+
 export const storyExists = (storyId) => {
     return getDoc(doc(db, publishCollection, storyId)).then(res => {
         return res.exists();
@@ -44,14 +55,7 @@ export const setStory = (userId, story) => {
     return setDoc(doc(db, coll, story.id), story);
 };
 
-const dataOrNull = (res) => {
-    if (res.exists()) return res.data();
 
-    return null;
-};
-const dataDocs = (res) => {
-    return res.docs.map(item => item.data());
-};
 
 export const getStory = (userId, storyId) => {
     const coll = getStoryCollection(userId);

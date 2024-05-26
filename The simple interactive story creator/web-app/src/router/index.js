@@ -40,6 +40,11 @@ const router = createRouter({
           name: 'new-editor',
           component: () => import('../views/NewStoryEditorView.vue'),
           beforeEnter: ifAuthenticated
+        },
+        {
+          path: 'story/:publishId',
+          name: 'story',
+          component: () => import('../views/StoryView.vue')
         }
       ]
     }],

@@ -53,7 +53,10 @@ const onUnpublish = () => {
                 </div>
                 <div class="modal-body">
                     <p>{{ $t('publishDescriptionAlready') }}</p>
-                    <p>{{ story.publish }}</p>
+                    <RouterLink class="btn btn-transparent text-left pl-2"
+                        :to="{ name: 'story', params: { publishId: `${story.publish}` } }">
+                        {{ $t('view') }}
+                    </RouterLink>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" @click="onClose">
