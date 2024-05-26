@@ -146,6 +146,14 @@ const removeCurrentScene = () => {
             </tr>
 
             <tr>
+                <td><label>{{ $t('sceneText') }}</label></td>
+                <td>
+                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')" v-model="currentScene.text"
+                        maxlength="3000"></textarea>
+                </td>
+            </tr>
+
+            <tr>
                 <td><label>{{ $t('sceneBackground') }}</label></td>
                 <td class="form-right">
                     <PreviewImageSelect :images="userStorage.images" :initial="currentScene.background"
@@ -160,14 +168,6 @@ const removeCurrentScene = () => {
                     <br>
                     <PreviewSoundSelect :sounds="userStorage.sounds" :initial="currentScene.music"
                         :on-selected="onMusicSelected"></PreviewSoundSelect>
-                </td>
-            </tr>
-
-            <tr>
-                <td><label>{{ $t('sceneText') }}</label></td>
-                <td>
-                    <textarea style="width: 100%;" :placeholder="$t('sceneTextHint')" v-model="currentScene.text"
-                        maxlength="3000"></textarea>
                 </td>
             </tr>
 

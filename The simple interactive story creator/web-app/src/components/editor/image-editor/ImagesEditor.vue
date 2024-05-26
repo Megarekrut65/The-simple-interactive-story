@@ -35,7 +35,7 @@ const createImage = (image, draw) => {
     const obj = {
         img: image,
         draw: draw,
-        params: {
+        rect: {
             x: 5,
             y: 5,
             width: draw.width,

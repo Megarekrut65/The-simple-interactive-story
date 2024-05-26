@@ -2,6 +2,7 @@
 import { publishStory, storyExists, unpublishStory } from '@/js/firebase/story';
 import { getRandomLetter, textToId } from '@/js/utilities/text-utility';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 const props = defineProps({
@@ -13,6 +14,13 @@ const props = defineProps({
 
 const story = computed(() => props.story);
 const privateStory = ref(true);
+
+const router = useRouter();
+const url = computed(() => {
+    return `${window.location.origin}${router.resolve({
+        name: 'story', params: { publishId: `${story.value.publish}` }
+    }).href}`;
+});
 
 const isActive = defineModel();
 const onClose = () => {
@@ -53,9 +61,9 @@ const onUnpublish = () => {
                 </div>
                 <div class="modal-body">
                     <p>{{ $t('publishDescriptionAlready') }}</p>
-                    <RouterLink class="btn btn-transparent text-left pl-2"
+                    <RouterLink class="text-left pl-2"
                         :to="{ name: 'story', params: { publishId: `${story.publish}` } }">
-                        {{ $t('view') }}
+                        {{ url }}
                     </RouterLink>
                 </div>
                 <div class="modal-footer">
