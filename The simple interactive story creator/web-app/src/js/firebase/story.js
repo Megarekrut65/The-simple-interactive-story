@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
+import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
@@ -21,7 +21,14 @@ export const publishStory = (story) => {
     return setDoc(doc(db, publishCollection, story.id), story).then(() => {
         const coll = getStoryCollection(story.authorId);
 
-        return setDoc(doc(db, coll, story.storyId), { publish: story }, { merge: true });
+        return setDoc(doc(db, coll, story.storyId), { publish: story.id }, { merge: true });
+    });
+};
+export const unpublishStory = (authorId, storyId, publishId) => {
+    return deleteDoc(doc(db, publishCollection, publishId)).then(() => {
+        const coll = getStoryCollection(authorId);
+
+        return setDoc(doc(db, coll, storyId), { publish: deleteField() }, { merge: true });
     });
 };
 

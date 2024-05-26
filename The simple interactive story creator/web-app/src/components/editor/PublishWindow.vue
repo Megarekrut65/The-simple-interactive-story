@@ -1,5 +1,5 @@
 <script setup>
-import { publishStory, storyExists } from '@/js/firebase/story';
+import { publishStory, storyExists, unpublishStory } from '@/js/firebase/story';
 import { getRandomLetter, textToId } from '@/js/utilities/text-utility';
 import { computed, ref } from 'vue';
 
@@ -22,7 +22,7 @@ const onClose = () => {
 const publishRecursive = (id) => {
     return storyExists(id).then(res => {
         if (res) return publishRecursive(id + getRandomLetter());
-        const item = { id: id, storyId: story.value.id, authorId: story.value.authorId, private: privateStory.value };
+        const item = { id: id, storyId: story.value.id, authorId: story.value.authorId, private: privateStory.value, publishDate: new Date() };
         return publishStory(item).then(() => item);
     });
 };
@@ -30,12 +30,14 @@ const publishRecursive = (id) => {
 const onPublish = () => {
     let newId = textToId(story.value.author) + "-" + textToId(story.value.title);
     publishRecursive(newId).then(item => {
-        story.value.publish = item;
+        story.value.publish = item.id;
     });
 };
 
 const onUnpublish = () => {
-
+    unpublishStory(story.value.authorId, story.value.id, story.value.publish).then(() => {
+        delete story.value.publish;
+    });
 };
 
 </script>
@@ -51,7 +53,7 @@ const onUnpublish = () => {
                 </div>
                 <div class="modal-body">
                     <p>{{ $t('publishDescriptionAlready') }}</p>
-                    <p>{{ story.publish.id }}</p>
+                    <p>{{ story.publish }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" @click="onClose">
