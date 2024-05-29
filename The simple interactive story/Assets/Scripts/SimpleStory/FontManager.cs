@@ -7,11 +7,13 @@ namespace SimpleStory
     public class FontManager: MonoBehaviour
     {
         [SerializeField] private Font[] fonts;
+        [SerializeField] private Font defaultFont;
 
         [CanBeNull]
         public Font GetFont(string fontName)
         {
-            return Array.Find(fonts, font => font.name == fontName);
+            Font font = Array.Find(fonts, font => font.name == fontName);
+            return font != null ? font : defaultFont;
         }
     }
 }

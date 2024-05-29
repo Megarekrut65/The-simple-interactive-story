@@ -1,6 +1,8 @@
-﻿using Global;
-using Global.Json;
-using Global.Localization;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Global;
+using JetBrains.Annotations;
 using SimpleStory.Data;
 using UnityEngine;
 
@@ -8,41 +10,66 @@ namespace SimpleStory
 {
     public class StoryController
     {
-        //private readonly JsonStoryParser _parser;
-        private readonly LocalizationManagerInstance _localization;
+        private readonly Dictionary<string, Scene> _scenes = new Dictionary<string, Scene>();
+        private readonly Dictionary<string, Sprite> _images = new Dictionary<string, Sprite>();
+        private readonly Dictionary<string, AudioClip> _sounds = new Dictionary<string, AudioClip>();
+        [CanBeNull] private readonly Scene _mainScene = null;
 
-        //public Configuration Config { get; private set; }
-
-        private readonly string _path;
-        
-        public StoryController(string storyId, string language)
+        public StoryController() { }
+        public StoryController(Scene[] scenes)
         {
-            _path = $"{Application.streamingAssetsPath}/{storyId}";
-            //Config = JsonObjectParser<Configuration>.Parse($"{_path}/config");
-            
-            //_parser = new JsonStoryParser(_path, Config.mainFrame);
-            _localization = new LocalizationManagerInstance($"{_path}/Languages", language);
+            foreach (Scene scene in scenes)
+            {
+                _scenes[scene.id] = scene;
+                if (scene.isMain) _mainScene = scene;
+            }
         }
 
         public string GetWord(string key)
         {
-            return _localization.GetWord(key);
+            return key;
         }
 
-        public Scene GetFrame(string key)
+        public Scene GetScene(string key=null)
         {
-            //return _parser.Frames.TryGetValue(key, out var frame) ? frame : null;
-            return null;
+            if (key == null) return _mainScene;
+            
+            return _scenes.TryGetValue(key, out Scene scene) ? scene : null;
         }
 
-        public Sprite GetSprite(string key)
+        public IEnumerator LoadSprite(string url, Action<Sprite> answer)
         {
-            return FileReader.ReadSprite($"{_path}/{key}.png");
+            if (_images.TryGetValue(url, out Sprite image))
+            {
+                answer(image);
+                return Empty();
+            }
+            
+            return UrlReader.ReadSprite(url, (sprite) =>
+            {
+                if (sprite != null) _images[url] = sprite;
+                answer(sprite);
+            });
         }
 
-        public AudioClip GetClip(string name)
+        public IEnumerator LoadClip(string url, Action<AudioClip> answer)
         {
-            return FileReader.ReadAudio(name, $"{_path}/Sounds/{name}.mp3");
+            if (_sounds.TryGetValue(url, out AudioClip sound))
+            {
+                answer(sound);
+                return Empty();
+            }
+            
+            return UrlReader.ReadAudio(url,url, (clip) =>
+            {
+                if (clip != null) _sounds[url] = clip;
+                answer(clip);
+            });
+        }
+
+        private IEnumerator Empty()
+        {
+            yield break;
         }
     }
 }

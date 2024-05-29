@@ -12,7 +12,8 @@ namespace Main
 
         public void Click()
         {
-            LocalStorage.SetValue("storyId", storyId);
+            LocalStorage.SetValue("storyId", "3f311d94-1a32-48b7-b7f6-cb04623fef49");
+            LocalStorage.SetValue("userId", "rdMc08WAIpMKwZC7l8hdlHIXwUB2");
             LocalStorage.SetValue("language", language);
             
             SceneManager.LoadScene(scene, LoadSceneMode.Single);

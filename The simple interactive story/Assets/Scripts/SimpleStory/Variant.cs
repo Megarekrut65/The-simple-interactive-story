@@ -13,11 +13,11 @@ namespace SimpleStory
 
         [SerializeField] private Text text;
 
-        public void SetData(Answer answer, Action<string, string> click, Font font)
+        public void SetData(Answer answer, Action<string> click, Font font)
         {
-            //answerClick.Click = () => click(answer.nextFrameId, answer.action);
+            answerClick.Click = () => click(answer.nextScene);
 
-            //text.text = LocalizationManager.GetWordByKey(answer.textKey);
+            text.text = answer.text;
             text.font = font;
         } 
     }

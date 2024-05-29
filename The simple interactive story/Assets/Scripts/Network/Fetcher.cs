@@ -22,7 +22,7 @@ namespace Network
 
             if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
             {
-                callback(request.downloadHandler.text, "");
+                callback(request.downloadHandler.text, null);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace Network
 
                 if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
                 {
-                    callback(request.downloadHandler.text, "");
+                    callback(request.downloadHandler.text, null);
                 }
                 else
                 {

@@ -6,7 +6,9 @@ using Network;
 using Network.Data;
 using SimpleStory.Data;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Scene = SimpleStory.Data.Scene;
 
 namespace SimpleStory
 {
@@ -19,78 +21,80 @@ namespace SimpleStory
         [SerializeField] private Image background;
         
         [Header("Images")]
-        [SerializeField] private Image left;
-        [SerializeField] private Image right;
-        [SerializeField] private Image centerUnder;
-        [SerializeField] private Image centerOver;
-        
+
         [Header("Texts")]
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
-        [SerializeField] private Font font;
         [SerializeField] private FontManager fontManager;
 
-        private StoryController _controller;
+        private StoryController _controller = new StoryController();
+        private Font _currentFont;
 
         private void Start()
         {
-            string url = Constants.UserStories +
-                         "rdMc08WAIpMKwZC7l8hdlHIXwUB2/stories/3f311d94-1a32-48b7-b7f6-cb04623fef49/scenes";
-            Debug.Log(url);
-            Fetcher.Get(this, url, 
-                "", (e, s) =>
-                {
-                    Debug.Log(new FirebaseError(e));
-                    Debug.Log(s);
+            string storyId = LocalStorage.GetValue("storyId", "");
+            string userId = LocalStorage.GetValue("userId", "");
+            string fontName = LocalStorage.GetValue("font", "");
+            if (storyId == "" || userId == "")
+            {
+                SceneManager.LoadScene("Main", LoadSceneMode.Single);
+                return;
+            }
 
-                    FirestoreCollection<SceneFields> scenes = JsonUtility.FromJson<FirestoreCollection<SceneFields>>(s);
-                    Scene[] scenesList = NetworkConverter.Convert(scenes);
-                    foreach (var scene in scenesList)
-                    {
-                        Debug.Log(scene);
-                    }
-                });
-            /*string storyId = LocalStorage.GetValue("storyId", "");
-            string language = LocalStorage.GetValue("language", "en_US");
-            if(storyId == "") return;
-            
-            StartCoroutine(Load(storyId, language));*/
+            _currentFont = fontManager.GetFont(fontName);
+            text.GetComponent<Text>().font = _currentFont;
+
+            Fetcher.Get(this, Constants.GetScenesPath(userId, storyId),
+                "", FetchScenesCallback);
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
-        private IEnumerator Load(string storyId, string language)
+        private void FetchScenesCallback([CanBeNull] string error, [CanBeNull] string result)
         {
-            _controller = new StoryController(storyId, language);
+            if (error != null)
+            {
+                FirebaseError err = new FirebaseError(error);
+                Debug.Log(err);
+                return;
+            }
 
-            //Font frameFont = fontManager.GetFont(_controller.Config.font);
-            //if (frameFont != null) font = frameFont;
-            text.GetComponent<Text>().font = font;
+            if (result == null)
+            {
+                Debug.Log("Story is null");
+                return;
+            }
             
-            //LoadFrame(_controller.GetFrame(_controller.Config.mainFrame));
-            yield return null;
+            FirestoreCollection<SceneFields> scenes = JsonUtility.FromJson<FirestoreCollection<SceneFields>>(result);
+            Scene[] list = NetworkConverter.Convert(scenes);
+
+            _controller = new StoryController(list);
+            LoadScene(_controller.GetScene());
         }
-        private void LoadFrame(Scene scene)
+
+        private void LoadScene(Scene scene)
         {
             if(scene == null) return;
+            Debug.Log(scene);
 
             LoadMusic(scene);
             
-            //LoadText(scene.textKey);
+            LoadText(scene.text);
             LoadAnswers(scene.answers);
             
-            LoadImage(background, "Backgrounds",scene.background);
+            LoadImage(background, scene.background);
+
+            if(scene.images == null) return;
             
-            //LoadImage(left, "Images",scene.images?.left);
-            //LoadImage(right, "Images",scene.images?.right);
-            //LoadImage(centerUnder, "Images",scene.images?.centerUnder);
-            //LoadImage(centerOver, "Images",scene.images?.centerOver);
+            foreach (CanvasImage img in scene.images)
+            {
+                DrawImage(img);
+            }
         }
 
         private void LoadMusic(Scene scene)
         {
             if(scene.music == null) return;
+            StartCoroutine(_controller.LoadClip(scene.music, MusicManager.ChangeAudioClip));
             
-            MusicManager.ChangeAudioClip(_controller.GetClip(scene.music));
         }
         private void LoadText([CanBeNull] string key)
         {
@@ -110,29 +114,29 @@ namespace SimpleStory
             foreach (Answer answer in answers)
             {
                 GameObject obj = Instantiate(variantPrefab, content, false);
-                
-                //answer.textKey = _controller.GetWord(answer.textKey);
-                obj.GetComponent<Variant>().SetData(answer, AnswerClick, font);
+                obj.GetComponent<Variant>().SetData(answer, AnswerClick, _currentFont);
             }
         }
 
-        private void AnswerClick(string frameId, string action)
+        private void AnswerClick(string nextSceneId)
         {
-            if(frameId == null) return;
+            if(nextSceneId == null) return;
 
-            LoadFrame(_controller.GetFrame(frameId));
-            
-            if(action == null) return;
-            Debug.Log("Action");
-
+            LoadScene(_controller.GetScene(nextSceneId));
         }
-        private void LoadImage(Image img, string folder, [CanBeNull] string filename)
+        private void LoadImage(Image img, [CanBeNull] string url)
         {
-            if(filename == null) return;
+            if( url == null) return;
 
-            Sprite sprite = _controller.GetSprite($"{folder}/{filename}");
+            StartCoroutine(_controller.LoadSprite(url, (sprite) =>
+            {
+                if (sprite != null) img.sprite = sprite;
+            }));
+        }
 
-            if (sprite != null) img.sprite = sprite;
+        private void DrawImage(CanvasImage img)
+        {
+            
         }
     }
 }
