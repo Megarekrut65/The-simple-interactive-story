@@ -21,7 +21,10 @@ namespace SimpleStory
         [SerializeField] private Transform content;
         [SerializeField] private Image background;
 
-        [Header("Images")] [SerializeField] private Sprite defaultBackground;
+        [Header("Images")] 
+        [SerializeField] private Sprite defaultBackground;
+
+        [SerializeField] private ImagesConstructor constructor;
 
         [Header("Texts")]
         [SerializeField] private GameObject textObj;
@@ -78,8 +81,7 @@ namespace SimpleStory
             
             loader.Close();
             yield return _controller.LoadScene(scene);
-            loader.Open();
-            
+
             LoadMusic(scene);
             
             LoadText(scene.text);
@@ -87,12 +89,18 @@ namespace SimpleStory
             
             LoadImage(background, scene.background);
 
-            if(scene.images == null) yield break;
+            constructor.Clear();
+            if (scene.images == null)
+            {
+                loader.Open();
+                yield break;
+            }
             
             foreach (CanvasImage img in scene.images)
             {
                 DrawImage(img);
             }
+            loader.Open();
         }
 
         private void LoadMusic(Scene scene)
@@ -147,7 +155,7 @@ namespace SimpleStory
 
         private void DrawImage(CanvasImage img)
         {
-            
+            constructor.DrawImage(img, _controller.GetSprite(img.img));
         }
     }
 }

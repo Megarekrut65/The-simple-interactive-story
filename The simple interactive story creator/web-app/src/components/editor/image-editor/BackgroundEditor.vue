@@ -108,6 +108,8 @@ const dragImage = (event) => {
     const selectedImage = imagesContainer.value[selectedImageIndex].rect;
     selectedImage.x += dx;
     selectedImage.y += dy;
+
+    console.log(selectedImage)
 };
 
 const resizeImage = (event) => {

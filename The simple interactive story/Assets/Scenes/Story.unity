@@ -1119,6 +1119,7 @@ MonoBehaviour:
   content: {fileID: 3541307931116967962}
   background: {fileID: 1121166556}
   defaultBackground: {fileID: 21300000, guid: 79e4ec9df4ddf824eb8c5ffd4321dcf5, type: 3}
+  constructor: {fileID: 0}
   textObj: {fileID: 8010976413277459778}
   text: {fileID: 2812717410855193028}
   fontManager: {fileID: 593467278}
@@ -1759,6 +1760,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2105649647}
+  - component: {fileID: 2105649648}
   m_Layer: 5
   m_Name: Images
   m_TagString: Untagged
@@ -1785,6 +1787,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2105649648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105649646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca794f9a39814a4e8f77c898690eeffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 2105649646}
+  imageObj: {fileID: 1439225489968874834, guid: 09c65bc5f8a9dfb41a21c269a91db5cb, type: 3}
 --- !u!1 &2138371087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2863,7 +2879,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 131963036203751653}
   m_HandleRect: {fileID: 1531556953019712437}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
