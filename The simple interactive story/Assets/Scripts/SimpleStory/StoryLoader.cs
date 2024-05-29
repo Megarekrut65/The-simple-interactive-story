@@ -14,13 +14,14 @@ namespace SimpleStory
 {
     public class StoryLoader : MonoBehaviour
     {
+        [SerializeField] private Loader loader;
         [SerializeField] private GameObject variantPrefab;
         
         [Header("Parts")]
         [SerializeField] private Transform content;
         [SerializeField] private Image background;
-        
-        [Header("Images")]
+
+        [Header("Images")] [SerializeField] private Sprite defaultBackground;
 
         [Header("Texts")]
         [SerializeField] private GameObject textObj;
@@ -67,14 +68,18 @@ namespace SimpleStory
             Scene[] list = NetworkConverter.Convert(scenes);
 
             _controller = new StoryController(list);
-            LoadScene(_controller.GetScene());
+            StartCoroutine(LoadScene(_controller.GetScene()));
         }
 
-        private void LoadScene(Scene scene)
+        private IEnumerator LoadScene(Scene scene)
         {
-            if(scene == null) return;
             Debug.Log(scene);
-
+            if(scene == null) yield break;
+            
+            loader.Close();
+            yield return _controller.LoadScene(scene);
+            loader.Open();
+            
             LoadMusic(scene);
             
             LoadText(scene.text);
@@ -82,7 +87,7 @@ namespace SimpleStory
             
             LoadImage(background, scene.background);
 
-            if(scene.images == null) return;
+            if(scene.images == null) yield break;
             
             foreach (CanvasImage img in scene.images)
             {
@@ -92,9 +97,12 @@ namespace SimpleStory
 
         private void LoadMusic(Scene scene)
         {
-            if(scene.music == null) return;
-            StartCoroutine(_controller.LoadClip(scene.music, MusicManager.ChangeAudioClip));
-            
+            if (scene.music == null)
+            {
+                MusicManager.ChangeAudioClip(null);
+                return;
+            }
+            MusicManager.ChangeAudioClip(_controller.GetClip(scene.music));
         }
         private void LoadText([CanBeNull] string key)
         {
@@ -120,18 +128,21 @@ namespace SimpleStory
 
         private void AnswerClick(string nextSceneId)
         {
+            Debug.Log(nextSceneId);
             if(nextSceneId == null) return;
 
-            LoadScene(_controller.GetScene(nextSceneId));
+            StartCoroutine(LoadScene(_controller.GetScene(nextSceneId)));
         }
         private void LoadImage(Image img, [CanBeNull] string url)
         {
-            if( url == null) return;
-
-            StartCoroutine(_controller.LoadSprite(url, (sprite) =>
+            if (url == null)
             {
-                if (sprite != null) img.sprite = sprite;
-            }));
+                img.sprite = defaultBackground;
+                return;
+            }
+
+            Sprite sprite = _controller.GetSprite(url);
+            if (sprite != null) img.sprite = sprite;
         }
 
         private void DrawImage(CanvasImage img)

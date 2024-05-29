@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Global;
 using JetBrains.Annotations;
 using SimpleStory.Data;
@@ -25,6 +26,30 @@ namespace SimpleStory
             }
         }
 
+        public IEnumerator LoadScene(Scene scene, int depth=2)
+        {
+            if (scene == null) yield break;
+            
+            List<IEnumerator> enumerators = new List<IEnumerator>();
+            if(scene.background != null) enumerators.Add(LoadSprite(scene.background));
+            
+            if(scene.music != null) enumerators.Add(LoadClip(scene.music));
+
+            if (scene.images != null)
+                enumerators.AddRange(scene.images.Select(img => LoadSprite(img.img)));
+            
+            if (scene.answers != null && depth >= 0)
+            {
+                enumerators.AddRange(from answer in scene.answers where answer.nextScene != scene.id 
+                    select LoadScene(_scenes[answer.nextScene], depth-1));
+            }
+            
+            foreach (IEnumerator enumerator in enumerators)
+            {
+                yield return enumerator;
+            }
+        }
+
         public string GetWord(string key)
         {
             return key;
@@ -37,36 +62,39 @@ namespace SimpleStory
             return _scenes.TryGetValue(key, out Scene scene) ? scene : null;
         }
 
-        public IEnumerator LoadSprite(string url, Action<Sprite> answer)
+        public Sprite GetSprite(string url)
         {
-            if (_images.TryGetValue(url, out Sprite image))
-            {
-                answer(image);
+            return _images.TryGetValue(url, out Sprite image) ? image : null;
+        }
+
+        public AudioClip GetClip(string url)
+        {
+            return _sounds.TryGetValue(url, out AudioClip clip) ? clip : null;
+        }
+
+        private IEnumerator LoadSprite(string url)
+        {
+            if (_images.ContainsKey(url))
                 return Empty();
-            }
             
             return UrlReader.ReadSprite(url, (sprite) =>
             {
                 if (sprite != null) _images[url] = sprite;
-                answer(sprite);
             });
         }
 
-        public IEnumerator LoadClip(string url, Action<AudioClip> answer)
+        private IEnumerator LoadClip(string url)
         {
-            if (_sounds.TryGetValue(url, out AudioClip sound))
-            {
-                answer(sound);
+            if (_sounds.ContainsKey(url))
                 return Empty();
-            }
+            
             
             return UrlReader.ReadAudio(url,url, (clip) =>
             {
                 if (clip != null) _sounds[url] = clip;
-                answer(clip);
             });
         }
-
+        
         private IEnumerator Empty()
         {
             yield break;

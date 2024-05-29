@@ -5,7 +5,7 @@ namespace SimpleStory
 {
     public class AnswerClick : MonoBehaviour
     {
-        public Action Click;
+        public Action Click { get; set; }
 
         public void ClickEvent()
         {
