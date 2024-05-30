@@ -59,6 +59,20 @@ namespace SimpleStory
 
             return story;
         }
+        public static Publish Convert(FirestoreDocument<PublishFields> document)
+        {
+            PublishFields fields = document.fields ?? new PublishFields();
+            Publish publish = new Publish
+            {
+                id = Convert(fields.id),
+                authorId = Convert(fields.authorId),
+                storyId = Convert(fields.storyId),
+                publishDate = Convert(fields.publishDate),
+                privateStory = Convert(fields.privateStory)
+            };
+
+            return publish;
+        }
         
         public static Scene Convert(FirestoreDocument<SceneFields> document)
         {

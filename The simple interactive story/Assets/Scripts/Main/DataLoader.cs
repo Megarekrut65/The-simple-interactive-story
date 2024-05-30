@@ -7,7 +7,6 @@ using SimpleStory;
 using SimpleStory.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Scene = SimpleStory.Data.Scene;
 
@@ -26,18 +25,61 @@ namespace Main
         [Header("Buttons")]
         [SerializeField] private Button continueBtn;
 
-        private string _storyId = "827c621f-e6f9-4502-9d72-6d08fcefb7f0";
-        private string _userId = "rdMc08WAIpMKwZC7l8hdlHIXwUB2";
+        private string _storyId = "";
+        private string _userId = "";
         private string _token = "";
         private void Start()
         {
             continueBtn.interactable = false;
+            #if UNITY_EDITOR
+                string publishId = "sasha-taiemnicya-lisovogo-ostrivcya";
+            #else
+                string publishId = JsManager.UidFromUrl();
+                _token = JsManager.Token();
+            #endif
+
+            if (publishId == "")
+            {
+                logger.ShowError(LocalizationManager.GetWordByKey("story-not-found"));
+                return;
+            }
+            
+            StartCoroutine(Fetcher.Get(Constants.GetPublishPath(publishId), _token, FetchPublishCallback)); 
+        }
+
+        private void FetchPublishCallback([CanBeNull] string error, [CanBeNull] string result)
+        {
+            if (error != null)
+            {
+                FirebaseError err = new FirebaseError(error);
+                Debug.Log(err);
+                logger.ShowError(err.ToString());
+                return;
+            }
+
+            if (result == null)
+            {
+                Debug.Log("Story is null");
+                logger.ShowError(LocalizationManager.GetWordByKey("story-not-found"));
+                return;
+            }
+            
+            FirestoreDocument<PublishFields> publishFields = JsonUtility.FromJson<FirestoreDocument<PublishFields>>(result);
+            Publish publish = NetworkConverter.Convert(publishFields);
+            _storyId = publish.storyId;
+            _userId = publish.authorId;
+
+            LoadStory();
+        }
+
+        private void LoadStory()
+        {
             LocalStorage.SetValue("storyId", _storyId);
             LocalStorage.SetValue("userId", _userId);
             LocalStorage.SetValue("token", _token);
             
             LocalStorage.SetValue("language", "uk_UK");
-            StartCoroutine(Fetcher.Get(Constants.GetStoryPath(_userId, _storyId), _token, FetchStoryCallback));
+            StartCoroutine(Fetcher.Get(Constants.GetStoryPath(_userId, _storyId), _token, FetchStoryCallback)); 
         }
 
         public void Continue()

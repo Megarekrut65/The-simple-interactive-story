@@ -33,6 +33,16 @@ namespace Network.Data
         public FirestoreTimestamp creatingDate;
         public FirestoreString publish;
     }
+    
+    [Serializable]
+    public class PublishFields
+    {
+        public FirestoreString id;
+        public FirestoreString authorId;
+        public FirestoreString storyId;
+        public FirestoreTimestamp publishDate;
+        public FirestoreBoolean privateStory;
+    }
 
     [Serializable]
     public class AnswerFields

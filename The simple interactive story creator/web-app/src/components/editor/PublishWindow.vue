@@ -30,7 +30,7 @@ const onClose = () => {
 const publishRecursive = (id) => {
     return storyExists(id).then(res => {
         if (res) return publishRecursive(id + getRandomLetter());
-        const item = { id: id, storyId: story.value.id, authorId: story.value.authorId, private: privateStory.value, publishDate: new Date() };
+        const item = { id: id, storyId: story.value.id, authorId: story.value.authorId, privateStory: privateStory.value, publishDate: new Date() };
         return publishStory(item).then(() => item);
     });
 };
