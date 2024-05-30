@@ -31,9 +31,9 @@ namespace Network
             }
         }
         
-        public static void Get(MonoBehaviour behaviour, string url, string token, Action<string, string> callback)
+        public static IEnumerator Get(string url, string token, Action<string, string> callback)
         {
-            behaviour.StartCoroutine(GetNumerator(url, token, callback));
+            return GetNumerator(url, token, callback);
         }
         
         private static IEnumerator PostNumerator(string url, string token, WWWForm form, Action<string, string> callback)
@@ -60,10 +60,10 @@ namespace Network
             }
         }
         
-        public static void Post(MonoBehaviour behaviour, string url, string token, WWWForm form, 
+        public static IEnumerator Post(string url, string token, WWWForm form, 
             Action<string, string> callback)
         {
-            behaviour.StartCoroutine(PostNumerator(url, token, form, callback));
+            return PostNumerator(url, token, form, callback);
         }
     }
 }

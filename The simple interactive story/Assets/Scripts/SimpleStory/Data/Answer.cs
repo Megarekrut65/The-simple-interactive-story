@@ -1,5 +1,8 @@
-﻿namespace SimpleStory.Data
+﻿using System;
+
+namespace SimpleStory.Data
 {
+    [Serializable]
     public class Answer
     {
         public string id;

@@ -10,6 +10,7 @@ namespace Global.Localization
         private GameObject blackBoard;
         [SerializeField]
         private GameObject mainCanvas;
+
         private LoadBoard _loadBoard;
 
         private void Start() {

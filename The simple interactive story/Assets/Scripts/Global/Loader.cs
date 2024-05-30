@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace SimpleStory
+namespace Global
 {
     public class Loader: MonoBehaviour
     {
@@ -17,7 +17,7 @@ namespace SimpleStory
 
         private IEnumerator CheckAnimationEnd()
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.6f);
             
             background.SetActive(false);
         }

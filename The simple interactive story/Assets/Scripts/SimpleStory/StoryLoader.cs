@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Global;
 using Global.Sound;
 using JetBrains.Annotations;
-using Network;
-using Network.Data;
 using SimpleStory.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,7 +27,6 @@ namespace SimpleStory
         [Header("Texts")]
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
-        [SerializeField] private FontManager fontManager;
 
         private StoryController _controller = new StoryController();
         private Font _currentFont;
@@ -39,42 +35,24 @@ namespace SimpleStory
         {
             string storyId = LocalStorage.GetValue("storyId", "");
             string userId = LocalStorage.GetValue("userId", "");
+            string scene = LocalStorage.GetValue($"{userId}/{storyId}", "");
             string fontName = LocalStorage.GetValue("font", "");
-            if (storyId == "" || userId == "")
+            if (storyId == "" || userId == "" || scene == "")
             {
                 SceneManager.LoadScene("Main", LoadSceneMode.Single);
                 return;
             }
 
-            _currentFont = fontManager.GetFont(fontName);
+            _currentFont = FontManager.GetTextFont(fontName);
             text.GetComponent<Text>().font = _currentFont;
 
-            Fetcher.Get(this, Constants.GetScenesPath(userId, storyId),
-                "", FetchScenesCallback);
-        }
-
-        private void FetchScenesCallback([CanBeNull] string error, [CanBeNull] string result)
-        {
-            if (error != null)
-            {
-                FirebaseError err = new FirebaseError(error);
-                Debug.Log(err);
-                return;
-            }
-
-            if (result == null)
-            {
-                Debug.Log("Story is null");
-                return;
-            }
-            
-            FirestoreCollection<SceneFields> scenes = JsonUtility.FromJson<FirestoreCollection<SceneFields>>(result);
-            Scene[] list = NetworkConverter.Convert(scenes);
+            ScenesWrapper wrapper = JsonUtility.FromJson<ScenesWrapper>(scene);
+            Scene[] list = wrapper.scenes;
 
             _controller = new StoryController(list);
             StartCoroutine(LoadScene(_controller.GetScene()));
         }
-        
+
         private IEnumerator LoadScene(Scene scene)
         {
             Debug.Log(scene);
@@ -89,7 +67,6 @@ namespace SimpleStory
             {
                 StartCoroutine(_controller.LoadScene(scene));
             }
-            
 
             LoadMusic(scene);
             

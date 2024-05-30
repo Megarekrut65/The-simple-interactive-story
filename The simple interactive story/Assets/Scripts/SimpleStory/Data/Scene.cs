@@ -2,6 +2,7 @@
 
 namespace SimpleStory.Data
 {
+    [Serializable]
     public class Scene
     {
         public string id;

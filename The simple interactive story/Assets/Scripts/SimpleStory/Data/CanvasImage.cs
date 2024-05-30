@@ -1,5 +1,8 @@
-﻿namespace SimpleStory.Data
+﻿using System;
+
+namespace SimpleStory.Data
 {
+    [Serializable]
     public class Rect
     {
         public double x;
@@ -16,6 +19,7 @@
                    $"height: {height}\n";
         }
     }
+    [Serializable]
     public class CanvasImage
     {
         public string img;
