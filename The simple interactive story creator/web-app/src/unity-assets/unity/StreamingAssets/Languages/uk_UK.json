@@ -1,0 +1,13 @@
+{
+    "items": [
+        {
+            "key": "game-name", "value": "The simple interactive story"
+        },
+        {
+            "key": "new-start", "value": "Почати нову історію"
+        },
+        {
+            "key": "continue", "value": "Продовжити"
+        }
+    ]
+}

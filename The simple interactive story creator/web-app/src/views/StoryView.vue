@@ -69,7 +69,13 @@ getPublish(publishId).then((res) => {
                     <div class="col-12">
                         <div v-if="publish && story" class="card">
                             <div class="card-body">
-                                <h4 class="card-title">{{ story.title }}</h4>
+                                <div>
+                                    <h4 class="card-title">{{ story.title }}</h4>
+                                    <RouterLink class="card-text text-primary"
+                                        :to="{ name: 'story-view', params: { publishId: story.publish } }">
+                                        {{ $t('runStory') }}
+                                    </RouterLink>
+                                </div>
                                 <p class="card-text"><strong>{{ $t('storyAuthor') }}</strong></p>
                                 <p class="card-text">{{ story.author }}</p>
 

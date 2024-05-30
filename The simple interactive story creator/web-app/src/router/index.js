@@ -45,6 +45,11 @@ const router = createRouter({
           path: 'story/:publishId',
           name: 'story',
           component: () => import('../views/StoryView.vue')
+        },
+        {
+          path: 'story/view/:publishId',
+          name: 'story-view',
+          component: () => import('../views/StoryUnityView.vue')
         }
       ]
     }],
