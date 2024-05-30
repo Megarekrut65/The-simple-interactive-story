@@ -57,7 +57,7 @@ const removeTitle = ref("");
 
 const story = ref({
     id: v4(), title: untitled.value, banner: null, font: "Arial", description: "",
-    author: "", publish: null, authorId: null
+    author: "", publish: null, authorId: null, genre: ""
 });
 const scenes = ref({});
 const currentSceneKey = ref(undefined);
@@ -249,10 +249,14 @@ const onPublish = () => {
                     <form onsubmit="return false;" action="#" @submit="submitStory" ref="storyForm">
                         <table class="form-table">
                             <tr>
-                                <td><label class="star" for="title">{{ $t("storyTitle") }}</label></td>
-                                <td><input v-model.trim="story.title" name="title" type="text"
-                                        :placeholder="$t('storyHint')" required minlength="5" maxlength="50"
-                                        style="width: 100%;"></td>
+                                <td><label class="star">{{ $t("storyTitle") }}</label></td>
+                                <td><input v-model.trim="story.title" type="text" :placeholder="$t('storyHint')"
+                                        required minlength="5" maxlength="50" style="width: 100%;"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="star">{{ $t("storyGenre") }}</label></td>
+                                <td><input v-model.trim="story.genre" type="text" :placeholder="$t('genreHint')"
+                                        required minlength="1" maxlength="50" style="width: 100%;"></td>
                             </tr>
                             <tr>
                                 <td><label class="star">{{ $t('storyDes') }}</label></td>

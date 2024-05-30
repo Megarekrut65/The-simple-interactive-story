@@ -121,6 +121,7 @@ const onAuthChange = (action) => {
         const userData = localStorage.getItem("userData");
         if (userData && user) {
             localStorage.setItem("userData", JSON.stringify(user));
+            localStorage.setItem("token", user.accessToken);
             action(user);
 
         } else {

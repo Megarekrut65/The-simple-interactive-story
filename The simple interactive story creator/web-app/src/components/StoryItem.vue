@@ -37,6 +37,9 @@ const isAuthor = computed(() => {
                 <p class="h4 card-title d-block mt-3 text-dark">
                     {{ data.title }}
                 </p>
+                <p class="d-block mt-1">
+                    {{ data.genre }}
+                </p>
                 <p :class="isAuthor ? 'text-danger' : 'text-secondary'">{{ isAuthor ? $t('you') : data.author }}</p>
 
             </div>
