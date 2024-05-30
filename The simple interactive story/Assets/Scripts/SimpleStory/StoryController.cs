@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Global;
@@ -12,9 +11,7 @@ namespace SimpleStory
     public class StoryController
     {
         private readonly Dictionary<string, Scene> _scenes = new Dictionary<string, Scene>();
-        private readonly Dictionary<string, Sprite> _images = new Dictionary<string, Sprite>();
-        private readonly Dictionary<string, AudioClip> _sounds = new Dictionary<string, AudioClip>();
-        private Dictionary<string, bool> _loadedScenes = new Dictionary<string, bool>();
+        private readonly Dictionary<string, bool> _loadedScenes = new Dictionary<string, bool>();
         [CanBeNull] private readonly Scene _mainScene = null;
 
         public StoryController() { }
@@ -68,34 +65,34 @@ namespace SimpleStory
 
         public Sprite GetSprite(string url)
         {
-            return _images.TryGetValue(url, out Sprite image) ? image : null;
+            return StorageManager.GetSavedSprite(url);
         }
 
         public AudioClip GetClip(string url)
         {
-            return _sounds.TryGetValue(url, out AudioClip clip) ? clip : null;
+            return StorageManager.GetSavedClip(url);
         }
 
         private IEnumerator LoadSprite(string url)
         {
-            if (_images.ContainsKey(url))
+            if (StorageManager.ContainsSprite(url))
                 return Empty();
             
             return UrlReader.ReadSprite(url, (sprite) =>
             {
-                if (sprite != null) _images[url] = sprite;
+                if (sprite != null) StorageManager.Save(url, sprite);
             });
         }
 
         private IEnumerator LoadClip(string url)
         {
-            if (_sounds.ContainsKey(url))
+            if (StorageManager.ContainsClip(url))
                 return Empty();
             
             
             return UrlReader.ReadAudio(url,url, (clip) =>
             {
-                if (clip != null) _sounds[url] = clip;
+                if (clip != null) StorageManager.Save(url, clip);
             });
         }
         
