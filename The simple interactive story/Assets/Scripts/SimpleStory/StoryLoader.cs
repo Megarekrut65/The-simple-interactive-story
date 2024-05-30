@@ -30,14 +30,16 @@ namespace SimpleStory
 
         private StoryController _controller = new StoryController();
         private Font _currentFont;
+        private string _storyId;
+        private string _userId;
 
         private void Start()
         {
-            string storyId = LocalStorage.GetValue("storyId", "");
-            string userId = LocalStorage.GetValue("userId", "");
-            string scene = LocalStorage.GetValue($"{userId}/{storyId}", "");
+            _storyId = LocalStorage.GetValue("storyId", "");
+            _userId = LocalStorage.GetValue("userId", "");
+            string scene = LocalStorage.GetValue($"{_userId}/{_storyId}", "");
             string fontName = LocalStorage.GetValue("font", "");
-            if (storyId == "" || userId == "" || scene == "")
+            if (_storyId == "" || _userId == "" || scene == "")
             {
                 SceneManager.LoadScene("Main", LoadSceneMode.Single);
                 return;
@@ -50,12 +52,15 @@ namespace SimpleStory
             Scene[] list = wrapper.scenes;
 
             _controller = new StoryController(list);
-            StartCoroutine(LoadScene(_controller.GetScene()));
+            
+            string lastScene = LocalStorage.GetValue($"{_userId}/{_storyId}/lastScene", "");
+            if (lastScene == "") lastScene = null;
+            
+            StartCoroutine(LoadScene(_controller.GetScene(lastScene)));
         }
 
         private IEnumerator LoadScene(Scene scene)
         {
-            Debug.Log(scene);
             if(scene == null) yield break;
             
             loader.Close();
@@ -124,6 +129,7 @@ namespace SimpleStory
         {
             Debug.Log(nextSceneId);
             if(nextSceneId == null) return;
+            LocalStorage.SetValue($"{_userId}/{_storyId}/lastScene", nextSceneId);
 
             StartCoroutine(LoadScene(_controller.GetScene(nextSceneId)));
         }

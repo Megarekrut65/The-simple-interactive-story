@@ -48,6 +48,7 @@ namespace Main
         public void PlayNew()
         {
             loader.Close();
+            LocalStorage.SetValue($"{_userId}/{_storyId}/lastScene", "");
             StartCoroutine(Fetcher.Get(Constants.GetScenesPath(_userId, _storyId),
                 _token, FetchScenesCallback));
         }
