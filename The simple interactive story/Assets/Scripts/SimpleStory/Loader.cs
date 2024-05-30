@@ -17,11 +17,7 @@ namespace SimpleStory
 
         private IEnumerator CheckAnimationEnd()
         {
-            while (animator.GetCurrentAnimatorStateInfo(0).length >
-                   animator.GetCurrentAnimatorStateInfo(0).normalizedTime)
-            {
-                yield return null;
-            }
+            yield return new WaitForSeconds(1.5f);
             
             background.SetActive(false);
         }
