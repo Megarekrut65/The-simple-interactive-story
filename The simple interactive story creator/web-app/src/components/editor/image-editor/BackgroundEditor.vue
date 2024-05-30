@@ -13,6 +13,10 @@ const props = defineProps({
         type: Number,
         required: true
     },
+    draws: {
+        type: Object,
+        required: true
+    },
     updateImage: {
         type: Function,
         required: true
@@ -53,7 +57,10 @@ const redrawCanvas = () => {
     if (background.value) ctx.drawImage(background.value, 0, 0, size.width, size.height);
 
     imagesContainer.value.forEach((image, index) => {
-        ctx.drawImage(image.draw, image.rect.x, image.rect.y, image.rect.width, image.rect.height);
+        const draw = props.draws[image.img.name];
+        if (!draw) return;
+
+        ctx.drawImage(draw, image.rect.x, image.rect.y, image.rect.width, image.rect.height);
         drawResizingCircles(ctx, selectedImageIndex, index, image.rect);
     });
 };
@@ -108,8 +115,6 @@ const dragImage = (event) => {
     const selectedImage = imagesContainer.value[selectedImageIndex].rect;
     selectedImage.x += dx;
     selectedImage.y += dy;
-
-    console.log(selectedImage)
 };
 
 const resizeImage = (event) => {

@@ -74,6 +74,8 @@ subscribeAuthChange((user) => {
     router.go();
 });
 
+const draws = ref({});
+
 const loadStoryData = () => {
     isLoading.value = true;
 
@@ -92,7 +94,7 @@ const loadStoryData = () => {
 
                 scene.images.forEach(item => {
                     objToImage(item.img, (_, draw) => {
-                        item.draw = draw;
+                        draws.value[item.img.name] = draw;
                     });
                 });
             });
@@ -328,7 +330,7 @@ const onPublish = () => {
                     </table>
                     <SceneEditor v-if="Object.keys(scenes).length > 0" :scenes="scenes"
                         :currentSceneKey="currentSceneKey" :user-storage="userStorage" :story-id="story.id"
-                        :remove-scene="removeCurrentScene">
+                        :remove-scene="removeCurrentScene" :draws="draws">
                     </SceneEditor>
                 </div>
             </div>

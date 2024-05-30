@@ -34,6 +34,10 @@ const props = defineProps({
     removeScene: {
         type: Function,
         required: true
+    },
+    draws: {
+        type: Object,
+        required: true
     }
 });
 
@@ -98,7 +102,6 @@ const onSceneSave = () => {
         const allImages = scene.images.map((image) =>
             uploadImage(props.userStorage.images, image.img).then(res => {
                 image.img = res;
-                delete image.draw;
 
                 return Promise.resolve();
             })
@@ -186,7 +189,7 @@ const removeCurrentScene = () => {
                 </td>
                 <td>
                     <ImagesEditor :is-active="editorIsActive" :currentScene="currentScene" :on-close="onSceneClose"
-                        :on-update="onUpdateImages" :user-images="userStorage.images">
+                        :draws="draws" :on-update="onUpdateImages" :user-images="userStorage.images">
                     </ImagesEditor>
                 </td>
             </tr>

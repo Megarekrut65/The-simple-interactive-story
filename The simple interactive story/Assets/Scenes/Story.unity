@@ -1119,7 +1119,7 @@ MonoBehaviour:
   content: {fileID: 3541307931116967962}
   background: {fileID: 1121166556}
   defaultBackground: {fileID: 21300000, guid: 79e4ec9df4ddf824eb8c5ffd4321dcf5, type: 3}
-  constructor: {fileID: 0}
+  constructor: {fileID: 2105649648}
   textObj: {fileID: 8010976413277459778}
   text: {fileID: 2812717410855193028}
   fontManager: {fileID: 593467278}
@@ -1800,7 +1800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 2105649646}
-  imageObj: {fileID: 1439225489968874834, guid: 09c65bc5f8a9dfb41a21c269a91db5cb, type: 3}
+  canvasRect: {fileID: 581319728}
 --- !u!1 &2138371087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2704,7 +2704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 470.97003}
+  m_AnchoredPosition: {x: 0, y: 446.5429}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &3566143824772822401
@@ -2879,8 +2879,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 131963036203751653}
   m_HandleRect: {fileID: 1531556953019712437}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.8284008
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

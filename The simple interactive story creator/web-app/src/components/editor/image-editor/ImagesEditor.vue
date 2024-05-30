@@ -26,15 +26,19 @@ const props = defineProps({
     userImages: {
         type: Array,
         required: true
+    },
+    draws: {
+        type: Object,
+        required: true
     }
 });
 
 const images = computed(() => props.currentScene.images), length = computed(() => images.value.length);
+const draws = computed(() => props.draws);
 
 const createImage = (image, draw) => {
     const obj = {
         img: image,
-        draw: draw,
         rect: {
             x: 5,
             y: 5,
@@ -42,6 +46,8 @@ const createImage = (image, draw) => {
             height: draw.height
         }
     };
+
+    draws.value[image.name] = draw;
 
     return obj;
 };
@@ -85,8 +91,8 @@ const onRemove = (index) => {
             <div class="row my-row">
                 <div class="col-12 col-md-9 col-xl-8 canvas-container">
                     <i class="fa-regular fa-circle-xmark text-white custom-btn" @click="onClose"></i>
-                    <BackgroundEditor :images="images" :images-length="length" :update-image="updateImage"
-                        :currentScene="currentScene">
+                    <BackgroundEditor :images="images" :images-length="length" :draws="draws"
+                        :update-image="updateImage" :currentScene="currentScene">
                     </BackgroundEditor>
                 </div>
                 <div class="col-12 col-md-3 col-xl-4 images-part">
