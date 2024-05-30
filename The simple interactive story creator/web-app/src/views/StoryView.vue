@@ -69,10 +69,11 @@ getPublish(publishId).then((res) => {
                     <div class="col-12">
                         <div v-if="publish && story" class="card">
                             <div class="card-body">
-                                <div>
+                                <div class="title-box">
                                     <h4 class="card-title">{{ story.title }}</h4>
-                                    <RouterLink class="card-text text-primary"
-                                        :to="{ name: 'story-view', params: { publishId: story.publish } }">
+                                    <RouterLink class="h4 card-text text-primary"
+                                        :to="{ name: 'story-view', params: { publishId: story.publish } }"
+                                        target="_blank">
                                         {{ $t('runStory') }}
                                     </RouterLink>
                                 </div>
@@ -112,5 +113,10 @@ getPublish(publishId).then((res) => {
 <style>
 .description-text {
     white-space: pre-wrap;
+}
+
+.title-box {
+    display: flex;
+    justify-content: space-between;
 }
 </style>

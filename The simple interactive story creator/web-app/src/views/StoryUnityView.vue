@@ -38,11 +38,11 @@ const loadGame = () => {
     }
 
     var buildUrl = assetsUrl.href + "/Build";
-    var loaderUrl = buildUrl + "/TemplateData.loader.js";
+    var loaderUrl = buildUrl + "/Web.loader.js";
     var config = {
-        dataUrl: buildUrl + "/TemplateData.data.br",
-        frameworkUrl: buildUrl + "/TemplateData.framework.js.br",
-        codeUrl: buildUrl + "/TemplateData.wasm.br",
+        dataUrl: buildUrl + "/Web.data.br",
+        frameworkUrl: buildUrl + "/Web.framework.js.br",
+        codeUrl: buildUrl + "/Web.wasm.br",
         streamingAssetsUrl: assetsUrl.href + "/StreamingAssets",
         companyName: "BOAGames",
         productName: "The simple interactive story",
@@ -109,7 +109,7 @@ onMounted(loadGame);
 <template>
     <BigBanner min-height="100vh"></BigBanner>
     <div id="unity-container" class="unity-desktop" style="width: 80%;">
-        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 100%;"></canvas>
+        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 100%; "></canvas>
         <div id="unity-loading-bar">
             <div id="unity-logo"></div>
             <div id="unity-progress-bar-empty">
@@ -123,4 +123,5 @@ onMounted(loadGame);
             <div id="unity-build-title">The simple interactive story</div>
         </div>
     </div>
+
 </template>

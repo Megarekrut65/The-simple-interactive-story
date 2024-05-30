@@ -26,7 +26,8 @@ const logoutBtn = () => {
 </script>
 
 <template>
-  <header class="navigation fixed-top" style="padding-bottom: 0; padding-top: 0;">
+  <header v-if="!$route.name?.includes('story-view')" class="navigation fixed-top"
+    style="padding-bottom: 0; padding-top: 0;">
     <nav class="navbar navbar-expand-lg navbar-dark" style="padding-bottom: 0; padding-top: 0;">
       <LocalizedLink class="navbar-brand" to="/"><img class="logo-img" src="./assets/images/logo.png" alt="Logo">
       </LocalizedLink>
@@ -80,7 +81,8 @@ const logoutBtn = () => {
 
   <RouterView />
 
-  <footer class="position-relative text-center" :style="{ backgroundImage: 'url(' + footerBackground + ')' }">
+  <footer v-if="!$route.name?.includes('story-view')" class="position-relative text-center"
+    :style="{ backgroundImage: 'url(' + footerBackground + ')' }">
     <div class="section">
       <div class="container">
         <div class="row align-items-center">
