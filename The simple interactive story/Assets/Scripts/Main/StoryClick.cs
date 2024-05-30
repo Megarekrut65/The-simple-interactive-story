@@ -12,7 +12,7 @@ namespace Main
 
         public void Click()
         {
-            LocalStorage.SetValue("storyId", "db37cb6d-e063-400e-b96e-9c0b3df11b62");
+            LocalStorage.SetValue("storyId", "827c621f-e6f9-4502-9d72-6d08fcefb7f0");
             LocalStorage.SetValue("userId", "rdMc08WAIpMKwZC7l8hdlHIXwUB2");
             LocalStorage.SetValue("language", language);
             

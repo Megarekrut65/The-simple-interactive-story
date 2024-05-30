@@ -35,6 +35,6 @@ const onImageSelected = (value) => {
 
 <template>
     <ItemSelect :items="images" :on-selected="onImageSelected" :initial="image?.name" item-key="img" content-key="name"
-        value-key="name" file-type="image/png" :load-function="loadImage"></ItemSelect>
+        value-key="name" file-type="image/png, image/jpeg" :load-function="loadImage"></ItemSelect>
     <SingleMiniImage :image="image"></SingleMiniImage>
 </template>

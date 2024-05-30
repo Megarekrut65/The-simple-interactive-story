@@ -14,6 +14,7 @@ namespace SimpleStory
         private readonly Dictionary<string, Scene> _scenes = new Dictionary<string, Scene>();
         private readonly Dictionary<string, Sprite> _images = new Dictionary<string, Sprite>();
         private readonly Dictionary<string, AudioClip> _sounds = new Dictionary<string, AudioClip>();
+        private Dictionary<string, bool> _loadedScenes = new Dictionary<string, bool>();
         [CanBeNull] private readonly Scene _mainScene = null;
 
         public StoryController() { }
@@ -26,9 +27,12 @@ namespace SimpleStory
             }
         }
 
+        public bool IsSceneLoaded(Scene scene) => _loadedScenes.TryGetValue(scene.id, out bool value) && value;
+
         public IEnumerator LoadScene(Scene scene, int depth=2)
         {
             if (scene == null) yield break;
+            _loadedScenes[scene.id] = true;
             
             List<IEnumerator> enumerators = new List<IEnumerator>();
             if(scene.background != null) enumerators.Add(LoadSprite(scene.background));

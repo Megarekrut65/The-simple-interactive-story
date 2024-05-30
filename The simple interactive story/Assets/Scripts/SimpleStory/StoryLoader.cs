@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Global;
 using Global.Sound;
 using JetBrains.Annotations;
@@ -73,14 +74,22 @@ namespace SimpleStory
             _controller = new StoryController(list);
             StartCoroutine(LoadScene(_controller.GetScene()));
         }
-
+        
         private IEnumerator LoadScene(Scene scene)
         {
             Debug.Log(scene);
             if(scene == null) yield break;
             
             loader.Close();
-            yield return _controller.LoadScene(scene);
+            if (!_controller.IsSceneLoaded(scene))
+            {
+                yield return _controller.LoadScene(scene);
+            }
+            else
+            {
+                StartCoroutine(_controller.LoadScene(scene));
+            }
+            
 
             LoadMusic(scene);
             
