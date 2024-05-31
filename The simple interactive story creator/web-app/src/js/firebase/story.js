@@ -126,7 +126,7 @@ export const setStorageList = (userId, list, listKey) => {
     return setDoc(doc(db, mainCollection, userId), { [listKey]: list }, { merge: true });
 };
 
-export const cascadeRemoveStory = (userId, storyId) => {
+export const cascadeRemoveStory = (userId, storyId, publishId) => {
     const storyColl = getStoryCollection(userId);
     const sceneColl = getSceneCollection(userId, storyId);
     const docs = getDocs(collection(db, sceneColl));
@@ -139,6 +139,10 @@ export const cascadeRemoveStory = (userId, storyId) => {
         }
 
         return Promise.all(promises).then(() => {
+            if (publishId) return deleteDoc(doc(db, publishCollection, publishId));
+
+            return Promise.resolve();
+        }).then(() => {
             return deleteDoc(doc(db, storyColl, storyId));
         });
     });

@@ -213,7 +213,7 @@ const removeStoryAction = () => {
     if (!user || !props.storyId) return;
     isLoading.value = true;
 
-    cascadeRemoveStory(user.uid, props.storyId).then(() => {
+    cascadeRemoveStory(user.uid, props.storyId, story.value.publish).then(() => {
         router.push({ name: "account" });
     })
         .catch(err => {
