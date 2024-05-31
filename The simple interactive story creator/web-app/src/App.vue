@@ -40,13 +40,13 @@ const logoutBtn = () => {
       <div class="collapse navbar-collapse text-center" id="navigation">
         <ul class="navbar-nav ml-auto outline">
           <li class="nav-item active">
-            <LocalizedLink class="nav-link" to="">{{ $t('home') }}</LocalizedLink>
+            <LocalizedLink class="nav-link" to="/">{{ $t('home') }}</LocalizedLink>
           </li>
           <li class="nav-item">
             <LocalizedLink class="nav-link" to="/stories">{{ $t('userStories') }}</LocalizedLink>
           </li>
           <li class="nav-item">
-            <LocalizedLink class="nav-link" to="/">{{ $t('contacts') }}</LocalizedLink>
+            <LocalizedLink class="nav-link" to="/contacts">{{ $t('contacts') }}</LocalizedLink>
           </li>
           <li class="nav-item">
             <LanguageSelect></LanguageSelect>
@@ -94,10 +94,10 @@ const logoutBtn = () => {
                 <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('home') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('about') }}</LocalizedLink>
+                <LocalizedLink to="/about" class="text-light d-block mb-3">{{ $t('about') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('contacts') }}</LocalizedLink>
+                <LocalizedLink to="/contacts" class="text-light d-block mb-3">{{ $t('contacts') }}</LocalizedLink>
               </li>
             </ul>
           </div>

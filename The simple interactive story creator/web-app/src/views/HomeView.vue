@@ -19,10 +19,6 @@ const toLink = (data) => { return { name: 'story', params: { publishId: `${data.
         <section class="section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-12">
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-10 mx-auto text-center">
                         <h2>{{ $t('popularStories') }}</h2>
                         <p>{{ $t('selectPopular') }}</p>

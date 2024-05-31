@@ -59,5 +59,10 @@ loadMore();
                 <button class="btn btn-success" @click="loadMore">{{ $t('loadMore') }}</button>
             </div>
         </div>
+        <div class="row" v-if="stories.length == 0">
+            <div class="col-12 text-center">
+                <h5>{{ $t('empty') }}</h5>
+            </div>
+        </div>
     </div>
 </template>

@@ -4,7 +4,7 @@ export const en = {
     news: "News",
     about: "About us",
     help: "Help",
-    story: "History",
+    story: "Story",
     contacts: "Contacts",
     signInUp: "Sign in/register.",
     support: "Support",
@@ -110,5 +110,13 @@ export const en = {
     singUp: "Registration",
     nicknameHint: "Nickname...",
     repeatHint: "Repeat password...",
-    register: "Register"
+    register: "Register",
+
+    userStories: "Stories",
+    search: "Search",
+    empty: "No stories found",
+
+    developer: "Developer",
+    email: "E-mail address",
+    aboutDescription: "BOA Games is a game development 'company' consisting of one member, Bandalak Oleksandr.\nMany games have been developed under the BOA Games brand, such as 'Magical Slimes: Triple Choice', 'Denasty', ' Three ways' and others."
 };
