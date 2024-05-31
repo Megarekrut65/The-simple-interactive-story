@@ -100,5 +100,15 @@ export const en = {
     creatingDate: "Creation Date",
     publishDate: "Publication date",
     runStory: "Run Story",
-    mobileSupport: "Unfortunately, mobile devices are not supported by the Unity platform in web applications."
+    mobileSupport: "Unfortunately, mobile devices are not supported by the Unity platform in web applications.",
+
+    singIn: "Input",
+    login: "Log in",
+    emailHint: "Email address...",
+    passwordHint: "Password...",
+    dontMatch: "Passwords do not match!",
+    singUp: "Registration",
+    nicknameHint: "Nickname...",
+    repeatHint: "Repeat password...",
+    register: "Register"
 };

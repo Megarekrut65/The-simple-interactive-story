@@ -28,19 +28,17 @@ const onSubmit = () => {
 <template>
     <LoadingWindow :is-loading="isLoading"></LoadingWindow>
     <div class="border border-dark p-3 m-lg-3 m-1">
-        <h3>Sing In</h3>
+        <h3>{{ $t('singIn') }}</h3>
 
         <form action="#" @submit="onSubmit" onsubmit="return false;">
-            <input v-model="email" type="email" name="email" autocomplete="email" placeholder="Email..."
-                class="form-control mb-4 shadow rounded-0" required>
-            <input v-model="password" type="password" name="password" placeholder="Password..."
-                class="form-control mb-4 shadow rounded-0" required>
+            <input v-model="email" type="email" name="email" autocomplete="email" :placeholder="$t('emailHint')"
+                class="form-control mb-4 shadow rounded-0" required max-length="1000">
+            <input v-model="password" type="password" name="password" :placeholder="$t('passwordHint')"
+                class="form-control mb-4 shadow rounded-0" required max-length="1000">
 
             <div class="error-message">{{ error }}</div>
 
-            <p>Forgot Password?</p>
-
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">{{ $t('login') }}</button>
         </form>
     </div>
 </template>
