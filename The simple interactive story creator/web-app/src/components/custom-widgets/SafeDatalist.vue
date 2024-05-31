@@ -28,6 +28,10 @@ const props = defineProps({
         type: String,
         required: false,
         default: ""
+    },
+    itemAction: {
+        type: Object,
+        required: false
     }
 });
 
@@ -41,6 +45,11 @@ watch(() => props.initial, (newOne, oldOne) => {
 
 
 const onChanged = () => {
+    if (props.itemAction && value.value === props.itemAction[props.valueKey]) {
+        props.onSelect(toRaw(props.itemAction));
+        value.value = props.initial;
+        return;
+    }
     const result = props.list.find(item => item[props.valueKey] === value.value);
     if (result === undefined) {
         value.value = "";
@@ -54,6 +63,7 @@ const onChanged = () => {
     <input type="list" :list="id" :required="required" autocomplete="off" v-model="value" :placeholder="$t('selectOld')"
         @change="onChanged">
     <datalist :id="id">
+        <option v-if="itemAction" :value="itemAction[valueKey]">{{ itemAction[contentKey] }}</option>
         <option v-for="data in list" :key="data.id" :value="data[valueKey]">{{ data[contentKey] }}
         </option>
     </datalist>

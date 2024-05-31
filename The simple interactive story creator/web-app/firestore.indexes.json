@@ -15,6 +15,24 @@
       ]
     },
     {
+      "collectionGroup": "publishStories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "privateStory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "publishDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "stories",
       "queryScope": "COLLECTION",
       "fields": [

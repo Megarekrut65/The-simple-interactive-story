@@ -38,6 +38,10 @@ const props = defineProps({
     draws: {
         type: Object,
         required: true
+    },
+    createScene: {
+        type: Function,
+        required: true
     }
 });
 
@@ -86,7 +90,6 @@ const onSceneSave = () => {
     isLoading.value = true;
 
     const scene = toRaw(currentScene.value);
-    console.log(scene);
 
     const uploadBackground = uploadImage(props.userStorage.images, scene.background).then(background => {
         scene.background = background;
@@ -178,7 +181,8 @@ const removeCurrentScene = () => {
                 <td><label class="td-icon">{{ $t('sceneAnswers') }}<i class="fa-regular fa-square-plus custom-btn"
                             @click="onAddAnswer"></i></label></td>
                 <td>
-                    <AnswersEditor :answers="currentScene.answers" :scenes="scenes" :on-update="onUpdateAnswers">
+                    <AnswersEditor :answers="currentScene.answers" :scenes="scenes" :on-update="onUpdateAnswers"
+                        :create-scene="createScene">
                     </AnswersEditor>
                 </td>
             </tr>

@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
 import { removeAt } from '@/js/utilities/array-utility';
+import i18n from '@/i18n';
 
 
 const props = defineProps({
@@ -16,15 +17,31 @@ const props = defineProps({
     onUpdate: {
         type: Function,
         required: true
+    },
+    createScene: {
+        type: Function,
+        required: true
     }
 });
 
 const sceneList = computed(() => Object.values(props.scenes));
 const answers = computed(() => props.answers);
+
+const newTitle = computed(() => i18n.t('newScene'));
+const newSceneScene = ref({ id: "new-scene-none", title: newTitle.value });
 const scenes = computed(() => props.scenes);
+
+
 
 const onSceneSelect = (index, value) => {
     if (index >= 0 && index < answers.value.length) {
+        if (value && value.id === newSceneScene.value.id) {
+            const scene = props.createScene();
+            answers.value[index].nextScene = scene.id;
+            props.onUpdate(answers.value);
+            return;
+        }
+
         answers.value[index].nextScene = value.id;
         props.onUpdate(answers.value);
     }
@@ -51,7 +68,8 @@ const onRemove = (index) => {
                     <td>
                         <SafeDatalist :list="sceneList" :on-select="(value) => onSceneSelect(index, value)"
                             :required="true" content-key="title" value-key="title"
-                            :initial="scenes[data.nextScene] ? scenes[data.nextScene].title : ''"></SafeDatalist>
+                            :initial="scenes[data.nextScene] ? scenes[data.nextScene].title : ''"
+                            :item-action="newSceneScene"></SafeDatalist>
                     </td>
                 </tr>
             </table>

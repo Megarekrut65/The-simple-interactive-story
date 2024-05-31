@@ -122,15 +122,27 @@ const makeMain = () => {
     });
 };
 
-const createEmptyScene = () => {
+const createEmptyScene = (defaultTitle = null) => {
     const id = v4();
     const size = Object.keys(scenes.value).length;
 
-    const title = getUniqueName(Object.values(scenes.value).map(item => item.title), untitled.value);
+    if (!defaultTitle) defaultTitle = untitled.value;
+
+    const title = getUniqueName(Object.values(scenes.value).map(item => item.title), defaultTitle);
     const scene = {
         id: id, title: title, background: null, music: null, text: "",
         answers: [], images: [], isMain: size == 0
     };
+
+    return scene;
+};
+
+const createSceneForAnswers = () => {
+    const current = scenes.value[currentSceneKey.value];
+    const title = current.title;
+
+    const scene = createEmptyScene(title);
+    scenes.value[scene.id] = scene;
 
     return scene;
 };
@@ -334,7 +346,7 @@ const onPublish = () => {
                     </table>
                     <SceneEditor v-if="Object.keys(scenes).length > 0" :scenes="scenes"
                         :currentSceneKey="currentSceneKey" :user-storage="userStorage" :story-id="story.id"
-                        :remove-scene="removeCurrentScene" :draws="draws">
+                        :remove-scene="removeCurrentScene" :draws="draws" :create-scene="createSceneForAnswers">
                     </SceneEditor>
                 </div>
             </div>

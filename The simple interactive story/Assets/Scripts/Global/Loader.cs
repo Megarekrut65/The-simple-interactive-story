@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using Image = UnityEngine.UI.Image;
 
 namespace Global
 {
     public class Loader: MonoBehaviour
     {
+        [SerializeField] private Image backgroundImage;
         [SerializeField] private GameObject background;
         [SerializeField] private GameObject icon;
         [SerializeField] private Animator animator;
@@ -21,21 +21,18 @@ namespace Global
         {
             animator.SetBool(IsOpened, true);
             icon.SetActive(false);
-            StartCoroutine(CheckAnimationEnd());
         }
-
-        private IEnumerator CheckAnimationEnd()
-        {
-            yield return new WaitForSeconds(1.6f);
-            
-            background.SetActive(false);
-        }
-
+        
         public void Close()
         {
             background.SetActive(true);
             icon.SetActive(true);
             animator.SetBool(IsOpened, false);
+        }
+
+        private void Update()
+        {
+            background.SetActive(backgroundImage.color.a > 0.05);
         }
     }
 }
