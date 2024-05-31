@@ -28,8 +28,9 @@ const logoutBtn = () => {
 <template>
   <header v-if="!$route.name?.includes('story-view')" class="navigation fixed-top"
     style="padding-bottom: 0; padding-top: 0;">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="padding-bottom: 0; padding-top: 0;">
-      <LocalizedLink class="navbar-brand" to="/"><img class="logo-img" src="./assets/images/logo.png" alt="Logo">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="padding:0;">
+      <LocalizedLink class="navbar-brand logo-link" style="padding:0;" to="/"><img class="logo-img"
+          src="./assets/images/logo.png" alt="Logo">
       </LocalizedLink>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
         aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +43,7 @@ const logoutBtn = () => {
             <LocalizedLink class="nav-link" to="">{{ $t('home') }}</LocalizedLink>
           </li>
           <li class="nav-item">
-            <LocalizedLink class="nav-link" to="/">{{ $t('news') }}</LocalizedLink>
+            <LocalizedLink class="nav-link" to="/stories">{{ $t('userStories') }}</LocalizedLink>
           </li>
           <li class="nav-item">
             <LocalizedLink class="nav-link" to="/">{{ $t('contacts') }}</LocalizedLink>
@@ -93,16 +94,10 @@ const logoutBtn = () => {
                 <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('home') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('news') }}</LocalizedLink>
-              </li>
-              <li>
                 <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('about') }}</LocalizedLink>
               </li>
               <li>
                 <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('contacts') }}</LocalizedLink>
-              </li>
-              <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('support') }}</LocalizedLink>
               </li>
             </ul>
           </div>
@@ -110,16 +105,16 @@ const logoutBtn = () => {
             <h4 class="text-white mb-5">{{ $t('story') }}</h4>
             <ul class="list-unstyled">
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('createStory') }}</LocalizedLink>
+                <LocalizedLink to="/editor/new" class="text-light d-block mb-3">{{ $t('createStory') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('myStories') }}</LocalizedLink>
+                <LocalizedLink to="/account" class="text-light d-block mb-3">{{ $t('myStories') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('popularStories') }}</LocalizedLink>
+                <LocalizedLink to="/stories" class="text-light d-block mb-3">{{ $t('userStories') }}</LocalizedLink>
               </li>
               <li>
-                <LocalizedLink to="/" class="text-light d-block mb-3">{{ $t('account') }}</LocalizedLink>
+                <LocalizedLink to="/account" class="text-light d-block mb-3">{{ $t('account') }}</LocalizedLink>
               </li>
 
             </ul>

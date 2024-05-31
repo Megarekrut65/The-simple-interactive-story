@@ -110,5 +110,8 @@ export const uk = {
     singUp: "Реєстрація",
     nicknameHint: "Псевдонім...",
     repeatHint: "Повторіть пароль...",
-    register: "Зареєструватися"
+    register: "Зареєструватися",
+
+    userStories: "Історії",
+    search: "Пошук"
 };

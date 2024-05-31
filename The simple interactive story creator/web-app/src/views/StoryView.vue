@@ -78,7 +78,11 @@ getPublish(publishId).then((res) => {
                                     </RouterLink>
                                 </div>
                                 <p class="card-text"><strong>{{ $t('storyAuthor') }}</strong></p>
-                                <p class="card-text">{{ story.author }}</p>
+                                <p class="card-text">
+                                    <RouterLink :to="{ name: 'author-stories', params: { authorId: story.authorId } }">
+                                        {{ story.author }}
+                                    </RouterLink>
+                                </p>
 
                                 <p class="card-text"><strong>{{ $t('storyGenre') }}</strong></p>
                                 <p class="card-text">{{ story.genre }}</p>

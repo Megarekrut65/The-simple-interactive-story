@@ -5,14 +5,10 @@ import { getPublishStories, getStory } from '@/js/firebase/story';
 
 const loadMore = (perPage, after) => {
     return getPublishStories(perPage, after).then(publishList => {
-        publishList = publishList.filter(publish => !publish.private);
-
         const stories = publishList.map(publish => getStory(publish.authorId, publish.storyId));
-        return Promise.all(stories).then(res => res.filter(story => story));
+        return Promise.all(stories.map(res => res.catch(() => null))).then(res => res.filter(story => story));
     });
 };
-
-loadMore();
 
 const toLink = (data) => { return { name: 'story', params: { publishId: `${data.publish}` } } };
 </script>

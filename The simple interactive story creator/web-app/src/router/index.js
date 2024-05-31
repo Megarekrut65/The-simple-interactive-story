@@ -19,6 +19,16 @@ const router = createRouter({
           component: () => import('../views/HomeView.vue')
         },
         {
+          path: 'stories',
+          name: 'stories',
+          component: () => import('../views/StoriesView.vue')
+        },
+        {
+          path: 'stories/:authorId',
+          name: 'author-stories',
+          component: () => import('../views/AuthorStoriesView.vue')
+        },
+        {
           path: 'auth',
           name: 'auth',
           component: () => import('../views/AuthView.vue')

@@ -973,8 +973,13 @@ footer .overlay-image {
   border: 0;
 }
 
+.logo-link {
+  max-width: 75%;
+}
+
 .logo-img {
-  height: 100px;
+  max-height: 100px;
+  max-width: 100%;
 }
 footer {
   background-repeat: no-repeat;

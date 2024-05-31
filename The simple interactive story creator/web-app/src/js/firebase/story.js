@@ -1,4 +1,7 @@
-import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter } from "firebase/firestore";
+import {
+    collection, deleteDoc, deleteField, doc, getDoc, getDocs,
+    limit, orderBy, query, setDoc, startAfter, where
+} from "firebase/firestore";
 import { fs as db } from "./firestore";
 
 const mainCollection = "userStories", storyCollection = "stories", scenesCollection = "scenes";
@@ -75,12 +78,36 @@ export const getUserStories = (userId, perPage, after = null) => {
 
 export const getPublishStories = (perPage, after = null) => {
     const q = query(collection(db, publishCollection),
+        where("privateStory", "==", false),
         orderBy("id"),
         orderBy("publishDate", "desc"),
         startAfter(after),
         limit(perPage));
 
     return getDocs(q).then(dataDocs);
+};
+
+export const searchPublishStories = (title, author, authorId, genre, perPage, after = null) => {
+    const conditionals = [];
+    if (authorId) {
+        conditionals.push(where("authorId", "==", authorId));
+    }
+
+    const q = query(collection(db, publishCollection), ...conditionals, where("privateStory", "==", false),
+        orderBy("id"),
+        orderBy("publishDate", "desc"),
+        startAfter(after),
+        limit(perPage));
+
+    return getDocs(q).then(dataDocs).then(lst => {
+        const promises = lst.map(publish => getStory(publish.authorId, publish.storyId));
+        return Promise.all(promises.map(res => res.catch(() => null))).then(stories => {
+            return stories.filter(story => story
+                && ((!title || title.length < 2) || story.title.toLowerCase().includes(title.toLowerCase()))
+                && ((!author || author.length < 2) || story.author.toLowerCase().includes(author.toLowerCase()))
+                && ((!genre || genre.length < 2) || story.genre.toLowerCase().includes(genre.toLowerCase())));
+        });
+    });
 };
 
 export const getStoryScenes = (userId, storyId) => {
