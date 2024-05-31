@@ -3,7 +3,8 @@ import "../unity-assets/unity/TemplateData/style.css";
 import BigBanner from "@/components/BigBanner.vue";
 import { onMounted } from "vue";
 
-const assetsUrl = new URL("../unity-assets/unity", import.meta.url);
+//const assetsUrl = new URL("../unity-assets/unity", import.meta.url);
+const assetsUrl = new URL("/assets/unity", import.meta.url);
 
 const loadGame = () => {
     var container = document.querySelector("#unity-container");
@@ -40,10 +41,10 @@ const loadGame = () => {
     var buildUrl = assetsUrl.href + "/Build";
     var loaderUrl = buildUrl + "/Web.loader.js";
     var config = {
-        dataUrl: buildUrl + "/Web.data.br",
-        frameworkUrl: buildUrl + "/Web.framework.js.br",
-        codeUrl: buildUrl + "/Web.wasm.br",
-        streamingAssetsUrl: assetsUrl.href + "/StreamingAssets",
+        dataUrl: buildUrl + "/Web.data",
+        frameworkUrl: buildUrl + "/Web.framework.js",
+        codeUrl: buildUrl + "/Web.wasm",
+        streamingAssetsUrl: assetsUrl.href + "StreamingAssets",
         companyName: "BOAGames",
         productName: "The simple interactive story",
         productVersion: "2.1",
@@ -72,11 +73,6 @@ const loadGame = () => {
         // config.devicePixelRatio = 1;
 
 
-    } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
     }
 
     canvas.style.background = "url('" + buildUrl + "/TemplateData.jpg') center / cover";
@@ -107,9 +103,9 @@ onMounted(loadGame);
 </script>
 
 <template>
-    <BigBanner min-height="100vh"></BigBanner>
+    <BigBanner min-height="100vh" :title="$t('mobileSupport')"></BigBanner>
     <div id="unity-container" class="unity-desktop" style="width: 80%;">
-        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 100%; "></canvas>
+        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 80%;"></canvas>
         <div id="unity-loading-bar">
             <div id="unity-logo"></div>
             <div id="unity-progress-bar-empty">
@@ -123,5 +119,4 @@ onMounted(loadGame);
             <div id="unity-build-title">The simple interactive story</div>
         </div>
     </div>
-
 </template>

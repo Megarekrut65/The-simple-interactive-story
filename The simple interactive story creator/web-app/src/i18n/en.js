@@ -25,12 +25,15 @@ export const en = {
     generatedAuto: "Generated automatically from story name",
     storyTitle: "Title",
     storyHint: "A simple story...",
+    storyDes: "Description",
+    storyDesHint: "This story is about...",
     storyId: "ID",
     storyBanner: "Banner",
     storyFont: "Font",
     storyAuthor: "Author",
     storyPrivate: "Private story",
-    storyPrivateDes: "To view a private story, you can use its ID. Public stories can be found by name in search.",
+    storyGenre: "Genre",
+    genreHint: "Adventure, Romance, Comedy...",
 
     generalSettings: "General History Settings",
     allFieldsMarked: "All required fields are marked",
@@ -75,6 +78,7 @@ export const en = {
     yes: "Yes",
     no: "No",
     ok: "Understood",
+    you: "You are the author",
     removeSceneTitle: "Remove Scene",
     removeSceneQuestion: "Are you sure you want to delete the scene? It will not be able to be restored!",
     infoMainMessage: "Unable to delete main scene.\nMake another scene main first.",
@@ -86,10 +90,15 @@ export const en = {
     publishTitle: "Publication",
     publishDescription: "Once published, your story will be viewable by other people you send the link to. Or if you mark the story as non-private, it will be available to all users on our platform.",
     publishTitleAlready: "Story published",
-    publishDescriptionAlready: "Your story has already been published and is available with the following url:",
+    publishDescriptionAlready: "Your story has already been published and is available at the following link:",
     unpublish: "Unpublish",
     cancel: "Cancel",
 
     publishError: "Failed to load story. This story may have been deleted, closed, or you may have entered an incorrect ID.\nPlease contact the author of the story if possible.",
-    selectPopular: "Enjoy other people's stories"
+    selectPopular: "Enjoy other people's stories",
+    storyPrivateDes: "To view a private story, you can use its ID. Public stories can be found by name in search.",
+    creatingDate: "Creation Date",
+    publishDate: "Publication date",
+    runStory: "Run Story",
+    mobileSupport: "Unfortunately, mobile devices are not supported by the Unity platform in web applications."
 };
