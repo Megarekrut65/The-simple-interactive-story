@@ -100,7 +100,7 @@ export const en = {
     creatingDate: "Creation Date",
     publishDate: "Publish Date",
     runStory: "Run Story",
-    mobileSupport: "Unfortunately, mobile devices are not supported by the Unity platform in web applications. If you are reading this on a desktop device, please wait for the game to load or try reloading the page.",
+    mobileSupport: "If you are using a mobile device and the story does not load, try switching to the desktop version of the site in your browser. If you're reading this on a desktop device, wait for the game to load or try reloading the page.",
 
     singIn: "Input",
     login: "Log in",
