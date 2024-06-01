@@ -7,6 +7,14 @@ defineProps({
     onRemove: {
         type: Function,
         required: true
+    },
+    onUp: {
+        type: Function,
+        required: true
+    },
+    onDown: {
+        type: Function,
+        required: true
     }
 })
 </script>
@@ -15,6 +23,9 @@ defineProps({
     <div class="image-container">
         <img :src="src">
         <div class="panel">
+            <i class="fa-solid fa-circle-arrow-up text-success custom-btn" @click="onUp" :title="$t('removeImage')"></i>
+            <i class="fa-solid fa-circle-arrow-down text-warning custom-btn" @click="onDown"
+                :title="$t('removeImage')"></i>
             <i class="fa-solid fa-trash-can text-danger custom-btn" @click="onRemove" :title="$t('removeImage')"></i>
         </div>
     </div>

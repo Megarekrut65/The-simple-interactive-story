@@ -5,6 +5,7 @@ import ImageItem from "./ImageItem.vue";
 import MiniImagesList from "@/components/custom-widgets/MiniImagesList.vue";
 import ItemSelect from "@/components/custom-widgets/ItemSelect.vue";
 import { imageToSrc, loadImage, objToImage } from "@/js/utilities/image-utility";
+import { ref } from "vue";
 
 const props = defineProps({
     isActive: {
@@ -63,6 +64,7 @@ const addImage = (image, draw) => {
     images.value.push(createImage(image, draw));
 
     props.onUpdate(images.value);
+    backgroundRef.value.redrawAll();
 };
 
 const onImageSelect = (value) => {
@@ -78,6 +80,29 @@ const onRemove = (index) => {
     if (index >= 0 && index < images.value.length) {
         images.value.splice(index, 1);
         props.onUpdate(images.value);
+
+        backgroundRef.value.redrawAll();
+    }
+};
+
+const backgroundRef = ref(null);
+
+const onUp = (index) => {
+    if (index >= 1 && index < images.value.length) {
+        [images.value[index], images.value[index - 1]] = [images.value[index - 1], images.value[index]];
+        props.onUpdate(images.value);
+
+        backgroundRef.value.redrawAll();
+    }
+};
+
+const onDown = (index) => {
+    if (index >= 0 && index < images.value.length - 1) {
+        [images.value[index], images.value[index + 1]] = [images.value[index + 1], images.value[index]];
+
+        props.onUpdate(images.value);
+
+        backgroundRef.value.redrawAll();
     }
 };
 
@@ -85,17 +110,15 @@ const onRemove = (index) => {
 
 <template>
     <div>
-
-
         <div v-if="isActive" class="img-editor-background">
             <div class="row my-row">
-                <div class="col-12 col-md-9 col-xl-8 canvas-container">
+                <div class="col-12 col-md-9 canvas-container">
                     <i class="fa-regular fa-circle-xmark text-white custom-btn" @click="onClose"></i>
-                    <BackgroundEditor :images="images" :images-length="length" :draws="draws"
+                    <BackgroundEditor ref="backgroundRef" :images="images" :images-length="length" :draws="draws"
                         :update-image="updateImage" :currentScene="currentScene">
                     </BackgroundEditor>
                 </div>
-                <div class="col-12 col-md-3 col-xl-4 images-part">
+                <div class="col-12 col-md-3 images-part">
                     <div>
                         <label>{{ $t('choseFile') }}</label>
                         <ItemSelect :items="userImages" :on-selected="onImageSelect" item-key="img" content-key="name"
@@ -105,7 +128,8 @@ const onRemove = (index) => {
 
                     <div class="images">
                         <ImageItem v-for="(data, index) in images" :key="data.id" :src="imageToSrc(data.img)"
-                            :on-remove="() => onRemove(index)">
+                            :on-remove="() => onRemove(index)" :on-up="() => onDown(index)"
+                            :on-down="() => onUp(index)">
                         </ImageItem>
 
                     </div>
@@ -142,7 +166,7 @@ const onRemove = (index) => {
 
 .images {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
 
     overflow-y: auto;

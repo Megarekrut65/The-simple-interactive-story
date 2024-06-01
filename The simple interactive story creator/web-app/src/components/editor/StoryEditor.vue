@@ -324,11 +324,11 @@ const onPublish = () => {
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
                     <div class="row">
-                        <div class="col-12 col-md-6"><input type="button" class="custom-btn" :value="$t('addScene')"
-                                @click="addScene">
+                        <div class="col-12 col-md-6"><input type="button" class="btn-outline-custom"
+                                :value="$t('addScene')" @click="addScene">
                         </div>
-                        <div class="col-12 col-md-6"><input type="button" class="custom-btn" :value="$t('makeMain')"
-                                @click="makeMain">
+                        <div class="col-12 col-md-6"><input type="button" class="btn-outline-custom"
+                                :value="$t('makeMain')" @click="makeMain">
                         </div>
                     </div>
                     <table>

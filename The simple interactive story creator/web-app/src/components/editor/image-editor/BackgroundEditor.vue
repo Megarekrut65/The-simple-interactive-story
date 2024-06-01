@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted } from "vue";
 import { collidePoint, drawResizingCircles, getCornerUnderMouse } from "@/js/utilities/canvas-utility";
 import { getNormSize } from "@/js/utilities/size-utility";
 import { imageToSrc } from "@/js/utilities/image-utility";
@@ -7,10 +7,6 @@ import { imageToSrc } from "@/js/utilities/image-utility";
 const props = defineProps({
     images: {
         type: Array,
-        required: true
-    },
-    imagesLength: {
-        type: Number,
         required: true
     },
     draws: {
@@ -57,6 +53,7 @@ const redrawCanvas = () => {
     if (background.value) ctx.drawImage(background.value, 0, 0, size.width, size.height);
 
     imagesContainer.value.forEach((image, index) => {
+        if (!image) return;
         const draw = props.draws[image.img.name];
         if (!draw) return;
 
@@ -185,19 +182,21 @@ const setUpCanvas = (canvasId) => {
     }
 };
 
+const redrawAll = () => {
+    selectedImageIndex = -1;
+    selectedCornerIndex = -1;
+    redrawCanvas();
+};
 
 onMounted(() => {
     setUpCanvas("canvas");
 
-    redrawCanvas();
-
-    watch(() => props.imagesLength, () => {
-        selectedImageIndex = -1;
-        selectedCornerIndex = -1;
-        redrawCanvas();
-    })
+    redrawAll();
 });
 
+defineExpose({
+    redrawAll
+});
 </script>
 
 <template>

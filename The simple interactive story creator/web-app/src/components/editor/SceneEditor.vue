@@ -211,7 +211,7 @@ const removeCurrentScene = () => {
 
             <tr>
                 <td></td>
-                <td class="row text-center">
+                <td class="row text-center mt-4">
                     <div class="col-12 col-sm-4">
                         <input type="submit" :value="$t('save')">
                     </div>
