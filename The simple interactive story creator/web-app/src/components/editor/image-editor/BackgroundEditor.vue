@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted } from "vue";
-import { collidePoint, drawResizingCircles, getCornerUnderMouse } from "@/js/utilities/canvas-utility";
+import { calculateNewDimensions, collidePoint, drawRotatedImage, drawRotatedResizingCircles, getCornerUnderMouse, getRotatorUnderMouse, rotateDelta } from "@/js/utilities/canvas-utility";
 import { getNormSize } from "@/js/utilities/size-utility";
 import { imageToSrc } from "@/js/utilities/image-utility";
 
@@ -33,6 +33,7 @@ let canvas;
 let ctx;
 let isDragging = false;
 let isResizing = false;
+let isRotating = false;
 let prevX, prevY;
 let selectedImageIndex = -1;
 let selectedCornerIndex = -1;
@@ -61,14 +62,15 @@ const redrawCanvas = () => {
         const draw = props.draws[image.img.name];
         if (!draw) return;
 
-        ctx.drawImage(draw, image.rect.x, image.rect.y, image.rect.width, image.rect.height);
-        if (selectedImageIndex === index) drawResizingCircles(ctx, image.rect);
+        drawRotatedImage(ctx, draw, image.rect);
+        if (selectedImageIndex === index) drawRotatedResizingCircles(ctx, image.rect);
     });
 };
 
 const handleMouseUp = () => {
     isDragging = false;
     isResizing = false;
+    isRotating = false;
 };
 
 const getMousePos = (event) => {
@@ -83,6 +85,13 @@ const handleMouseDown = (event) => {
 
     for (let i = imagesContainer.value.length - 1; i >= 0; i--) {
         const image = imagesContainer.value[i];
+
+
+        if (!image.rect.rotation) image.rect.rotation = 0;
+
+
+
+
         const corner = getCornerUnderMouse(image.rect, mouseX, mouseY);
         if (corner !== -1) {
             selectedImageIndex = i;
@@ -93,6 +102,15 @@ const handleMouseDown = (event) => {
 
             redrawCanvas();
 
+            return;
+        }
+        const rotator = getRotatorUnderMouse(image.rect, mouseX, mouseY);
+        if (rotator) {
+            selectedImageIndex = i;
+            isRotating = true;
+            prevX = mouseX;
+            prevY = mouseY;
+            redrawCanvas();
             return;
         }
 
@@ -113,6 +131,26 @@ const handleMouseDown = (event) => {
 
     redrawCanvas();
 };
+const rotateImage = (event) => {
+    if (!isRotating) return;
+
+    const { mouseX, mouseY } = getMousePos(event);
+
+    const selectedImage = imagesContainer.value[selectedImageIndex].rect;
+    if (!selectedImage.rotation) selectedImage.rotation = 0;
+
+    const centerX = selectedImage.x + selectedImage.width / 2;
+    const centerY = selectedImage.y + selectedImage.height / 2;
+
+    const angle1 = Math.atan2(prevY - centerY, prevX - centerX);
+    const angle2 = Math.atan2(mouseY - centerY, mouseX - centerX);
+    const angleDelta = angle2 - angle1;
+
+    selectedImage.rotation += angleDelta * (180 / Math.PI);
+
+    prevX = mouseX;
+    prevY = mouseY;
+};
 const dragImage = (event) => {
     const { mouseX, mouseY } = getMousePos(event);
     const dx = mouseX - prevX;
@@ -125,50 +163,34 @@ const dragImage = (event) => {
 
 const resizeImage = (event) => {
     const { mouseX, mouseY } = getMousePos(event);
+
+    const selectedImage = imagesContainer.value[selectedImageIndex].rect;
     const dx = mouseX - prevX;
     const dy = mouseY - prevY;
 
-    const selectedImage = imagesContainer.value[selectedImageIndex].rect;
+    const { dx: rotatedDx, dy: rotatedDy } = rotateDelta(dx, dy, -((selectedImage.rotation + 360) % 360));
 
-    const aspect = selectedImage.width / selectedImage.height;
+    const { newX, newY, newWidth, newHeight } = calculateNewDimensions(event, selectedImage, selectedCornerIndex, rotatedDx, rotatedDy);
 
-    switch (selectedCornerIndex) {
-        case 0: // Top-left corner
-            selectedImage.x += dx;
-            selectedImage.y += dy;
-            selectedImage.width -= dx;
-            selectedImage.height -= dy;
-            break;
-        case 1: // Top-right corner
-            selectedImage.y += dy;
-            selectedImage.width += dx;
-            selectedImage.height -= dy;
-            break;
-        case 2: // Bottom-right corner
-            selectedImage.width += dx;
-            selectedImage.height += dy;
-            break;
-        case 3: // Bottom-left corner
-            selectedImage.x += dx;
-            selectedImage.width -= dx;
-            selectedImage.height += dy;
-            break;
-    }
+    selectedImage.x = newX;
+    selectedImage.y = newY;
+    selectedImage.width = newWidth;
+    selectedImage.height = newHeight;
 
-    if (!event.shiftKey) {
-        selectedImage.width = selectedImage.height * aspect;
-    }
+    prevX = mouseX;
+    prevY = mouseY;
+
 };
 
 const handleMouseMove = (event) => {
-    if (!isDragging && !isResizing) return;
-
+    if (!isDragging && !isResizing && !isRotating) return;
 
     if (isDragging && selectedImageIndex !== -1) dragImage(event);
     else if (isResizing && selectedImageIndex !== -1 && selectedCornerIndex !== -1) resizeImage(event);
+    else if (isRotating && selectedImageIndex !== -1) rotateImage(event);
 
     redrawCanvas();
-    if (selectedImageIndex != -1) {
+    if (selectedImageIndex !== -1) {
         props.updateImage(selectedImageIndex, imagesContainer.value[selectedImageIndex]);
     }
 

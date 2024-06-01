@@ -44,7 +44,8 @@ const createImage = (image, draw) => {
             x: 5,
             y: 5,
             width: draw.width,
-            height: draw.height
+            height: draw.height,
+            rotation: 0
         }
     };
 
