@@ -32,7 +32,7 @@ namespace SimpleStory
             value == null
                 ? null
                 : new Rect { x = Convert(value.x), y = Convert(value.y), 
-                    width = Convert(value.width), height = Convert(value.height)};
+                    width = Convert(value.width), height = Convert(value.height), rotation = Convert(value.rotation)};
 
         public static CanvasImage Convert(CanvasImageFields value) =>
             value == null

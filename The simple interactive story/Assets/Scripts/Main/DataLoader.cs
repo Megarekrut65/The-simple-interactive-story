@@ -32,7 +32,7 @@ namespace Main
         {
             continueBtn.interactable = false;
             #if UNITY_EDITOR
-            string publishId = "marko-bez-nazvi";// "sasha-taiemnicya-lisovogo-ostrivcya";
+            string publishId = "sasha-taiemnicya-lisovogo-ostrivcya";
             #else
                 string publishId = JsManager.UidFromUrl();
                 _token = JsManager.Token();

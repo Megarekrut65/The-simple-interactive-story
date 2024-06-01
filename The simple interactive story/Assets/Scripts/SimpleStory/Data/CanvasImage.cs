@@ -9,6 +9,7 @@ namespace SimpleStory.Data
         public double y;
         public double width;
         public double height;
+        public double rotation;
         
         public override string ToString()
         {
@@ -16,7 +17,8 @@ namespace SimpleStory.Data
                    $"x: {x}\n" +
                    $"y: {y}\n" +
                    $"width: {width}\n" +
-                   $"height: {height}\n";
+                   $"height: {height}\n" +
+                   $"rotation: {rotation}\n";
         }
     }
     [Serializable]

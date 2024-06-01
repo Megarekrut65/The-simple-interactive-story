@@ -59,6 +59,7 @@ namespace Network.Data
         public FirestoreDouble y;
         public FirestoreDouble width;
         public FirestoreDouble height;
+        public FirestoreDouble rotation;
     }
 
     [Serializable]

@@ -26,6 +26,7 @@ namespace SimpleStory
                                                          (float)canvasImage.rect.width/2, 
                 -((float)canvasImage.rect.y - rect.height/2 + (float)canvasImage.rect.height/2));
 
+            instance.transform.rotation = Quaternion.Euler(0, 0, -(float)canvasImage.rect.rotation);
             Image image = instance.AddComponent<Image>();
             image.sprite = sprite;
             image.preserveAspect = true;
