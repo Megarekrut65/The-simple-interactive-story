@@ -1,0 +1,103 @@
+<script setup>
+import { computed, ref } from 'vue';
+import SafeDatalist from '../custom-widgets/SafeDatalist.vue';
+import { removeAt } from '@/js/utilities/array-utility';
+import i18n from '@/i18n';
+
+
+const props = defineProps({
+    answers: {
+        type: Array,
+        required: true
+    },
+    scenes: {
+        type: Object,
+        required: true
+    },
+    onUpdate: {
+        type: Function,
+        required: true
+    },
+    createScene: {
+        type: Function,
+        required: true
+    }
+});
+
+const sceneList = computed(() => Object.values(props.scenes));
+const answers = computed(() => props.answers);
+
+const newTitle = computed(() => i18n.t('newScene'));
+const newSceneScene = ref({ id: "new-scene-none", title: newTitle.value });
+const scenes = computed(() => props.scenes);
+
+
+
+const onSceneSelect = (index, value) => {
+    if (index >= 0 && index < answers.value.length) {
+        if (value && value.id === newSceneScene.value.id) {
+            const scene = props.createScene();
+            answers.value[index].nextScene = scene.id;
+            props.onUpdate(answers.value);
+            return;
+        }
+
+        answers.value[index].nextScene = value.id;
+        props.onUpdate(answers.value);
+    }
+};
+const onRemove = (index) => {
+    removeAt(answers.value, index);
+    props.onUpdate(answers.value);
+};
+
+</script>
+<template>
+    <div class="row">
+        <div class="col-12 answer" v-for="(data, index) in answers" :key="data.id">
+            <table>
+                <tr>
+                    <td><label>{{ $t('text') }}</label></td>
+                    <td>
+                        <textarea style="width: 100%;" :placeholder="$t('answerHint')" v-model="answers[index].text"
+                            maxlength="200"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>{{ $t('nextScene') }}</label></td>
+                    <td>
+                        <SafeDatalist :list="sceneList" :on-select="(value) => onSceneSelect(index, value)"
+                            :required="false" content-key="title" value-key="title"
+                            :initial="scenes[data.nextScene] ? scenes[data.nextScene].title : ''"
+                            :item-action="newSceneScene"></SafeDatalist>
+                    </td>
+                </tr>
+            </table>
+            <div class="options-container">
+                <i class="fa-solid fa-sliders custom-btn text-waring" :title="$t('advancedOptions')"></i>
+                <i class="fa-solid fa-x custom-btn text-danger" @click="() => onRemove(index)"
+                    :title="$t('removeAnswer')"></i>
+
+            </div>
+
+        </div>
+    </div>
+</template>
+<style>
+.answer {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.067);
+}
+
+.options-container {
+    display: flex;
+}
+
+.options-container i {
+    margin-left: 15px;
+}
+</style>

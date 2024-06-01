@@ -45,6 +45,11 @@ namespace Global.Sound
 
         public void ChangeClip(AudioClip clip)
         {
+            if (clip == null)
+            {
+                audioSource.Stop();
+                return;
+            }
             if(audioSource.isPlaying && audioSource.clip.name == clip.name) return;
             
             audioSource.Stop();

@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Arial';
+  src: url('files/ARIAL.TTF');
+}
+
+@font-face {
+  font-family: 'Geist Mono Variable';
+  src: url('files/GeistMonoVariableVF.ttf');
+}
+
+@font-face {
+  font-family: 'Pixpopenei';
+  src: url('files/pixpopenei.ttf');
+}
+
+@font-face {
+  font-family: 'Inkverse';
+  src: url('files/Inkverse.ttf');
+}

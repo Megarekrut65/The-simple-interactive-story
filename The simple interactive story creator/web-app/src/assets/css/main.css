@@ -1,0 +1,36 @@
+@import './style.css';
+
+.error-message {
+  color: brown;
+  padding-bottom: 10px;
+}
+.card {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.dropdown-item.custom-item:hover {
+  color: #07085d;
+}
+.dropdown-item.custom-item {
+  color: #ffffff;
+}
+.custom-btn:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.part-container > * {
+  width: 45%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+@media screen and (max-width: 500px) {
+  .part-container > * {
+    width: 90%;
+  }
+}
+
+.part-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

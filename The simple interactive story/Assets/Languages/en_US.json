@@ -1,0 +1,16 @@
+{
+    "items": [
+        {
+            "key": "game-name", "value": "The simple interactive story"
+        },
+        {
+            "key": "new-start", "value": "Start new story"
+        },
+        {
+            "key": "continue", "value": "Continue"
+        },
+        {
+            "key": "story-not-found", "value": "Story not found!"
+        }
+    ]
+}
