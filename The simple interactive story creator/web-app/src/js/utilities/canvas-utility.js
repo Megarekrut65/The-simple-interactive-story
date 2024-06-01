@@ -4,11 +4,9 @@ export const drawCircle = (ctx, x, y, radius) => {
     ctx.stroke();
 }
 
-export const drawResizingCircles = (ctx, selectedImageIndex, index, image) => {
-    if (selectedImageIndex != index) return;
-
+export const drawResizingCircles = (ctx, image) => {
     const circleRadius = 5;
-    ctx.fillStyle = "blue";
+    ctx.strokeStyle = "#07085d";
 
     drawCircle(ctx, image.x, image.y, circleRadius);
     drawCircle(ctx, image.x + image.width, image.y, circleRadius);

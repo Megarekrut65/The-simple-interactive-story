@@ -120,5 +120,11 @@ export const uk = {
     email: "Електронна адреса",
     aboutDescription: "BOA Games - це 'компанія' по розробці ігор, яка складається з одного учасника, а саме Бандалака Олександра.\nПід маркою BOA Games було розроблено декілька ігор, такий як 'Magical Slimes: Triple Choice', 'Denasty', 'Three ways' та інші.",
     newScene: "Створити нову сцену",
-    saveAll: "Зберегти все"
+    saveAll: "Зберегти все",
+
+    upImage: "Підняти",
+    downImage: "Опустити",
+    seeImage: "Виділити",
+    removeImageTitle: "Видалення зображення",
+    removeImageText: "Ви точно хочете видалити це зображення?"
 };

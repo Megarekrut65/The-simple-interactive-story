@@ -64,7 +64,7 @@ const addImage = (image, draw) => {
     images.value.push(createImage(image, draw));
 
     props.onUpdate(images.value);
-    backgroundRef.value.redrawAll();
+    backgroundRef.value.redrawAll(images.value.length - 1);
 };
 
 const onImageSelect = (value) => {
@@ -80,20 +80,20 @@ const onRemove = (index) => {
     if (index >= 0 && index < images.value.length) {
         images.value.splice(index, 1);
         props.onUpdate(images.value);
-
-        backgroundRef.value.redrawAll();
     }
+    backgroundRef.value.redrawAll();
 };
 
 const backgroundRef = ref(null);
+const selectedImage = ref(-1);
 
 const onUp = (index) => {
     if (index >= 1 && index < images.value.length) {
         [images.value[index], images.value[index - 1]] = [images.value[index - 1], images.value[index]];
         props.onUpdate(images.value);
-
-        backgroundRef.value.redrawAll();
     }
+
+    backgroundRef.value.redrawAll(index - 1);
 };
 
 const onDown = (index) => {
@@ -101,9 +101,15 @@ const onDown = (index) => {
         [images.value[index], images.value[index + 1]] = [images.value[index + 1], images.value[index]];
 
         props.onUpdate(images.value);
-
-        backgroundRef.value.redrawAll();
     }
+    backgroundRef.value.redrawAll(index + 1);
+};
+
+const imageClick = (index) => {
+    backgroundRef.value.redrawAll(index);
+};
+const onPress = (index) => {
+    selectedImage.value = index;
 };
 
 </script>
@@ -115,7 +121,7 @@ const onDown = (index) => {
                 <div class="col-12 col-md-9 canvas-container">
                     <i class="fa-regular fa-circle-xmark text-white custom-btn" @click="onClose"></i>
                     <BackgroundEditor ref="backgroundRef" :images="images" :images-length="length" :draws="draws"
-                        :update-image="updateImage" :currentScene="currentScene">
+                        :update-image="updateImage" :currentScene="currentScene" :on-press="onPress">
                     </BackgroundEditor>
                 </div>
                 <div class="col-12 col-md-3 images-part">
@@ -127,9 +133,10 @@ const onDown = (index) => {
                     </div>
 
                     <div class="images">
-                        <ImageItem v-for="(data, index) in images" :key="data.id" :src="imageToSrc(data.img)"
-                            :on-remove="() => onRemove(index)" :on-up="() => onDown(index)"
-                            :on-down="() => onUp(index)">
+                        <ImageItem v-for="(data, index) in images" :key="data.img.id" :src="imageToSrc(data.img)"
+                            :on-remove="() => onRemove(index)" :on-up="() => onDown(index)" :on-down="() => onUp(index)"
+                            :class="selectedImage === index ? 'border border-danger' : ''"
+                            :on-see="() => imageClick(index)">
                         </ImageItem>
 
                     </div>

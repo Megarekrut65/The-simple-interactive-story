@@ -20,9 +20,12 @@ const props = defineProps({
     currentScene: {
         type: Object,
         required: true
+    },
+    onPress: {
+        type: Function,
+        required: true
     }
 });
-
 
 const imagesContainer = computed(() => props.images);
 
@@ -47,6 +50,7 @@ const background = computed(() => {
 });
 
 const redrawCanvas = () => {
+    props.onPress(selectedImageIndex);
     // eslint-disable-next-line no-self-assign
     canvas.width = canvas.width; // clear canvas
 
@@ -58,7 +62,7 @@ const redrawCanvas = () => {
         if (!draw) return;
 
         ctx.drawImage(draw, image.rect.x, image.rect.y, image.rect.width, image.rect.height);
-        drawResizingCircles(ctx, selectedImageIndex, index, image.rect);
+        if (selectedImageIndex === index) drawResizingCircles(ctx, image.rect);
     });
 };
 
@@ -87,6 +91,8 @@ const handleMouseDown = (event) => {
             prevX = mouseX;
             prevY = mouseY;
 
+            redrawCanvas();
+
             return;
         }
 
@@ -96,12 +102,15 @@ const handleMouseDown = (event) => {
             prevX = mouseX;
             prevY = mouseY;
 
+            redrawCanvas();
+
             return;
         }
     }
 
     selectedImageIndex = -1;
     selectedCornerIndex = -1;
+
     redrawCanvas();
 };
 const dragImage = (event) => {
@@ -182,20 +191,20 @@ const setUpCanvas = (canvasId) => {
     }
 };
 
-const redrawAll = () => {
-    selectedImageIndex = -1;
-    selectedCornerIndex = -1;
-    redrawCanvas();
-};
-
 onMounted(() => {
     setUpCanvas("canvas");
 
-    redrawAll();
+    redrawCanvas();
 });
 
+const redrawAll = (selectedImage = -1) => {
+    selectedImageIndex = selectedImage;
+    redrawCanvas();
+};
+
 defineExpose({
-    redrawAll
+    redrawAll,
+    selectedImageIndex
 });
 </script>
 
