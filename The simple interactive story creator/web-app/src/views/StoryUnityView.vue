@@ -103,9 +103,13 @@ onMounted(loadGame);
 </script>
 
 <template>
-    <BigBanner min-height="100vh" :title="$t('mobileSupport')"></BigBanner>
+    <BigBanner min-height="100vh"></BigBanner>
     <div id="unity-container" class="unity-desktop" style="width: 80%;">
         <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 80%;"></canvas>
+        <div class="not-supported">
+            <p class="text-white font-weight-bold font-primary text-center"> {{ $t('mobileSupport') }}
+            </p>
+        </div>
         <div id="unity-loading-bar">
             <div id="unity-logo"></div>
             <div id="unity-progress-bar-empty">
@@ -120,3 +124,19 @@ onMounted(loadGame);
         </div>
     </div>
 </template>
+<style>
+.not-supported {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.not-supported>* {
+    width: 80%;
+}
+</style>
