@@ -57,17 +57,17 @@ const onRemove = (index) => {
         <div class="col-12 answer" v-for="(data, index) in answers" :key="data.id">
             <table>
                 <tr>
-                    <td><label class="star">{{ $t('text') }}</label></td>
+                    <td><label>{{ $t('text') }}</label></td>
                     <td>
                         <textarea style="width: 100%;" :placeholder="$t('answerHint')" v-model="answers[index].text"
-                            required></textarea>
+                            maxlength="200"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="star">{{ $t('nextScene') }}</label></td>
+                    <td><label>{{ $t('nextScene') }}</label></td>
                     <td>
                         <SafeDatalist :list="sceneList" :on-select="(value) => onSceneSelect(index, value)"
-                            :required="true" content-key="title" value-key="title"
+                            :required="false" content-key="title" value-key="title"
                             :initial="scenes[data.nextScene] ? scenes[data.nextScene].title : ''"
                             :item-action="newSceneScene"></SafeDatalist>
                     </td>

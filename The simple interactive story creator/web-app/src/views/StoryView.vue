@@ -117,6 +117,7 @@ getPublish(publishId).then((res) => {
 <style>
 .description-text {
     white-space: pre-wrap;
+    line-height: 0.8;
 }
 
 .title-box {

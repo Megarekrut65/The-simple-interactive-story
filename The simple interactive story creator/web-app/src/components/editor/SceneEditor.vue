@@ -83,13 +83,16 @@ const onAddAnswer = () => {
     currentScene.value.answers.push({ text: "", nextScene: "", id: v4() });
 };
 
-const onSceneSave = () => {
+const onSceneSave = async () => {
+    saveScene(toRaw(currentScene.value));
+    return false;
+};
+
+const saveScene = (scene) => {
     const user = getUser();
     if (!user) return false;
 
     isLoading.value = true;
-
-    const scene = toRaw(currentScene.value);
 
     const uploadBackground = uploadImage(props.userStorage.images, scene.background).then(background => {
         scene.background = background;
@@ -100,7 +103,7 @@ const onSceneSave = () => {
         return Promise.resolve();
     });
 
-    Promise.all([uploadBackground, uploadMusic]).then(() => {
+    return Promise.all([uploadBackground, uploadMusic]).then(() => {
 
         const allImages = scene.images.map((image) =>
             uploadImage(props.userStorage.images, image.img).then(res => {
@@ -115,10 +118,18 @@ const onSceneSave = () => {
         return setScene(user.uid, props.storyId, scene);
     }).catch(err => {
         console.log(err);
-    }).finally(() => isLoading.value = false);
+        return Promise.reject();
+    }).finally(() => {
+        isLoading.value = false
+        return Promise.resolve();
+    });
+};
 
-    return false;
 
+const saveAll = async () => {
+    for (let i in scenes.value) {
+        await saveScene(toRaw(scenes.value[i]))
+    }
 };
 
 const question = ref({
@@ -146,9 +157,9 @@ const removeCurrentScene = () => {
     <form @submit="onSceneSave" onsubmit="return false;" action="#">
         <table class="form-table">
             <tr>
-                <td><label class="star">{{ $t('sceneTitle') }}</label></td>
-                <td><input type="text" :placeholder="$t('sceneHint')" v-model="currentScene.title" minlength="5"
-                        required @change="onTitleChanged"></td>
+                <td><label>{{ $t('sceneTitle') }}</label></td>
+                <td><input type="text" :placeholder="$t('sceneHint')" v-model="currentScene.title" maxlength="50"
+                        @change="onTitleChanged"></td>
             </tr>
 
             <tr>
@@ -200,11 +211,17 @@ const removeCurrentScene = () => {
 
             <tr>
                 <td></td>
-                <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
-            </tr>
-            <tr>
-                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
-                <td><input type="button" :value="$t('remove')" style="margin-top: 20px;" @click="removeCurrentScene">
+                <td class="row text-center">
+                    <div class="col-12 col-sm-4">
+                        <input type="submit" :value="$t('save')">
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <input type="button" :value="$t('saveAll')" @click="saveAll" class="btn-outline-success">
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <input type="button" :value="$t('remove')" @click="removeCurrentScene"
+                            class="btn-outline-danger">
+                    </div>
                 </td>
             </tr>
         </table>

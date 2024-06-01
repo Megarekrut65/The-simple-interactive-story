@@ -311,8 +311,8 @@ const onPublish = () => {
                                 <td>{{ $t("allFieldsMarked") }} <label class="star"></label></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" :value="$t('save')" style="margin-top: 20px;"></td>
-                                <td><input type="button" :value="$t('publish')" style="margin-top: 20px;"
+                                <td><input type="submit" :value="$t('save')"></td>
+                                <td><input type="button" class="btn-outline-primary" :value="$t('publish')"
                                         @click="onPublish" :disabled="!storyId"></td>
                             </tr>
                         </table>
@@ -324,11 +324,11 @@ const onPublish = () => {
                 <div class="col mx-auto">
                     <h3 class="font-tertiary mb-5">{{ $t('scenes') }}</h3>
                     <div class="row">
-                        <div class="col-12 col-md-4"><input type="button" :value="$t('addScene')" @click="addScene">
+                        <div class="col-12 col-md-6"><input type="button" class="custom-btn" :value="$t('addScene')"
+                                @click="addScene">
                         </div>
-                        <div class="col-12 col-md-4"><input type="button" :value="$t('viewScene')">
-                        </div>
-                        <div class="col-12 col-md-4"><input type="button" :value="$t('makeMain')" @click="makeMain">
+                        <div class="col-12 col-md-6"><input type="button" class="custom-btn" :value="$t('makeMain')"
+                                @click="makeMain">
                         </div>
                     </div>
                     <table>
@@ -357,8 +357,8 @@ const onPublish = () => {
                         <div class="col-12 border p-4">
                             <p lass="font-tertiary mb-1">{{ $t('removeTitle') }}</p>
                             <input type="text" v-model.trim="removeTitle">
-                            <input type="button" :value="$t('remove')" @click="removeStoryAction"
-                                :disabled="removeTitle !== story.title">
+                            <input type="button" class="btn-outline-danger" :value="$t('remove')"
+                                @click="removeStoryAction" :disabled="removeTitle !== story.title">
                         </div>
                     </div>
                 </div>

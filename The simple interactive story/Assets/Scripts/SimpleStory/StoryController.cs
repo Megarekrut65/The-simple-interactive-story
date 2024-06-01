@@ -41,8 +41,9 @@ namespace SimpleStory
             
             if (scene.answers != null && depth >= 0)
             {
-                enumerators.AddRange(from answer in scene.answers where answer.nextScene != scene.id 
-                    select LoadScene(_scenes[answer.nextScene], depth-1));
+                enumerators.AddRange(from answer in scene.answers 
+                    where answer.nextScene != scene.id && answer.nextScene != null
+                    select LoadScene(_scenes.TryGetValue(answer.nextScene, out Scene nextScene)?nextScene:null, depth-1));
             }
             
             foreach (IEnumerator enumerator in enumerators)

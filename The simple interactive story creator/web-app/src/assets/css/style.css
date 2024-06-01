@@ -1049,6 +1049,7 @@ datalist {
   border: none;
   border-bottom: 1px solid #7359f3;
 }
+
 input::placeholder {
   color: #514697b9;
 }
@@ -1078,11 +1079,14 @@ label {
   min-height: 100px;
 }
 input[type='submit'],
-input[type='button'] {
+input[type='button'].custom-btn {
   border: 1px solid #7359f3;
 }
+input[type='button'] {
+  border: 1px solid;
+}
 input[type='submit']:hover,
-input[type='button']:hover {
+input[type='button'].custom-btn:hover {
   background-color: #7359f3;
   cursor: pointer;
   border: 1px solid #4d3ba5;
