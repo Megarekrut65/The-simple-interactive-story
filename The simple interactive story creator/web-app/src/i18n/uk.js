@@ -126,5 +126,16 @@ export const uk = {
     downImage: "Опустити",
     seeImage: "Виділити",
     removeImageTitle: "Видалення зображення",
-    removeImageText: "Ви точно хочете видалити це зображення?"
+    removeImageText: "Ви точно хочете видалити це зображення?",
+
+    descriptionTitle: "Почни створення власної інтерактивньої історії уже сьогодні!",
+    desSceneTitle: "Сцени",
+    desSceneDescription: "Створюй різноманітні сцени та зв'язки між ними",
+    desImageTitle: "Зображення",
+    desImageDescription: "Додавай мальовничі зображення для прикрашання сцени",
+    desSoundTitle: "Музика",
+    desSoundDescription: "Доповнюй атмосферу історії фоновою музикою",
+    desShareTitle: "Ділись своєю історією",
+    desShareDescription: "Публікуй створену історію для друзів або всіх користувачів",
+    go: "Вперед!"
 };

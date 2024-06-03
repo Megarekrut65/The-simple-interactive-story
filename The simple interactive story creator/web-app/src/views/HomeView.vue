@@ -1,5 +1,6 @@
 <script setup>
 import BigBanner from '@/components/BigBanner.vue';
+import DescriptionBanner from '@/components/home/DescriptionBanner.vue';
 import StoryCards from '@/components/StoryCards.vue';
 import { getPublishStories, getStory } from '@/js/firebase/story';
 
@@ -16,6 +17,7 @@ const toLink = (data) => { return { name: 'story', params: { publishId: `${data.
     <BigBanner :title="$t('title')" min-height="100vh"></BigBanner>
 
     <div class="basic-page">
+        <DescriptionBanner></DescriptionBanner>
         <section class="section">
             <div class="container">
                 <div class="row">

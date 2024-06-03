@@ -372,4 +372,8 @@ const onPublish = () => {
     margin-top: 10px;
     vertical-align: middle;
 }
+
+input[type="button"].btn-outline-primary:hover {
+    cursor: pointer;
+}
 </style>
