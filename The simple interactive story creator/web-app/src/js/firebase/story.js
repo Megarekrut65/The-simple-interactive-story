@@ -20,7 +20,7 @@ const dataOrNull = (res) => {
     return null;
 };
 const dataDocs = (res) => {
-    return res.docs.map(item => item.data());
+    return { list: res.docs.map(item => item.data()), last: res.docs[res.docs.length - 1] };
 };
 export const setScene = (userId, storyId, scene) => {
     const coll = getSceneCollection(userId, storyId);
@@ -79,8 +79,8 @@ export const getUserStories = (userId, perPage, after = null) => {
 export const getPublishStories = (perPage, after = null) => {
     const q = query(collection(db, publishCollection),
         where("privateStory", "==", false),
+        orderBy("publishDate"),
         orderBy("id"),
-        orderBy("publishDate", "desc"),
         startAfter(after),
         limit(perPage));
 
@@ -94,18 +94,22 @@ export const searchPublishStories = (title, author, authorId, genre, perPage, af
     }
 
     const q = query(collection(db, publishCollection), ...conditionals, where("privateStory", "==", false),
+        orderBy("publishDate"),
         orderBy("id"),
-        orderBy("publishDate", "desc"),
         startAfter(after),
         limit(perPage));
 
-    return getDocs(q).then(dataDocs).then(lst => {
+    return getDocs(q).then(dataDocs).then(getRes => {
+        const lst = getRes.list;
         const promises = lst.map(publish => getStory(publish.authorId, publish.storyId));
         return Promise.all(promises.map(res => res.catch(() => null))).then(stories => {
-            return stories.filter(story => story
-                && ((!title || title.length < 2) || story.title.toLowerCase().includes(title.toLowerCase()))
-                && ((!author || author.length < 2) || story.author.toLowerCase().includes(author.toLowerCase()))
-                && ((!genre || genre.length < 2) || story.genre.toLowerCase().includes(genre.toLowerCase())));
+            return {
+                list: stories.filter(story => story
+                    && ((!title || title.length < 2) || story.title.toLowerCase().includes(title.toLowerCase()))
+                    && ((!author || author.length < 2) || story.author.toLowerCase().includes(author.toLowerCase()))
+                    && ((!genre || genre.length < 2) || story.genre.toLowerCase().includes(genre.toLowerCase()))),
+                last: getRes.last
+            };
         });
     });
 };

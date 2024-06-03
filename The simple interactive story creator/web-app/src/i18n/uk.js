@@ -33,7 +33,7 @@ export const uk = {
     storyAuthor: "Автор",
     storyPrivate: "Приватна історія",
     storyGenre: "Жанр",
-    genreHint: "Пригоди, Романтика, Комендія...",
+    genreHint: "Пригоди, Романтика, Комедія...",
 
     generalSettings: "Загальні налаштування історії",
     allFieldsMarked: "Усі обов’язкові поля позначені",

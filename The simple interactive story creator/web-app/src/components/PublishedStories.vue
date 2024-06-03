@@ -18,14 +18,12 @@ const titleSearch = ref(""), authorSearch = ref(""), genreSearch = ref("");
 const searchParams = ref({
     title: null,
     author: null,
-    authorId: props.value,
+    authorId: props.authorId,
     genre: null
 });
-const loadMore = (perPage, after) => {
+const loadMore = (perPage, after = null) => {
     return searchPublishStories(searchParams.value.title, searchParams.value.author, searchParams.value.authorId, searchParams.value.genre, perPage, after);
 };
-
-loadMore(perPage.value);
 
 const onSearch = () => {
     searchParams.value = {
@@ -53,7 +51,7 @@ const toLink = (data) => { return { name: 'story', params: { publishId: `${data.
                         <div class="section-border"></div>
                     </div>
                 </div>
-                <div class="row" v-if="!authorId">
+                <div class="row">
                     <div class="col-12 col-lg-3">
                         <input v-model="titleSearch" :placeholder="$t('storyTitle')" type="text">
                     </div>
