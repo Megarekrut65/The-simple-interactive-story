@@ -32,11 +32,15 @@ namespace Main
         {
             continueBtn.interactable = false;
             #if UNITY_EDITOR
-            string publishId = "sasha-taiemnicya-lisovogo-ostrivcya";
+            string publishId = "kazkar-angeli-ta-demoni-protistoyannya";
+            string locale = "en";
             #else
                 string publishId = JsManager.UidFromUrl();
                 _token = JsManager.Token();
+                string locale = JsManager.Locale();
             #endif
+            
+            LocalStorage.SetValue("language", Locale(locale));
 
             if (publishId == "")
             {
@@ -45,6 +49,17 @@ namespace Main
             }
             
             StartCoroutine(Fetcher.Get(Constants.GetPublishPath(publishId), _token, FetchPublishCallback)); 
+        }
+
+        private string Locale(string locale)
+        {
+            switch (locale)
+            {
+                case "en": return "en_US";
+                case "uk": return "uk_UK";
+            }
+
+            return "en_US";
         }
 
         private void FetchPublishCallback([CanBeNull] string error, [CanBeNull] string result)
@@ -78,7 +93,6 @@ namespace Main
             LocalStorage.SetValue("userId", _userId);
             LocalStorage.SetValue("token", _token);
             
-            LocalStorage.SetValue("language", "uk_UK");
             StartCoroutine(Fetcher.Get(Constants.GetStoryPath(_userId, _storyId), _token, FetchStoryCallback)); 
         }
 

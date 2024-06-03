@@ -8,6 +8,10 @@ namespace Main
         [DllImport("__Internal")]
         [CanBeNull]
         public static extern string Token();
+        
+        [DllImport("__Internal")]
+        [CanBeNull]
+        public static extern string Locale();
 
         [DllImport("__Internal")]
         [CanBeNull]

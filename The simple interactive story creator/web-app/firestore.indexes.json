@@ -5,6 +5,28 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "authorId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "privateStory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "publishDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "publishStories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "id",
           "order": "ASCENDING"
         },
@@ -29,6 +51,24 @@
         {
           "fieldPath": "publishDate",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "publishStories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "privateStory",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "publishDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
         }
       ]
     },

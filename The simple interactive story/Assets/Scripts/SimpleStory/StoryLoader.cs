@@ -24,7 +24,8 @@ namespace SimpleStory
 
         [SerializeField] private ImagesConstructor constructor;
 
-        [Header("Texts")]
+        [Header("Texts")] 
+        [SerializeField] private ActivityController activityController;
         [SerializeField] private GameObject textObj;
         [SerializeField] private Text text;
 
@@ -62,6 +63,7 @@ namespace SimpleStory
         private IEnumerator LoadScene(Scene scene)
         {
             if(scene == null) yield break;
+            activityController.SetActivity(true);
             
             loader.Close();
             if (!_controller.IsSceneLoaded(scene))
@@ -77,6 +79,11 @@ namespace SimpleStory
             
             LoadText(scene.text);
             LoadAnswers(scene.answers);
+
+            if (string.IsNullOrEmpty(scene.text) && (scene.answers == null || scene.answers.Length == 0))
+            {
+                activityController.SetActivity(false);
+            }
             
             LoadImage(background, scene.background);
 
@@ -135,7 +142,7 @@ namespace SimpleStory
         }
         private void LoadImage(Image img, [CanBeNull] string url)
         {
-            if (url == null)
+            if (string.IsNullOrEmpty(url))
             {
                 img.sprite = defaultBackground;
                 return;

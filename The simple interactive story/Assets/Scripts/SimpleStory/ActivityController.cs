@@ -10,5 +10,9 @@ namespace SimpleStory
         {
             obj.SetActive(!obj.activeInHierarchy);
         }
+        public void SetActivity(bool value)
+        {
+            obj.SetActive(value);
+        }
     }
 }

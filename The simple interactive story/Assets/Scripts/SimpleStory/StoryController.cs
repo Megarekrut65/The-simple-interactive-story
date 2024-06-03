@@ -76,7 +76,7 @@ namespace SimpleStory
 
         private IEnumerator LoadSprite(string url)
         {
-            if (StorageManager.ContainsSprite(url))
+            if (StorageManager.ContainsSprite(url) || url == null || url == "")
                 return Empty();
             
             return UrlReader.ReadSprite(url, (sprite) =>
@@ -87,7 +87,7 @@ namespace SimpleStory
 
         private IEnumerator LoadClip(string url)
         {
-            if (StorageManager.ContainsClip(url))
+            if (StorageManager.ContainsClip(url) || url == null || url == "")
                 return Empty();
             
             
