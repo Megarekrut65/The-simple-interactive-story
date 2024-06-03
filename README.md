@@ -16,8 +16,8 @@ This web app allow users to create visual novels (interactive stories) and share
 - File hosting - [Firebase Storage](https://firebase.google.com/docs/storage).
 - Authentication - [Firebase Authentication](https://firebase.google.com/docs/auth).
 
-## Deployment
-- Web app hosting - [Firebase Hosting](https://firebase.google.com/docs/hosting).
-
 ## Game
 - [Unity WebGL](https://docs.unity3d.com/Manual/webgl-building.html).
+
+## Deployment
+- Web app hosting - [Firebase Hosting](https://firebase.google.com/docs/hosting).
