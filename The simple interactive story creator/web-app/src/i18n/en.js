@@ -126,5 +126,16 @@ export const en = {
     downImage: "Down",
     seeImage: "Highlight",
     removeImageTitle: "Remove image",
-    removeImageText: "Are you sure you want to remove this image?"
+    removeImageText: "Are you sure you want to remove this image?",
+
+    descriptionTitle: "Start creating your own interactive story today!",
+    desSceneTitle: "Scenes",
+    desSceneDescription: "Create various scenes and connections between them",
+    desImageTitle: "Image",
+    desImageDescription: "Add picturesque images to decorate the scene",
+    desSoundTitle: "Music",
+    desSoundDescription: "Add to the atmosphere of the story with background music",
+    desShareTitle: "Share your story",
+    desShareDescription: "Publish the created story to friends or all users",
+    go: "Forward!"
 };

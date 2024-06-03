@@ -3,7 +3,9 @@ import { en } from './en';
 import { uk } from './uk';
 
 
-export const defaultLocale = "en";
+const savedLocale = localStorage.getItem("locale");
+
+export const defaultLocale = savedLocale ? savedLocale : "en";
 
 let _i18n;
 let use;
@@ -30,8 +32,11 @@ const setup = (options = { locale: defaultLocale }) => {
 
 
 const setLocale = (newLocale) => {
-    if (messages[newLocale])
+    if (messages[newLocale]) {
         _i18n.global.locale.value = newLocale;
+        localStorage.setItem("locale", newLocale);
+    }
+
 };
 const getLocale = () => {
     return _i18n.global.locale.value;
