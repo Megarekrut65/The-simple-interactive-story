@@ -6,6 +6,7 @@ This web app allow users to create visual novels (interactive stories) and share
 
 ## Frontend
 - Web framework - [Vue.js](https://vuejs.org/).
+- Frontend toolkit - [Bootstrap](https://getbootstrap.com/).
 - Localization - [Vue I18n](https://vue-i18n.intlify.dev/).
 - [VueFire](https://vuefire.vuejs.org/) for work with Firebase.
 
