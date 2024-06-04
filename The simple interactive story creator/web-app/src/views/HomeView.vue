@@ -1,12 +1,15 @@
 <script setup>
 import BigBanner from '@/components/BigBanner.vue';
+import DescriptionBanner from '@/components/home/DescriptionBanner.vue';
 import StoryCards from '@/components/StoryCards.vue';
 import { getPublishStories, getStory } from '@/js/firebase/story';
 
 const loadMore = (perPage, after) => {
-    return getPublishStories(perPage, after).then(publishList => {
-        const stories = publishList.map(publish => getStory(publish.authorId, publish.storyId));
-        return Promise.all(stories.map(res => res.catch(() => null))).then(res => res.filter(story => story));
+    return getPublishStories(perPage, after).then(publishRes => {
+        const stories = publishRes.list.map(publish => getStory(publish.authorId, publish.storyId));
+        return Promise.all(stories.map(res => res.catch(() => null))).then(res => {
+            return { list: res.filter(story => story), last: publishRes.last };
+        });
     });
 };
 
@@ -16,6 +19,7 @@ const toLink = (data) => { return { name: 'story', params: { publishId: `${data.
     <BigBanner :title="$t('title')" min-height="100vh"></BigBanner>
 
     <div class="basic-page">
+        <DescriptionBanner></DescriptionBanner>
         <section class="section">
             <div class="container">
                 <div class="row">

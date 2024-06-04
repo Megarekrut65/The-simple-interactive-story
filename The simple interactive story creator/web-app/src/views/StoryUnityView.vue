@@ -103,20 +103,59 @@ onMounted(loadGame);
 </script>
 
 <template>
-    <BigBanner min-height="100vh" :title="$t('mobileSupport')"></BigBanner>
-    <div id="unity-container" class="unity-desktop" style="width: 80%;">
-        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 80%;"></canvas>
-        <div id="unity-loading-bar">
-            <div id="unity-logo"></div>
-            <div id="unity-progress-bar-empty">
-                <div id="unity-progress-bar-full"></div>
+    <BigBanner min-height="100vh"></BigBanner>
+    <div class="not-supported">
+        <p class="text-white text-center"> {{ $t('mobileSupport') }}
+        </p>
+    </div>
+    <div class="not-supported">
+        <div id="unity-container" class="unity-desktop canvas-container">
+            <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1" style="width: 80%;"></canvas>
+            <div class="mt-4">
+                <div id="unity-loading-bar">
+                    <div id="unity-logo"></div>
+                    <div id="unity-progress-bar-empty">
+                        <div id="unity-progress-bar-full"></div>
+                    </div>
+                </div>
+                <div id="unity-warning"> </div>
+                <div id="unity-footer">
+                    <div id="unity-webgl-logo"></div>
+                    <div id="unity-fullscreen-button"></div>
+                    <div id="unity-build-title">The simple interactive story</div>
+                </div>
             </div>
         </div>
-        <div id="unity-warning"> </div>
-        <div id="unity-footer">
-            <div id="unity-webgl-logo"></div>
-            <div id="unity-fullscreen-button"></div>
-            <div id="unity-build-title">The simple interactive story</div>
-        </div>
     </div>
+
 </template>
+<style>
+.not-supported {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+#unity-canvas {
+    z-index: 101;
+}
+
+.not-supported>p {
+    width: 60%;
+}
+
+.canvas-container {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+</style>

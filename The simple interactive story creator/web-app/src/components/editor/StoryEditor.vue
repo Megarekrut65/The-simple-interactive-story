@@ -312,8 +312,8 @@ const onPublish = () => {
                             </tr>
                             <tr>
                                 <td><input type="submit" :value="$t('save')"></td>
-                                <td><input type="button" class="btn-outline-primary" :value="$t('publish')"
-                                        @click="onPublish" :disabled="!storyId"></td>
+                                <td><input v-if="storyId" type="button" class="btn-outline-primary disabled-btn"
+                                        :value="$t('publish')" @click="onPublish" :disabled="!storyId"></td>
                             </tr>
                         </table>
 

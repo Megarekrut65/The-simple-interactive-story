@@ -37,7 +37,6 @@ getPublish(publishId).then((res) => {
 
     return getStory(res.authorId, res.storyId).then(storyRes => {
         story.value = storyRes;
-        console.log(storyRes)
 
         return Promise.resolve();
     });

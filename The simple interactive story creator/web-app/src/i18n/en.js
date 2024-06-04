@@ -1,11 +1,11 @@
 export const en = {
-    title: "A simple interactive story",
     home: "Home",
     news: "News",
     about: "About us",
     help: "Help",
-    story: "Story",
+    story: "History",
     contacts: "Contacts",
+    title: "A simple interactive story",
     signInUp: "Sign in/register.",
     support: "Support",
     createStory: "Create Story",
@@ -98,9 +98,9 @@ export const en = {
     selectPopular: "Enjoy other people's stories",
     storyPrivateDes: "To view a private story, you can use its ID. Public stories can be found by name in search.",
     creatingDate: "Creation Date",
-    publishDate: "Publication date",
+    publishDate: "Publish Date",
     runStory: "Run Story",
-    mobileSupport: "Unfortunately, mobile devices are not supported by the Unity platform in web applications.",
+    mobileSupport: "If you are using a mobile device and the story does not load, try switching to the desktop version of the site in your browser. If you're reading this on a desktop device, wait for the game to load or try reloading the page.",
 
     singIn: "Input",
     login: "Log in",
@@ -114,9 +114,28 @@ export const en = {
 
     userStories: "Stories",
     search: "Search",
-    empty: "No stories found",
+    empty: "No history found",
 
     developer: "Developer",
     email: "E-mail address",
-    aboutDescription: "BOA Games is a game development 'company' consisting of one member, Bandalak Oleksandr.\nMany games have been developed under the BOA Games brand, such as 'Magical Slimes: Triple Choice', 'Denasty', ' Three ways' and others."
+    aboutDescription: "BOA Games is a game development 'company' consisting of one member, Bandalak Oleksandr.\nMany games have been developed under the BOA Games brand, such as 'Magical Slimes: Triple Choice', 'Denasty', ' Three ways' and others.",
+    newScene: "Create new scene",
+    saveAll: "Save All",
+
+    upImage: "Up",
+    downImage: "Down",
+    seeImage: "Highlight",
+    removeImageTitle: "Remove image",
+    removeImageText: "Are you sure you want to remove this image?",
+
+    descriptionTitle: "Start creating your own interactive story today!",
+    desSceneTitle: "Scenes",
+    desSceneDescription: "Create various scenes and connections between them",
+    desImageTitle: "Image",
+    desImageDescription: "Add picturesque images to decorate the scene",
+    desSoundTitle: "Music",
+    desSoundDescription: "Add to the atmosphere of the story with background music",
+    desShareTitle: "Share your story",
+    desShareDescription: "Publish the created story to friends or all users",
+    go: "Forward!"
 };

@@ -1474,6 +1474,7 @@ MonoBehaviour:
   background: {fileID: 1121166556}
   defaultBackground: {fileID: 21300000, guid: 79e4ec9df4ddf824eb8c5ffd4321dcf5, type: 3}
   constructor: {fileID: 2105649648}
+  activityController: {fileID: 2138371094}
   textObj: {fileID: 1766704860}
   text: {fileID: 1153638620}
 --- !u!4 &1082260101
@@ -2365,7 +2366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 275.0843}
+  m_AnchoredPosition: {x: 0, y: 275.08505}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1737053525
@@ -3085,7 +3086,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 21197465}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99919146
+  m_Size: 0.99998945
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

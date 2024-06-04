@@ -158,6 +158,11 @@ h6,
   color: #fff;
   border-color: #f7463a;
 }
+.btn-outline-primary:disabled,
+.btn-outline-primary.focus:disabled,
+.btn-outline-primary:disabled:hover {
+  background: white;
+}
 
 .btn-secondary {
   background: #07085d;
@@ -1090,6 +1095,9 @@ input[type='button'].btn-outline-custom:hover {
   background-color: #7359f3;
   cursor: pointer;
   border: 1px solid #4d3ba5;
+}
+input[type='button'].btn-outline-custom:disabled {
+  background-color: rgb(222, 222, 222);
 }
 
 label.star::after {

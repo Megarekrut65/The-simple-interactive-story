@@ -12,7 +12,7 @@ namespace SimpleStory
 
         public void DrawImage(CanvasImage canvasImage, Sprite sprite)
         {
-            if(canvasImage == null || sprite == null) return;
+            if(canvasImage?.img == null || canvasImage.img == "" || sprite == null) return;
             
             GameObject instance = new GameObject(canvasImage.img);
             instance.transform.SetParent(container.transform, false);

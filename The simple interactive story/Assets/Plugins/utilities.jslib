@@ -1,7 +1,7 @@
 ﻿
 mergeInto(LibraryManager.library, {
 
-  Token: function () {
+    Token: function () {
     var returnStr = localStorage.getItem("token");
     if(returnStr == null) return null;
     
@@ -10,7 +10,16 @@ mergeInto(LibraryManager.library, {
     stringToUTF8(returnStr, buffer, bufferSize);
     
     return buffer;
-  },
+  }, Locale: function () {
+        var returnStr = localStorage.getItem("locale");
+        if(returnStr == null) return null;
+
+        var bufferSize = lengthBytesUTF8(returnStr) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(returnStr, buffer, bufferSize);
+
+        return buffer;
+        },
   UidFromUrl: function () {
     var url = window.location.href;
     var cleanedUrl = url.replace(/\/+$/, "");

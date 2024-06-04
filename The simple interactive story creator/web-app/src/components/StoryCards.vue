@@ -32,12 +32,12 @@ const loadMore = () => {
     isAll.value = true;
 
     props.loadFunction(props.perPage, after).then(res => {
-        stories.value = stories.value.concat(res);
-        if (res.length > 0) {
-            after = res[res.length - 1]
+        stories.value = stories.value.concat(res.list);
+        if (res.list.length > 0) {
+            after = res.last;
             isAll.value = false;
         }
-        if (res.length < props.perPage) {
+        if (res.list.length < props.perPage) {
             isAll.value = true;
         }
     });
