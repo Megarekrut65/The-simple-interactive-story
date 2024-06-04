@@ -20,8 +20,13 @@ const dataOrNull = (res) => {
     return null;
 };
 const dataDocs = (res) => {
+    return res.docs.map(item => item.data());
+};
+
+const dataDocsAfter = (res) => {
     return { list: res.docs.map(item => item.data()), last: res.docs[res.docs.length - 1] };
 };
+
 export const setScene = (userId, storyId, scene) => {
     const coll = getSceneCollection(userId, storyId);
     return setDoc(doc(db, coll, scene.id), scene);
@@ -73,7 +78,7 @@ export const getUserStories = (userId, perPage, after = null) => {
         startAfter(after),
         limit(perPage));
 
-    return getDocs(q).then(dataDocs);
+    return getDocs(q).then(dataDocsAfter);
 };
 
 export const getPublishStories = (perPage, after = null) => {
@@ -84,7 +89,7 @@ export const getPublishStories = (perPage, after = null) => {
         startAfter(after),
         limit(perPage));
 
-    return getDocs(q).then(dataDocs);
+    return getDocs(q).then(dataDocsAfter);
 };
 
 export const searchPublishStories = (title, author, authorId, genre, perPage, after = null) => {
@@ -99,7 +104,7 @@ export const searchPublishStories = (title, author, authorId, genre, perPage, af
         startAfter(after),
         limit(perPage));
 
-    return getDocs(q).then(dataDocs).then(getRes => {
+    return getDocs(q).then(dataDocsAfter).then(getRes => {
         const lst = getRes.list;
         const promises = lst.map(publish => getStory(publish.authorId, publish.storyId));
         return Promise.all(promises.map(res => res.catch(() => null))).then(stories => {

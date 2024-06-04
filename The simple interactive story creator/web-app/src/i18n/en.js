@@ -1,11 +1,11 @@
 export const en = {
-    title: "A simple interactive story",
     home: "Home",
     news: "News",
     about: "About us",
     help: "Help",
     story: "History",
     contacts: "Contacts",
+    title: "A simple interactive story",
     signInUp: "Sign in/register.",
     support: "Support",
     createStory: "Create Story",
